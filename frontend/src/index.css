@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* font-family: 'Poppins'; */
+}
+
+/* .hideScroll::-webkit-scrollbar {
+  display: none;
+} */
+
+.customScroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.customScroll::-webkit-scrollbar-thumb {
+  background: rgb(78, 78, 78); 
+  border-radius: 10px;
+}
+
+.customScroll::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+  display: none;
+}
+
+.customScroll::-webkit-resizer {
+  height: 10px;
+}
+
+/* custom range slider */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #ddd;
+  outline: none;
+  border-radius: 10px;
+  opacity: 0.8;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 9999px;
+  background: #ff004c;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 9999px;
+  background: #ff0080;
+  cursor: pointer;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.blue_gradient {
+  background: linear-gradient(180deg, rgba(188, 165, 255, 0) 0%, #214d76 100%);
+  filter: blur(123px);
+}
+
+.pink_gradient {
+  background: linear-gradient(90deg, #f493f2 0%, #ff2efc 100%);
+  filter: blur(800px);
+}
+
+.black_gradient {
+  background: linear-gradient(to top, rgb(0, 4, 15), rgba(255, 255, 255, 0));
+  filter: blur(100px);
+}

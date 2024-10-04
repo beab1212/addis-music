@@ -1,0 +1,14 @@
+# exclude node_modules
+/backend/node_modules/*
+/frontend/node_modules/*
+/.vscode/*
+
+# exclude big size files
+/backend/hls/*
+/frontend/src/assets/font-awesome-1-master/*
+/frontend/src/assets/genre/*
+/frontend/src/assets/list1/*
+
+# exclude sensetive files
+/backend/config.js
+
