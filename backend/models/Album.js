@@ -17,4 +17,5 @@ const AlbumSchema  = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-export default Album = mongoose.model('Album', AlbumSchema);
+const Album = mongoose.model('Album', AlbumSchema);
+export default Album;

@@ -13,4 +13,5 @@ const ListeningHistorySchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-export default ListeningHistory = mongoose.model('ListeningHistory', ListeningHistorySchema);
+const ListeningHistory = mongoose.model('ListeningHistory', ListeningHistorySchema);
+export default ListeningHistory;
