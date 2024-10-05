@@ -13,7 +13,7 @@ const Signup = () => {
     rePassword: "",
   });
   return (
-    <section className="flex flex-1 flex-col text-gray-900">
+    <section className="flex flex-1 flex-col text-gray-900 overflow-y-scroll customScroll h-screen">
       {/* sigup container */}
       <div className="flex flex-col md:w-1/2 lg:w-1/3 w-1/1 mx-auto py-6 borderr-4 rounded-3xl">
         <img

@@ -1,10 +1,19 @@
 import { memo } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddSong = () => {
+  const navigate = useNavigate();
   return (
     <section className="col-span-full bg-[#121212] h-full overflow-x-hidden rounded-lg pt-2l overflow-y-scroll customScroll">
+      <div className="pt-3 px-4">
+        <i
+          className="fad fa-arrow-left cursor-pointer"
+          style={{ fontSize: "1.2rem" }}
+          onClick={() => navigate(-1)}
+        />
+      </div>
       <div className="container mx-auto">
-        <div className="relative mx-auto w-full max-w-[650px] rounded-xl bg-whitex shadow-lg bg-gray-">
+        <div className="relative mx-auto w-full max-w-[650px] rounded-xl bg-whitex shadow-lg bg-gray-900x">
           <div className="px-7 py-8">
             <div className="mb-6">
               <h3 className="text-xl font-semibold text-dark dark:text-white">
@@ -16,7 +25,7 @@ const AddSong = () => {
             </div>
             <div className="mb-6">
               <label
-                for=""
+                htmlFor=""
                 className="flex min-h-[260px] items-center justify-center rounded-lg border border-dashed border-dark-6 bg-gray-1 p-10 dark:border-dark-3 dark:bg-white/5"
               >
                 <div>
@@ -57,8 +66,8 @@ const AddSong = () => {
               <div className="space-y-3 text-gray-800">
                 <div className="">
                   <label
-                    for="title"
-                    class="mb-2.5 block text-base font-medium text-dark text-white"
+                    htmlFor="title"
+                    className="mb-2.5 block text-base font-medium text-dark text-white"
                   >
                     Title
                   </label>
@@ -66,14 +75,14 @@ const AddSong = () => {
                     type="text"
                     name="title"
                     placeholder="Enter you song title"
-                    class="w-full rounded-lg border border-stroke px-5 py-3 text-dark placeholder-dark-6 outline-none focus:border-primary"
+                    className="w-full rounded-lg border border-stroke px-5 py-3 text-dark placeholder-dark-6 outline-none focus:border-primary"
                   />
                 </div>
 
                 <div className="">
                   <label
-                    for="title"
-                    class="mb-2.5 block text-base font-medium text-dark text-white"
+                    htmlFor="title"
+                    className="mb-2.5 block text-base font-medium text-dark text-white"
                   >
                     Contributors
                   </label>
@@ -81,14 +90,14 @@ const AddSong = () => {
                     type="text"
                     name="title"
                     placeholder="Enter name of contributors like writer, composer..."
-                    class="w-full rounded-lg border border-stroke px-5 py-3 text-dark placeholder-dark-6 outline-none focus:border-primary"
+                    className="w-full rounded-lg border border-stroke px-5 py-3 text-dark placeholder-dark-6 outline-none focus:border-primary"
                   />
                 </div>
 
                 <div className="">
                   <label
-                    for="title"
-                    class="mb-2.5 block text-base font-medium text-dark text-white"
+                    htmlFor="title"
+                    className="mb-2.5 block text-base font-medium text-dark text-white"
                   >
                     Genre
                   </label>
@@ -96,14 +105,14 @@ const AddSong = () => {
                     type="text"
                     name="title"
                     placeholder="Select song genre"
-                    class="w-full rounded-lg border border-stroke px-5 py-3 text-dark placeholder-dark-6 outline-none focus:border-primary"
+                    className="w-full rounded-lg border border-stroke px-5 py-3 text-dark placeholder-dark-6 outline-none focus:border-primary"
                   />
                 </div>
 
                 <div className="">
                   <label
-                    for="title"
-                    class="mb-2.5 block text-base font-medium text-dark text-white"
+                    htmlFor="title"
+                    className="mb-2.5 block text-base font-medium text-dark text-white"
                   >
                     Title
                   </label>
@@ -111,14 +120,17 @@ const AddSong = () => {
                     type="text"
                     name="title"
                     placeholder="Enter you song title"
-                    class="w-full rounded-lg border border-stroke px-5 py-3 text-dark placeholder-dark-6 outline-none focus:border-primary"
+                    className="w-full rounded-lg border border-stroke px-5 py-3 text-dark placeholder-dark-6 outline-none focus:border-primary"
                   />
                 </div>
               </div>
             </div>
           </div>
           <div className="flex items-center justify-end gap-3 border-t border-stroke px-7 py-5 dark:border-dark-3">
-            <button className="flex h-12 items-center justify-center rounded-lg border border-stroke bg-transparent px-6 py-3 font-medium text-dark duration-200 hover:border-dark hover:bg-dark hover:text-white dark:border-dark-3 dark:text-dark-7 dark:hover:border-dark dark:hover:text-white">
+            <button
+              className="flex h-12 items-center justify-center rounded-lg border border-stroke bg-transparent px-6 py-3 font-medium text-dark duration-200 hover:border-dark hover:bg-dark hover:text-white dark:border-dark-3 dark:text-dark-7 dark:hover:border-dark dark:hover:text-white"
+              onClick={() => navigate(-1)}
+            >
               Cancel
             </button>
             <button className="flex h-12 items-center justify-center rounded-lg border border-transparent bg-primary px-6 py-3 font-medium text-white duration-200 hover:bg-primary/90">
