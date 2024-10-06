@@ -7,10 +7,11 @@ import TrackList from "./TrackList";
 import Playlist from "./Playlist";
 import MaxPlayer from "./MaxPlayer";
 import AddSong from "./AddSong";
+import { SmallAlert } from "./Alert"
 import AppLayout from "./AppLayout";
 
 // 
 import Signin from "./market/Signin";
 import Signup from "./market/Signup";
 
-export { AudioComponent, Header, AppLayout, SideBar, Genre, TrackList, MusicPlayer, Playlist, MaxPlayer,AddSong, Signin, Signup }
+export { AudioComponent, SmallAlert, Header, AppLayout, SideBar, Genre, TrackList, MusicPlayer, Playlist, MaxPlayer,AddSong, Signin, Signup }

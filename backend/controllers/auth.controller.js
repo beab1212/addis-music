@@ -3,10 +3,10 @@ import { v4 as uuidv4 } from 'uuid';
 import CustomError from '../errors/index.js';
 import User from '../models/User.js';
 import redisClient from '../db/redis.js';
-import { setSessionCookie } from '../utils/cookie.js';
+import { setSessionCookie, clearSessionCookie } from '../utils/cookie.js';
 
 const AuthController = {
-    async singup (req, res) {
+    async singup (req, res) {        
         const { email, password, rePassword } = req.body;
         if (!email || !password || !rePassword) {
             throw new CustomError.BadRequest('Please provide sing up information properly');
@@ -43,7 +43,7 @@ const AuthController = {
         
         await redisClient.set(`auth_${token}`, JSON.stringify(user), 2592000);
         setSessionCookie(res, token);
-        return res.status(StatusCode.CREATED).json({ success: true, message: 'account created successfully', data: { sessionToken: token } });
+        return res.status(StatusCode.CREATED).json({ success: true, message: 'account created successfully', sessionToken: token, user: {} });
     },
 
     async singin (req, res) {
@@ -71,12 +71,13 @@ const AuthController = {
         const token = uuidv4();
         await redisClient.set(`auth_${token}`, JSON.stringify(user), 2592000);
         setSessionCookie(res, token);
-        return res.status(StatusCode.OK).json({ success: true, message: 'signin successfully', data: { sessionToken: token } });
+        return res.status(StatusCode.OK).json({ success: true, message: 'signin successfully', sessionToken: token, user: {} });
     },
 
     async signout (req, res) {
         const token = req.headers['session-token'] || null;
         const result = await redisClient.del(`auth_${token}`);
+        clearSessionCookie(res);
         return res.status(StatusCode.OK).json({ success: true, message: 'Signed out successfully' });
     }
 };

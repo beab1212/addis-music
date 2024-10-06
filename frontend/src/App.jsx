@@ -7,6 +7,7 @@ import {
   Genre,
   TrackList,
   Playlist,
+  SmallAlert,
   MaxPlayer,
   AppLayout,
   Signin,
@@ -23,6 +24,7 @@ function App() {
   }, []);
   return (
     <div className="bg-[#000000] w-full h-screen text-white overflow-hidden">
+      <SmallAlert/>
       <AudioComponent />
       <Routes>
         <Route path="/">

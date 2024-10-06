@@ -10,6 +10,7 @@ import config from './config.js';
 import connectDB from './db/connect.js';
 import redisClient from './db/redis.js';
 import errorHandler from './middleware/errorHandler.js';
+
 import { AuthRoute } from './routes/index.js';
 
 const app = express();
@@ -17,7 +18,12 @@ app.use(rateLimit({
     windowMs: 10 * 60 * 1000,
     limit: 100,
 }));
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}))
 app.use(mongoSanitize())
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -32,8 +38,9 @@ app.get('/', async (req, res) => {
     res.send('HLS Audio Streaming Server');
 })
 
-router.use('/auth', AuthRoute);
 app.use('/api/v1', router);
+router.use('/auth', AuthRoute);
+// router.use('/search', )
 
 app.use(errorHandler);
 app.use("*", async (req, res) => {
