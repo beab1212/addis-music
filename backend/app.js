@@ -11,7 +11,7 @@ import connectDB from './db/connect.js';
 import redisClient from './db/redis.js';
 import errorHandler from './middleware/errorHandler.js';
 
-import { AuthRoute } from './routes/index.js';
+import { AuthRoute, SearchRoute } from './routes/index.js';
 
 const app = express();
 app.use(rateLimit({
@@ -40,7 +40,7 @@ app.get('/', async (req, res) => {
 
 app.use('/api/v1', router);
 router.use('/auth', AuthRoute);
-// router.use('/search', )
+router.use('/search', SearchRoute);
 
 app.use(errorHandler);
 app.use("*", async (req, res) => {

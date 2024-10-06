@@ -2,7 +2,7 @@ import redisClient from '../db/redis.js';
 import UnauthenticatedError from '../errors/unauthenticatedError.js';
 
 const authHandler = async (req, res, next) => {
-    const token = req.headers['session-token'] || req.signedCookies.get('session-token') || null;
+    const token = req.headers['session-token'] || req.signedCookies['session-token'] || null;
     
     const user = await redisClient.get(`auth_${token}`);
 
