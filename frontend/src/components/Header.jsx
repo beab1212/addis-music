@@ -5,10 +5,15 @@ import { profile } from "../assets";
 
 const Header = () => {
   const [query, setQuery] = useState("");
+  const [isSearchFocus, setIsSearchFocus] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
 
   const handleChange = (e) => {
     setQuery(e.target.value);
+  };
+
+  const search = () => {
+    console.log(query, '=============');
   };
 
   useEffect(() => {
@@ -18,7 +23,6 @@ const Header = () => {
           .get(`search/suggestion?query=${query}`)
           .then((res) => {
             setSuggestions(res.data?.suggestions);
-            console.log("===========", res.data?.suggestions);
           })
           .catch((err) => {
             setSuggestions([]);
@@ -48,7 +52,7 @@ const Header = () => {
         </h1>
       </div>
       {/* Search */}
-      <div className="flex flex-row items-center">
+      <div className="flex flex-row items-center relative box-border" onFocus={() => setIsSearchFocus(true)} onBlur={() => setIsSearchFocus(false)} >
         <div className="bg-[#2a2a2a] px-4 py-2 rounded-full text-dimWhite hover:border-2 flex flex-row items-center">
           <i className="fa fa-search fa-1x px-2" />
           <input
@@ -60,6 +64,16 @@ const Header = () => {
             value={query}
             onChange={handleChange}
           />
+        </div>
+
+        <div className={`absolute top-12 w-full bg-gray-300 border rounded-xl px-1 py-4 z-10 ${ (suggestions.length > 0 && isSearchFocus) ? 'block' : 'hidden'}`}>
+          <ul className="text-gray-900">
+            {suggestions.map((suggestion) => (
+              <li key={suggestion._id} value={suggestion.key} className="py-1 px-2 hover:bg-gray-100 cursor-pointer rounded-lg" onMouseDown={(e) => {
+                setQuery(e.target.textContent);
+              }}>{suggestion.key}</li>
+            ))}
+          </ul>
         </div>
       </div>
       {/* User setting ml-28 added for centering search field */}

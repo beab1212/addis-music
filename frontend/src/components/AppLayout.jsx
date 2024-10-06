@@ -12,7 +12,7 @@ const AppLayout = () => {
     <div
     className={`grid grid-cols-[1fr_1fr_1fr_1fr] grid-rows-[56px_1fr_60px] gap-4 h-screen mx-auto sm:px-2 px-1`}
   >
-    <div className="col-span-full flex items-center overflow-hidden bg-[#121212] rounded-lg">
+    <div className="col-span-full flex items-center overflow-hiddenx bg-[#121212] rounded-lg">
       <Header />
     </div>
 
