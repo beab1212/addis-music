@@ -1,16 +1,17 @@
-export const actions = ['TOGGLE_PLAY_PAUSE', 'TOGGLE_MUTE', 'SET_VOLUME', 'SET_CURRENT_TRACK', 'SET_REPEAT', 'SET_LOADING', 'SET_AUDIO_REF', 'UPDATE_PROGRESS'];
+export const actions = ['TOGGLE_PLAY_PAUSE', 'TOGGLE_MUTE', 'SET_VOLUME', 'SET_CURRENT_TRACK', 'SET_REPEAT', 'SET_LOADING', 'SET_AUDIO_REF', 'UPDATE_PROGRESS', 'SET_DURATION'];
 export const appStateActions = ['SET_LOADING', 'CLEAR_ERROR', 'SET_ERROR', 'SHOW_ALERT', 'DISMISS_ALERT'];
 export const userActions = ['SET_USER', 'UPDATE_USER', 'LOGOUT_USER'];
 
 const initialState = {
     audioRef: null,
     player: {
-        audioSrc: "http://localhost:5000/audio/output.m3u8",
+        audioSrc: "http://localhost:5000/api/v1/song/stream/6703e6d18cee1ea33b728477/",
         isPlaying: false,
         volumeLevel: 100,
         isRepeat: false,
         isMuted: false,
         isShuffle: false,
+        duration: null,
         progress: {
             time: null,
             percent: 0,
@@ -56,6 +57,10 @@ function reducer(state=initialState, action) {
     } else if (action.type === 'SET_CURRENT_TRACK') {
         const newState = Object.assign({}, state);
         newState.currentPlay.currentTrack = action.payload;
+        return newState;
+    } else if (action.type === 'SET_DURATION') {
+        const newState = Object.assign({}, state);
+        newState.player.duration = action.payload;
         return newState;
     } else if (action.type === 'UPDATE_PROGRESS') {
         const newState = Object.assign({}, state);

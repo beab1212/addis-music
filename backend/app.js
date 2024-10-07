@@ -11,7 +11,7 @@ import connectDB from './db/connect.js';
 import redisClient from './db/redis.js';
 import errorHandler from './middleware/errorHandler.js';
 
-import { AuthRoute, SearchRoute } from './routes/index.js';
+import { AuthRoute, SearchRoute, SongRoute, GenreRoute } from './routes/index.js';
 
 const app = express();
 app.use(rateLimit({
@@ -32,7 +32,7 @@ app.use(morgan());
 
 const router = express.Router();
 
-app.use('/audio', express.static(path.join('./', 'hls')));
+app.use('/audio', express.static(path.join('./', 'hls'))); 
 
 app.get('/', async (req, res) => {
     res.send('HLS Audio Streaming Server');
@@ -41,6 +41,8 @@ app.get('/', async (req, res) => {
 app.use('/api/v1', router);
 router.use('/auth', AuthRoute);
 router.use('/search', SearchRoute);
+router.use('/song', SongRoute);
+router.use('/genre', GenreRoute);
 
 app.use(errorHandler);
 app.use("*", async (req, res) => {

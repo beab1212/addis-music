@@ -6,9 +6,16 @@ const SongSchema = new mongoose.Schema({
         maxlength: 15,
         minlength: 1,
     },
+    song: {
+        type: String,
+        required: [true, 'Song must have song file name']
+    },
     duration: {
         type: mongoose.Decimal128,
         required: [true, 'please provide song duration'],   
+    },
+    song_art: {
+        type: String,
     },
     user_id: {
         type: mongoose.Schema.ObjectId,
@@ -19,14 +26,22 @@ const SongSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Album',
     },
+    description: {
+        type: String,
+        maxlength: 1000,
+    },
+    contributors: {
+        type: Array,
+        maxlength: 5,
+    },
     genre: {
         type: mongoose.Schema.ObjectId,
         ref: 'Genre',
-        default: null,
+        required: [true, 'please provide song genre']
     },
     stream_url: {
         type: String,
-        required: [true, 'Song must have streaming url']
+        required: [true, 'Song must have streaming url'],
     },
 }, { timestamps: true });
 

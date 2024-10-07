@@ -12,6 +12,7 @@ const MusicPlayer = () => {
   const isPlaying = useSelector((state) => state.player.isPlaying);
   const isRepeat = useSelector((state) => state.player.isRepeat);
   const volumeLevel = useSelector((state) => state.player.volumeLevel);
+  const songDuration = useSelector((state) => state.player.duration);
   const progress = useSelector((state) => state.player.progress);
   const isMuted = useSelector((state) => state.player.isMuted);
   // const isShuffle = useSelector((state) => state.player.isShuffle);
@@ -70,7 +71,7 @@ const MusicPlayer = () => {
               background: `linear-gradient(to right, #99004d ${progress.percent}%, #ddd ${progress.percent}%)`,
             }}
           />
-          <p className="text-dimWhite text-[14px]">{currentPlay.length}</p>
+          <p className="text-dimWhite text-[14px]">{songDuration ? formatTime(songDuration) : '00:00'}</p>
           <div className="flex text-[20px] items-center px-6">
             <i
               className={`${styles.hoverColor} fad fa-volume-${

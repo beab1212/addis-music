@@ -8,6 +8,7 @@ import AudioHook from "../hooks/AudioHook";
 const MaxPlayer = () => {
   const navigate = useNavigate();
   const {
+    formatTime,
     handleProgress,
     togglePlayPause,
     handleRepeat,
@@ -16,6 +17,7 @@ const MaxPlayer = () => {
   const isPlaying = useSelector((state) => state.player.isPlaying);
   const progress = useSelector((state) => state.player.progress);
   const isRepeat = useSelector((state) => state.player.isRepeat);
+  const songDuration = useSelector((state) => state.player.duration);
 
   useEffect(() => {
     console.log('Component MaxPlayer');
@@ -35,7 +37,7 @@ const MaxPlayer = () => {
             <img
               src={hana}
               alt="song_art"
-              className="w-[18rem] rounded-full object-contain mx-auto"
+              className={`w-[18rem] rounded-full object-contain mx-auto slow-spin ${ !isPlaying && 'paused' }`}
             />
           </div>
 
@@ -56,7 +58,7 @@ const MaxPlayer = () => {
                   background: `linear-gradient(to right, #99004d ${progress.percent}%, #ddd ${progress.percent}%)`,
                 }}
               />
-              <p className="text-dimWhite text-[14px]">{"33:3"}</p>
+              <p className="text-dimWhite text-[14px]">{songDuration ? formatTime(songDuration) : '00:00'}</p>
             </div>
           </div>
 

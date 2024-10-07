@@ -51,7 +51,7 @@ const SmallAlert = (probs) => {
         <div className="flex w-full items-center justify-between">
           <div>
             <h3 className="mb-1 text-lg font-medium text-dark dark:text-whitex">
-              Did you know?
+              { alert.type ? alert.type : '' }
             </h3>
             <p className="text-sm text-body-color dark:text-dark-6">
               { alert.message ? alert.message : 'Something went wrong' }

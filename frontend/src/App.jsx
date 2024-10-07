@@ -33,7 +33,7 @@ function App() {
         </Route>
         
         <Route path="/app/player" Component={MaxPlayer}/>
-        <Route path="/app/add/song" Component={AddSong}/>
+        <Route path="/app/upload/song" Component={AddSong}/>
         <Route path="/app" element={<AppLayout />}>
           <Route path="" Component={Genre} />
           <Route path="genre" Component={Genre} />
