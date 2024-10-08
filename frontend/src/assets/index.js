@@ -11,6 +11,7 @@ import leftarrow from "./leftarrow.png";
 import rightarrow from "./rightarrow.png";
 import hana from "./hana.png";
 import profile from "./profile.png"
+import hero from "./photo_2024-10-06_15-37-23.png";
 
 export {
   addisMusic,
@@ -25,5 +26,6 @@ export {
   leftarrow,
   rightarrow,
   hana,
-  profile
+  profile,
+  hero,
 };

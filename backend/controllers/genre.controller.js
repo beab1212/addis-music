@@ -3,7 +3,7 @@ import Genre from '../models/Genre.js';
 
 const GenreController = {
     async availableGenre(req, res) {
-        const genres = await Genre.find({}, { name: 1, description: 1});
+        const genres = await Genre.find({}, { name: 1, description: 1, image: 1 });
         return res.status(StatusCodes.OK).json({ success: true, genre: genres });
     }
 }

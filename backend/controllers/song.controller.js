@@ -62,13 +62,9 @@ const SongController = {
 
         await newSong.save();
         
-        const transformedSong = newSong.toObject();
-        transformedSong.id = transformedSong._id;
-        transformedSong.duration = parseFloat(transformedSong.duration);
-        delete transformedSong._id;
-        delete transformedSong.user_id;
+        const newSongJson = newSong.toObject();
 
-        return res.status(StatusCodes.CREATED).json({ success: true, message: 'Song created successfully', song: { ...transformedSong } });
+        return res.status(StatusCodes.CREATED).json({ success: true, message: 'Song created successfully', song: { ...newSongJson, duration: parseFloat(newSong.duration) } });
     },
 
     async song(req, res){

@@ -13,6 +13,7 @@ import {
   Signin,
   Signup,
   AddSong,
+  Home,
 } from "./components";
 import { useEffect, memo } from "react";
 import { Routes, Route } from "react-router-dom";
@@ -28,12 +29,13 @@ function App() {
       <AudioComponent />
       <Routes>
         <Route path="/">
+          <Route path="/" Component={Home} />
           <Route path="signin" Component={Signin} />
           <Route path="signup" Component={Signup} />
         </Route>
         
         <Route path="/app/player" Component={MaxPlayer}/>
-        <Route path="/app/upload/song" Component={AddSong}/>
+        <Route path="/app/song/upload" Component={AddSong}/>
         <Route path="/app" element={<AppLayout />}>
           <Route path="" Component={Genre} />
           <Route path="genre" Component={Genre} />

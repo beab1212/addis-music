@@ -32,7 +32,7 @@ app.use(morgan());
 
 const router = express.Router();
 
-app.use('/audio', express.static(path.join('./', 'hls'))); 
+app.use('/audio', express.static(path.join('./', 'hls')));
 
 app.get('/', async (req, res) => {
     res.send('HLS Audio Streaming Server');

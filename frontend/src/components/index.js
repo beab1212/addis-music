@@ -11,7 +11,8 @@ import { SmallAlert } from "./Alert"
 import AppLayout from "./AppLayout";
 
 // 
+import Home from "./market/Home";
 import Signin from "./market/Signin";
 import Signup from "./market/Signup";
 
-export { AudioComponent, SmallAlert, Header, AppLayout, SideBar, Genre, TrackList, MusicPlayer, Playlist, MaxPlayer,AddSong, Signin, Signup }
+export { AudioComponent, SmallAlert, Header, AppLayout, SideBar, Genre, TrackList, MusicPlayer, Playlist, MaxPlayer,AddSong, Signin, Signup, Home };

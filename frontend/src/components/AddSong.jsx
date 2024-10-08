@@ -61,7 +61,7 @@ const AddSong = () => {
   useEffect(() => {
     axiosPrivate
       .get("/genre/available")
-      .then((res) => {
+      .then((res) => {        
         setGenres(res.data?.genre);
       })
       .catch((err) => {
@@ -91,7 +91,7 @@ const AddSong = () => {
                 </p>
               </div>
 
-              <div className="mb-6 border">
+              <div className="mb-6">
                 <label
                   htmlFor=""
                   className="flex min-h-[220px] items-center justify-center rounded-lg border border-dashed border-dark-6 bg-gray-1 p-5 dark:border-dark-3 dark:bg-white/5"
