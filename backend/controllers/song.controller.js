@@ -21,6 +21,14 @@ const SongController = {
             throw new CustomError.BadRequest('please provide song information properly');
         }
 
+        if (!song_art) {
+            throw new CustomError.BadRequest('songs must have song art image');
+        }
+
+        if (!song) {
+            throw new CustomError.BadRequest('audio file must be included to create a new song');
+        }
+
         if (!isValidObjectId(genre))  {
             throw new CustomError.BadRequest('invalid genre id');
         }
@@ -63,6 +71,8 @@ const SongController = {
         await newSong.save();
         
         const newSongJson = newSong.toObject();
+        delete newSongJson.song;
+        delete newSongJson.__v;
 
         return res.status(StatusCodes.CREATED).json({ success: true, message: 'Song created successfully', song: { ...newSongJson, duration: parseFloat(newSong.duration) } });
     },
@@ -85,6 +95,7 @@ const SongController = {
         transformedSong.duration = parseFloat(transformedSong.duration);
         delete transformedSong._id;
         delete transformedSong.user_id;
+        delete transformedSong.__v;
 
         return res.status(StatusCodes.OK).json({ success: true, song: { ...transformedSong } });
     },

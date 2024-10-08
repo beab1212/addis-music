@@ -9,7 +9,6 @@ const Genre = () => {
     axiosPrivate
       .get("/genre/available")
       .then((res) => {        
-        console.log(res.data?.genre);
         setData(res.data?.genre);
       })
       .catch((err) => {

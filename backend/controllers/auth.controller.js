@@ -5,6 +5,7 @@ import User from '../models/User.js';
 import redisClient from '../db/redis.js';
 import { setSessionCookie, clearSessionCookie } from '../utils/cookie.js';
 
+// TODO: use jwt to sign user information
 const AuthController = {
     async singup (req, res) {        
         const { email, password, rePassword } = req.body;

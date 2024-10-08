@@ -10,7 +10,7 @@ const SearchController = {
         }
 
         // TODO: make it more complex using regex
-        const pattern = new RegExp(`^${query}`, 'i');
+        const pattern = new RegExp(`${query}`, 'i');
 
         const suggestions = await Keyword.find({key: {$regex: pattern}}).limit(10).sort({ key: 1 });
 

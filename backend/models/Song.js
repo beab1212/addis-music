@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const SongSchema = new mongoose.Schema({
     title: {
         type: String,
-        maxlength: 15,
+        maxlength: 50,
         minlength: 1,
     },
     song: {

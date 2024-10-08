@@ -31,12 +31,10 @@ const AddSong = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axiosPrivate
-      .post("/song/add", form, {
+      .post("/song", form, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((res) => {
-        console.log(res.data);
-        
         dispatch({
           type: "SHOW_ALERT",
           payload: {

@@ -5,7 +5,7 @@ export const userActions = ['SET_USER', 'UPDATE_USER', 'LOGOUT_USER'];
 const initialState = {
     audioRef: null,
     player: {
-        audioSrc: "http://localhost:5000/api/v1/song/stream/6703e6d18cee1ea33b728477/",
+        audioSrc: "http://localhost:5000/api/v1/song/stream/6704bd1bef81c12f14267a9e/",
         isPlaying: false,
         volumeLevel: 100,
         isRepeat: false,
