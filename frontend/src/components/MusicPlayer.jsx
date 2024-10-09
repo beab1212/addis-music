@@ -1,12 +1,20 @@
-import { useEffect, memo } from "react";
+import { useEffect, memo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AudioHook from "../hooks/AudioHook";
 import { styles } from "../style";
+import { axiosPrivate } from "../api/axios";
 
 const MusicPlayer = () => {
   const navigate = useNavigate();
-  const { formatTime, handleMute, handleProgress, togglePlayPause, handleVolumeChange, handleRepeat } = AudioHook();
+  const {
+    formatTime,
+    handleMute,
+    handleProgress,
+    togglePlayPause,
+    handleVolumeChange,
+    handleRepeat,
+  } = AudioHook();
   const currentSong = useSelector((state) => state.currentSong);
   const isPlaying = useSelector((state) => state.player.isPlaying);
   const isRepeat = useSelector((state) => state.player.isRepeat);
@@ -16,9 +24,25 @@ const MusicPlayer = () => {
   const isMuted = useSelector((state) => state.player.isMuted);
   // const isShuffle = useSelector((state) => state.player.isShuffle);
 
+  const [localLike, setLocalLike] = useState(currentSong?.liked);
+  const toggleLike = () => {
+    axiosPrivate
+      .post(`/song/${currentSong?._id}/like`)
+      .then((res) => {
+        setLocalLike(res.data?.like);
+      })
+      .catch((err) => {
+        // nothing to do
+      });
+  };
+
   useEffect(() => {
-    console.log('Component MusicPlayer');
-  }, [])
+    console.log("Component MusicPlayer");
+  }, []);
+
+  useEffect(() => {
+    setLocalLike(currentSong?.liked);
+  }, [currentSong]);
 
   return (
     <div className={`${styles.paddingX}`}>
@@ -28,20 +52,33 @@ const MusicPlayer = () => {
             src={currentSong?.song_art}
             alt={currentSong && currentSong?._id}
             className="w-[50px] h-[50px] object-cover rounded-full cursor-pointer"
-            onClick={() => navigate('/app/player')}
+            onClick={() => navigate("/app/player")}
           />
           {/* Info */}
           <div className="flex flex-1 flex-col ml-4 w-24 overflow-x-hidden">
             <h4 className="text-[13px] font-semibold cursor-pointer hover:text-dimWhite text-nowrap">
-              {currentSong?.title || 'Title'}
+              {currentSong?.title || "Title"}
             </h4>
             <h4 className="text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap">
-              {currentSong?.contributors.join(', ').slice(0, 10) || 'Title'}
+              {currentSong?.contributors.join(", ").slice(0, 10) || "Title"}
             </h4>
           </div>
           {/* Play buttons */}
-          <div className="flex flex-row justify-between w-40 px-4 items-center text-[23px]">
-            <i className={`${styles.hoverColor} fad fa-backward`} style={{ fontSize: '1rem' }} />
+          <div className="flex flex-row justify-between w-52 px-4 items-center text-[23px]">
+            <i
+              className={`ml-1 ${styles.hoverColor} fad fa-star  ${
+                localLike
+                  ? "text-[#0053b9] hover:text-[#4a9124] "
+                  : "hover:text-[#6093d2]"
+              }`}
+              style={{ fontSize: "0.8rem" }}
+              onClick={toggleLike}
+            />
+
+            <i
+              className={`${styles.hoverColor} fad fa-backward`}
+              style={{ fontSize: "1rem" }}
+            />
             <i
               className={`${styles.hoverColor} fa fa-${
                 isPlaying ? "pause" : "play"
@@ -49,12 +86,21 @@ const MusicPlayer = () => {
               onClick={togglePlayPause}
             />
             {/* <i className={`${styles.hoverColor} fa fa-forward`} style={{ fontSize: '1rem' }} /> */}
-            <i className={`${styles.hoverColor} fad fa-forward`} style={{ fontSize: '1rem' }} />
-            <i className={`${styles.hoverColor} fad fa-light fa-repeat ${isRepeat ? 'text-[#0053b9] hover:text-[#6093d2] ' : ''}`} style={{ fontSize: '1rem' }} onClick={handleRepeat} />
+            <i
+              className={`${styles.hoverColor} fad fa-forward`}
+              style={{ fontSize: "1rem" }}
+            />
+            <i
+              className={`${styles.hoverColor} fad fa-light fa-repeat ${
+                isRepeat ? "text-[#0053b9] hover:text-[#6093d2] " : ""
+              }`}
+              style={{ fontSize: "1rem" }}
+              onClick={handleRepeat}
+            />
           </div>
         </div>
         {/* Range controllers */}
-        <div className="flexx flex-1 items-center sm:flex hidden">
+        <div className="flex-1 items-center sm:flex hidden">
           <p className="text-dimWhite text-[14px]">
             {progress.time ? progress.time : "0:00"}
           </p>
@@ -70,11 +116,19 @@ const MusicPlayer = () => {
               background: `linear-gradient(to right, #99004d ${progress.percent}%, #ddd ${progress.percent}%)`,
             }}
           />
-          <p className="text-dimWhite text-[14px]">{songDuration ? formatTime(songDuration) : '00:00'}</p>
+          <p className="text-dimWhite text-[14px]">
+            {songDuration ? formatTime(songDuration) : "00:00"}
+          </p>
           <div className="flex text-[20px] items-center px-6">
             <i
               className={`${styles.hoverColor} fad fa-volume-${
-                isMuted ? 'mute' : volumeLevel >= 50 ? "up" : (volumeLevel <= 0) ? "off" : "down"
+                isMuted
+                  ? "mute"
+                  : volumeLevel >= 50
+                  ? "up"
+                  : volumeLevel <= 0
+                  ? "off"
+                  : "down"
               } pr-4`}
               onClick={handleMute}
             />

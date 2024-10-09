@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { axiosPrivate } from "../api/axios";
 
 const AudioHook = () => {
   const audioRef = useSelector((state) => state.audioRef);
@@ -44,8 +45,21 @@ const AudioHook = () => {
     if (song._id === currentSong) {
       return null;
     }
-    dispatch({ type: 'SET_AUDIO_SOURCE', payload: song.stream_url });
-    dispatch({ type: 'SET_CURRENT_SONG', payload: song });
+
+    // new approach
+    axiosPrivate
+    .get(`/song/${song?._id}`)
+    .then((res) => {
+      dispatch({ type: 'SET_AUDIO_SOURCE', payload: res.data?.song.stream_url });
+      dispatch({ type: 'SET_CURRENT_SONG', payload: res.data?.song });
+    })
+    .catch((err) => {
+      // 
+    })
+
+    // old approach before like button
+    // dispatch({ type: 'SET_AUDIO_SOURCE', payload: song.stream_url });
+    // dispatch({ type: 'SET_CURRENT_SONG', payload: song });
   }
 
   const handleVolumeChange = (e) => {
