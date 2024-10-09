@@ -82,8 +82,6 @@ const SongController = {
             newSong.album_id = album;
         }
 
-        // TODO: image thumbnails with different resolution 
-
         await newSong.save();
         
         const newSongJson = newSong.toObject();
@@ -138,6 +136,7 @@ const SongController = {
     },
 
     async songDetail(req, res){
+        const user = req.user;
         const { id='' } = req.params;
 
         if (!isValidObjectId(id))  {
@@ -154,6 +153,14 @@ const SongController = {
         transformedSong.duration = parseFloat(transformedSong.duration);
         transformedSong.song_art = `${config.HOST_ADDRESS}/api/v1/song/asset/${transformedSong.song_art}`;
         delete transformedSong.__v;
+
+        const like = await Like.findOne({ user_id: new Types.ObjectId(user._id), song_id: song._id });
+
+        if (like) {
+            transformedSong.liked = true;
+        } else {
+            transformedSong.liked = false;
+        }
 
         return res.status(StatusCodes.OK).json({ success: true, song: { ...transformedSong } });
     },
@@ -204,13 +211,13 @@ const SongController = {
 
         if (!song) {
             throw new CustomError.BadRequest('song doesn\'t exist');
-        }
+        }        
 
         const like = await Like.findOne({ song_id: new Types.ObjectId(id), user_id:  new Types.ObjectId(user._id) });
 
         if (like) {
             await Like.findOneAndDelete({ song_id: new Types.ObjectId(id), user_id:  new Types.ObjectId(user._id) });
-            return res.status(StatusCodes.Ok).json({ success: true, like: false })
+            return res.status(StatusCodes.OK).json({ success: true, like: false });
         }
 
         const newLike = new Like({
@@ -220,7 +227,7 @@ const SongController = {
 
         await newLike.save()
 
-        return res.status(StatusCodes.Ok).json({ success: true, like: true })
+        return res.status(StatusCodes.OK).json({ success: true, like: true })
     }
 };
 
