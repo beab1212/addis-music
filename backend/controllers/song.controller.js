@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
-import { isValidObjectId } from 'mongoose';
+import { isValidObjectId, Types } from 'mongoose';
 import path from 'path';
 import config from '../config.js';
 import CustomError from '../errors/index.js';
@@ -192,7 +192,35 @@ const SongController = {
     },
 
     async likeSong(req, res) {
-        //
+        // song/:id/like
+        const user = req.user;
+        const { id='' } = req.params;
+
+        if (!isValidObjectId(id))  {
+            throw new CustomError.BadRequest('invalid song id');
+        }
+
+        const song = await Song.findById(id);
+
+        if (!song) {
+            throw new CustomError.BadRequest('song doesn\'t exist');
+        }
+
+        const like = await Like.findOne({ song_id: new Types.ObjectId(id), user_id:  new Types.ObjectId(user._id) });
+
+        if (like) {
+            await Like.findOneAndDelete({ song_id: new Types.ObjectId(id), user_id:  new Types.ObjectId(user._id) });
+            return res.status(StatusCodes.Ok).json({ success: true, like: false })
+        }
+
+        const newLike = new Like({
+            song_id: id,
+            user_id: user._id
+        });
+
+        await newLike.save()
+
+        return res.status(StatusCodes.Ok).json({ success: true, like: true })
     }
 };
 
