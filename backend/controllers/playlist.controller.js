@@ -1,6 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import { isValidObjectId, Types } from 'mongoose';
 import CustomError from '../errors/index.js';
+import config from '../config.js';
+import { moveToDataPath } from '../utils/file.utils.js';
 import Playlist from '../models/Playlist.js';
 import Song from '../models/Song.js';
 import PlaylistSong from '../models/PlaylistSong.js';
@@ -28,6 +30,13 @@ const PlaylistController = {
 
         if (playlist_art) {
             newPlaylist.playlist_art = playlist_art.filename;
+
+            const artPath = await moveToDataPath(playlist_art.path, 'image');
+            if (!artPath) {
+                throw new CustomError.BadRequest('something is wrong please try again later');
+            }
+        } else {
+            newPlaylist.playlist_art = config.DEFAULT_ART_IMAGE;
         }
 
         await newPlaylist.save();
@@ -143,6 +152,13 @@ const PlaylistController = {
             throw new CustomError.BadRequest('song does\'t exist');
         }
 
+        const isSongExistInPlaylist = await PlaylistSong.find({ playlist_id: new Types.ObjectId(playlist_id), song_id: new Types.ObjectId(song_id) });
+        
+
+        if (isSongExistInPlaylist.length !== 0) {
+            return res.status(StatusCodes.OK).json({ success: true, message: 'Song already exist' });
+        }
+
         const newPlaylistSong = new PlaylistSong({
             playlist_id: playlist_id,
             song_id: song_id,
@@ -154,7 +170,7 @@ const PlaylistController = {
         delete newPlaylistSongJson.__v;
 
         return res.status(StatusCodes.CREATED).json({ success: true, message: 'song added to playlist successfully', playlistSong: { ...newPlaylistSongJson } })
-    }
+    },
 };
 
 export default PlaylistController;

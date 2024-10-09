@@ -8,8 +8,8 @@ const image_fields = ['song_art', 'album_art', 'playlist_art'];
 const storage = multer.diskStorage({
     destination: async function (req, file, cb) {
         console.log(file, '===============');
-        const imagePath = `${config.DATA_PATH}/image`;
-        const songPath = `${config.DATA_PATH}/song`;
+        const imagePath = `${config.TMP_PATH}/image`;
+        const songPath = `${config.TMP_PATH}/song`;
         
         try {
             if (image_fields.includes(file.fieldname)) {

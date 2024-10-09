@@ -4,6 +4,7 @@ import path from 'path';
 import config from '../config.js';
 import CustomError from '../errors/index.js';
 import { getAudioDuration, isHlsAudioExist, generateHLSStream } from '../utils/song.utils.js';
+import { moveToDataPath } from '../utils/file.utils.js';
 import Song from '../models/Song.js';
 import Genre from '../models/Genre.js';
 import Album from '../models/Album.js';
@@ -45,7 +46,15 @@ const SongController = {
 
         const contributorsList = contributors.split(',').map((contributor) => {
             return contributor.trim();
-        });     
+        });
+
+        
+        const songPath = await moveToDataPath(req.files.song[0]?.path, 'song');
+        const songArtPath = await moveToDataPath(req.files.song_art[0]?.path, 'image');
+
+        if (!songPath || !songArtPath) {
+            throw new CustomError.BadRequest('something is wrong please try again later');
+        }
 
         const newSong = new Song({
             title,
@@ -53,7 +62,7 @@ const SongController = {
             contributors: contributorsList,
             genre: isGenreExist._id,
             song: req.files?.song[0].filename,
-            duration: await getAudioDuration(req.files.song[0]?.path),
+            duration: await getAudioDuration(songPath),
             song_art: req.files?.song_art ? req.files?.song_art[0].filename : null,
             user_id: user._id
         });

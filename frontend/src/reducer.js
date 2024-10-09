@@ -3,6 +3,14 @@ export const actions = ['TOGGLE_PLAY_PAUSE', 'SET_AUDIO_SOURCE', 'SET_CURRENT_SO
 export const appStateActions = ['SET_LOADING', 'CLEAR_ERROR', 'SET_ERROR', 'SHOW_ALERT', 'DISMISS_ALERT'];
 export const userActions = ['SET_USER', 'UPDATE_USER', 'LOGOUT_USER'];
 
+const decodeJwtToken = (token) => {
+    try {
+        return jwtDecode(token)
+    } catch {
+        return null;
+    }
+} 
+
 const initialState = {
     audioRef: null,
     volumeLevel: 100,
@@ -22,7 +30,7 @@ const initialState = {
     user: {
         isAuthenticated: false,
         token: null,
-        user: jwtDecode(localStorage.getItem('user'))
+        user: decodeJwtToken(localStorage.getItem('user'))
     },
     appState: {
         isLoading: false,

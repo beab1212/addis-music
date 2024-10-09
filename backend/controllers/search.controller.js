@@ -27,7 +27,7 @@ const SearchController = {
             throw new CustomError.BadRequest('query must be specified');
         }
         // TODO: note completed
-    }
+    },
 };
 
 export default SearchController;

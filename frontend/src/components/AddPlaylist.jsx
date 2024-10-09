@@ -9,12 +9,17 @@ const AddPlaylist = (probs) => {
   const [form, setForm] = useState({
     name: "",
     playlist_art: "",
+    is_public: ""
   });
 
   const handleChange = (e) => {
     if (e.target.name === "playlist_art") {
       setForm((prev) => {
         return { ...prev, [e.target.name]: e.target.files[0] };
+      });
+    } else if(e.target.name === "is_public") {
+      setForm((prev) => {
+        return { ...prev, [e.target.name]: e.target.checked };
       });
     } else {
       setForm((prev) => {
@@ -51,7 +56,6 @@ const AddPlaylist = (probs) => {
         });
       });
   };
-
   return (
     <div
       className={`fixed ${
@@ -89,6 +93,9 @@ const AddPlaylist = (probs) => {
               className="w-full rounded-lg border border-stroke px-5 py-3 text-dark placeholder-dark-6 outline-none focus:border-primary"
               onChange={handleChange}
             />
+          </div>
+          <div className="mt-2">
+            <input type="checkbox" name="is_public" value="yes" onChange={handleChange}/><p className="inline"> is Public</p>
           </div>
           <div className="text-right py-4 cursor-pointer">
             <button type="submit">

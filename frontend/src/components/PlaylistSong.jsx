@@ -10,6 +10,8 @@ const PlaylistSong = () => {
   const [addToggle, setAddToggle] = useState(false);
   const user = useSelector((state) => state.user.user);
   const [data, setData] = useState([]);
+  // get refresh: change it's value in child component to trigger refresh
+  const [refresh ,setRefresh] = useState("false")
   useEffect(() => {
     axiosPrivate
       .get(`/playlist/${id}`)
@@ -26,10 +28,10 @@ const PlaylistSong = () => {
           },
         });
       });
-  }, []);
+  }, [refresh]);
   return (
     <section className="grid sm:grid-rows-[150px_1fr]">
-      <AddPlaylistSong toggle={addToggle} playlist_id={id} />
+      <AddPlaylistSong toggle={addToggle} playlist_id={id} setAddToggle={setAddToggle} setRefresh={setRefresh} />
       <div className="sm:py-10 sm:bg-gradient-to-b from-[#e0cb419d] to-[#121212]">
         <h1 className="text-[38px] font-semibold mb-8 ml-8 uppercase">
           {data?.name}
@@ -95,7 +97,7 @@ const SongTemplate = (probs) => {
       <img
         src={data?.song_art}
         alt={data?._id}
-        className="w-[40px] h-[40px] object-cover overflow-hidden"
+        className="w-[40px] h-[40px] object-cover overflow-hidden min-w-[40px]"
       />
 
       <div className="flex flex-col ml-4">
@@ -120,28 +122,22 @@ const SongTemplate = (probs) => {
   );
 };
 
+
 // Popup component
 const AddPlaylistSong = (probs) => {
   const dispatch = useDispatch();
-  const [query, setQuery] = useState();
-  const [availableSong, setAvailableSong] = useState(null);
-
-  // const handleChange = (e) => {
-  //   if (e.target.name === "playlist_art") {
-  //     setForm((prev) => {
-  //       return { ...prev, [e.target.name]: e.target.files[0] };
-  //     });
-  //   } else {
-  //     setForm((prev) => {
-  //       return { ...prev, [e.target.name]: e.target.value };
-  //     });
-  //   }
-  // };
+  const [query, setQuery] = useState("");
+  const [availableSong, setAvailableSong] = useState([]);
+  // selected song
+  const [selectedSong, setSelectedSong] = useState({
+    title: null,
+    id: null
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     axiosPrivate
-      .post("/playlist", query, {
+      .post(`/playlist/${probs.playlist_id}/song/${selectedSong.id}`, query, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((res) => {
@@ -153,6 +149,12 @@ const AddPlaylistSong = (probs) => {
             dismiss: 9000,
           },
         });
+        // set to random(selectedSong.id) value to trigger refresh in parent component
+        probs.setRefresh(selectedSong.id)
+
+        setTimeout(() => {
+          probs.setAddToggle(false);
+        }, 500);
       })
       .catch((err) => {
         dispatch({
@@ -168,22 +170,22 @@ const AddPlaylistSong = (probs) => {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      if (query) {
+      if (query.length >= 3) {
         axiosPrivate
-          .get(`search/suggestion?query=${query}`)
+          .get(`/song?per_page=8&query=${query}`)
           .then((res) => {
-            // setAvailableSong(res.data?.suggestions);
+            setAvailableSong(res.data?.songs);
           })
           .catch((err) => {
-            // setAvailableSong(nul);
+            setAvailableSong(null);
           });
       } else {
-        // setAvailableSong(null);
+        setAvailableSong(null);
       }
     }, 500);
 
     return () => clearTimeout(delayDebounceFn); // Cleanup timeout on component unmount or query change
-  }, [query])
+  }, [query]);
 
   return (
     <div
@@ -211,6 +213,10 @@ const AddPlaylistSong = (probs) => {
               }}
             />
           </div>
+          {/* Selected song */}
+          <h4 className="font-semibold mt-2 text-dimWhite">
+            { selectedSong?.title ? selectedSong?.title : 'No song selected' }
+          </h4>
           <div className="">
             <label
               htmlFor="playlist_art"
@@ -218,11 +224,22 @@ const AddPlaylistSong = (probs) => {
             >
               Available songs
             </label>
-            <ul>
-              <li>list 1</li>
-              <li>list 2</li>
-              <li>list 3</li>
-              <li>list 4</li>
+            <ul className="pl-4 overflow-y-scroll customScroll">
+              {availableSong ? (
+                availableSong.map((song) => (
+                  <li
+                    key={song._id}
+                    className="text-dimWhite cursor-pointer hover:text-white text-nowrap"
+                    onClick={() => {
+                      setSelectedSong({ title: song?.title, id: song?._id });
+                    }}
+                  >
+                    {song.title}
+                  </li>
+                ))
+              ) : (
+                <li>No Match Found!</li>
+              )}
             </ul>
           </div>
           <div className="text-right py-4 cursor-pointer">
