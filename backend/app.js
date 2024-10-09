@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import path from 'path';
+import fs from 'fs';
 import morgan from 'morgan';
 import { rateLimit } from 'express-rate-limit';
 import mongoSanitize from 'express-mongo-sanitize';
@@ -14,10 +15,10 @@ import errorHandler from './middleware/errorHandler.js';
 import { AuthRoute, SearchRoute, SongRoute, GenreRoute, PlaylistRoute } from './routes/index.js';
 
 const app = express();
-// app.use(rateLimit({
-//     windowMs: 10 * 60 * 1000,
-//     limit: 100,
-// }));
+app.use(rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 100,
+}));
 // app.use(cors());
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -53,10 +54,22 @@ app.use("*", async (req, res) => {
 
 const main = async () => {
     await connectDB(config.DB_URL).then(() => {
-        console.log('connected to db successfully');
+        console.log('Connected to mongos db server');
     }).catch((err) => {
-        console.log('error to connect to db ', err);
+        console.error('Error to connect to db ', err);
     });
+
+    if (!fs.existsSync(config.DATA_PATH)) {
+        fs.mkdirSync(path.join(config.DATA_PATH, 'image'), { recursive: true });
+        fs.mkdirSync(path.join(config.DATA_PATH, 'song'), { recursive: true });
+        console.log('Data directory created');
+    }
+
+    if (!fs.existsSync(config.TMP_PATH)) {
+        fs.mkdirSync(path.join(config.TMP_PATH, 'image'), { recursive: true });
+        fs.mkdirSync(path.join(config.TMP_PATH, 'song'), { recursive: true });
+        console.log('Temporary data directory created');
+    }
 
     await redisClient.connect();
 

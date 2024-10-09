@@ -8,6 +8,7 @@ import { moveToDataPath } from '../utils/file.utils.js';
 import Song from '../models/Song.js';
 import Genre from '../models/Genre.js';
 import Album from '../models/Album.js';
+import Like from '../models/Like.js';
 
 const hlsFolder = config.HLS_PATH;
 
@@ -188,6 +189,10 @@ const SongController = {
             console.error(err);
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ success: false, message: 'Internal server error' });
         }
+    },
+
+    async likeSong(req, res) {
+        //
     }
 };
 

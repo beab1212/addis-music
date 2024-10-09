@@ -33,7 +33,7 @@ const PlaylistSong = () => {
     <section className="grid sm:grid-rows-[150px_1fr]">
       <AddPlaylistSong toggle={addToggle} playlist_id={id} setAddToggle={setAddToggle} setRefresh={setRefresh} />
       <div className="sm:py-10 sm:bg-gradient-to-b from-[#e0cb419d] to-[#121212]">
-        <h1 className="text-[38px] font-semibold mb-8 ml-8 uppercase">
+        <h1 className="text-[38px] font-semibold mb-8 ml-8 uppercase text-nowrap">
           {data?.name}
         </h1>
       </div>
