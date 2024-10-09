@@ -62,8 +62,10 @@ const main = async () => {
 
     app.listen(config.PORT, () => {
         console.log(`Server is running on port 5000`);
-        console.log(`Worker must run to handle thumbnail generation`);
     });
+
+    console.log(`===========> Worker must run to handle thumbnail generation`);
+    console.log(`===========> run node worker.js`);
 }
 
 main();
