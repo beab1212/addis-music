@@ -12,7 +12,6 @@ const resolutions = [200, 400, 600];
 
 imageQueue.process(async (job) => {
     const { imagePath } = job.data;
-    
 
     try {
         const imageBuffer = fs.readFileSync(imagePath);
