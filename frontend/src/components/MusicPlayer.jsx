@@ -4,14 +4,14 @@ import { useSelector } from "react-redux";
 import AudioHook from "../hooks/AudioHook";
 import { styles } from "../style";
 import { currentPlay } from "../constants";
-import { hana } from "../assets";
 
 const MusicPlayer = () => {
   const navigate = useNavigate();
   const { formatTime, handleMute, handleProgress, togglePlayPause, handleVolumeChange, handleRepeat } = AudioHook();
+  const currentSong = useSelector((state) => state.currentSong);
   const isPlaying = useSelector((state) => state.player.isPlaying);
   const isRepeat = useSelector((state) => state.player.isRepeat);
-  const volumeLevel = useSelector((state) => state.player.volumeLevel);
+  const volumeLevel = useSelector((state) => state.volumeLevel);
   const songDuration = useSelector((state) => state.player.duration);
   const progress = useSelector((state) => state.player.progress);
   const isMuted = useSelector((state) => state.player.isMuted);
@@ -26,18 +26,18 @@ const MusicPlayer = () => {
       <div className="flex flex-row">
         <div className="flex items-center">
           <img
-            src={hana}
-            alt={currentPlay.title}
-            className="w-[50px] h-[50px] object-contain rounded-full cursor-pointer"
+            src={currentSong?.song_art}
+            alt={currentSong && currentSong?._id}
+            className="w-[50px] h-[50px] object-cover rounded-full cursor-pointer"
             onClick={() => navigate('/app/player')}
           />
           {/* Info */}
           <div className="flex flex-1 flex-col mx-6">
             <h4 className="text-[13px] font-semibold cursor-pointer hover:text-dimWhite">
-              {currentPlay.title}
+              {currentSong?.title || 'Title'}
             </h4>
             <h4 className="text-[13px] text-dimWhite cursor-pointer hover:text-white">
-              {currentPlay.artist}
+              {currentSong?.contributors.join(', ').slice(0, 10) || 'Title'}
             </h4>
           </div>
           {/* Play buttons */}

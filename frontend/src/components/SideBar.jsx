@@ -101,6 +101,9 @@ const SideBar = () => {
             />
             <h1
               className={`${styles.hoverColor} text-[13px] font-semibold px-8`}
+              onClick={() => {
+                navigate('/app/playlist')
+              }}
             >
               PLAYLIST
             </h1>

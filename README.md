@@ -5,9 +5,10 @@
 
 
 ## <h2 style="color:#ff1a1a">Development Note:</h2>
-=> Don't forget to include big size file's in .gitignore
+=> implement access control for image and song assets
+=> don't forget to include big size file's in .gitignore
 => add advanced auth mechanism(otp) email verification
-=> 
+=> try to use ai generated arts for songs or albums
 
 
 ## <h2 style="color:#6600ff">Dependencies</h2>
@@ -38,3 +39,12 @@ ffmpeg version 4.2.7-0ubuntu0.1 Copyright (c) 2000-2022 the FFmpeg developers
     cd frontend
     npm install
     npm start
+
+
+#### Helpful resources during development
+https://www.practical-mongodb-aggregations.com/appendices/cheatsheet.html
+https://www.mongodb.com/developer/products/mongodb/cheat-sheet/
+https://phd-sid.ethz.ch/debian/mlv-app/FFMPEG/ffmpeg-4.0-64bit-static/manpages/ffmpeg-all.pdf
+Debugging: https://developer.chrome.com/blog/autoplay/
+Finally as expected <a href="https://chatgpt.com/">ChatGPT</a>, <a href="">Poe</a> and other AI powered tools.
+

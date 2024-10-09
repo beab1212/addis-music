@@ -39,7 +39,13 @@ const SongController = {
             throw new CustomError.BadRequest('selected genre does\'t exist');
         }
 
-        const contributorsList = contributors.split(',');
+        if (contributors && contributors.length > 150) {
+            throw new CustomError.BadRequest('to much contributors allowed only 150 characters including ","');
+        }
+
+        const contributorsList = contributors.split(',').map((contributor) => {
+            return contributor.trim();
+        });     
 
         const newSong = new Song({
             title,
@@ -78,6 +84,50 @@ const SongController = {
     },
 
     async song(req, res){
+        const { query='' } = req.query;
+        let { page=1, per_page=20 } = req.query;
+        try {
+            page = parseInt(page);
+            per_page = parseInt(per_page);
+        } catch(parseErr) {
+            throw new CustomError.BadRequest('page and per_page must be type integer');
+        }
+        const pattern = new RegExp(`${query}`, 'i');
+        const patternStart = new RegExp(`^${query}`, 'i');
+
+        const songs = await Song.aggregate([
+            { $match:
+                { $or: [
+                    { title: {$regex: pattern}},
+                    { description: {$regex: pattern}},
+                    { contributors: {$regex: patternStart}},
+                ]}
+            },
+            { $project:{
+                title: 1,
+                song: 1,
+                user_id: 1,
+                description: 1,
+                contributors: 1,
+                genre: 1,
+                stream_url: 1,
+                createdAt: 1,
+                updatedAt: 1,
+                song_art: { $concat: ['http://localhost:5000/api/v1/song/asset/', '$song_art']},
+                duration: { $concat: [{ $toString: "$duration" }, ] }
+            }},
+            { $skip: per_page *(page - 1)},
+            { $limit: per_page }
+        ]);
+        
+        if (!songs) {
+            return res.status(StatusCodes.OK).join({ success: true, songs: [] })
+        }
+
+        return res.status(StatusCodes.OK).json({ success: true, songs });
+    },
+
+    async songDetail(req, res){
         const { id='' } = req.params;
 
         if (!isValidObjectId(id))  {
@@ -91,10 +141,8 @@ const SongController = {
         }
 
         const transformedSong = song.toObject();
-        transformedSong.id = transformedSong._id;
         transformedSong.duration = parseFloat(transformedSong.duration);
-        delete transformedSong._id;
-        delete transformedSong.user_id;
+        transformedSong.song_art = `http://localhost:5000/api/v1/song/asset/${transformedSong.song_art}`;
         delete transformedSong.__v;
 
         return res.status(StatusCodes.OK).json({ success: true, song: { ...transformedSong } });

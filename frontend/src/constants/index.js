@@ -22,63 +22,6 @@ export const brandName = {
   logo: addisMusic,
 };
 
-export const genreList = [
-  {
-    id: "asdsjdsjd",
-    name: "Afro",
-    image: afro,
-    path: "afro",
-  },
-  {
-    id: "asdsjdsjb",
-    name: "R&B",
-    image: rnb,
-    path: "rnb",
-  },
-  {
-    id: "asdsjdsjn",
-    name: "Hip-Hop",
-    image: hipHop,
-    path: "hiphop",
-  },
-  {
-    id: "asdsjdsjx",
-    name: "Reggae",
-    image: reggae,
-    path: "reggae",
-  },
-  {
-    id: "asdsjdsjg",
-    name: "Drill",
-    image: drill,
-    path: "drill",
-  },
-  {
-    id: "asdsjdsjq",
-    name: "Electronic",
-    image: electronic,
-    path: "electronic",
-  },
-  {
-    id: "asdsjdsjp",
-    name: "Jazz",
-    image: jazz,
-    path: "jazz",
-  },
-  {
-    id: "asdsjdsjf",
-    name: "Trap",
-    image: trap,
-    path: "trap",
-  },
-  {
-    id: "asdsjdsjl",
-    name: "Pop",
-    image: pop,
-    path: "pop",
-  },
-];
-
 export const currentPlay = {
   id: "uuididds3456789rtyui567y8u9io",
   artist: "Hana Girma",

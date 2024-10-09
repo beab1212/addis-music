@@ -7,6 +7,7 @@ import {
   Genre,
   TrackList,
   Playlist,
+  PlaylistSong,
   SmallAlert,
   MaxPlayer,
   AppLayout,
@@ -41,6 +42,7 @@ function App() {
           <Route path="genre" Component={Genre} />
           <Route path="track" Component={TrackList} />
           <Route path="playlist" Component={Playlist} />
+          <Route path="playlist/:id" Component={PlaylistSong} />
         </Route>
       </Routes>
     </div>

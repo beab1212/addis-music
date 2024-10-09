@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { axiosPrivate } from "../../api/axios";
 import { brandName } from "../../constants";
-import { styles } from "../../style";
 
 const Signin = () => {
   const navigate = useNavigate();

@@ -6,10 +6,22 @@ const PlaylistSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
+    user_id: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true,
+    },
     name: {
         type: String,
-        maxlength: 15,
+        maxlength: 20,
         required: [true, 'please provide playlist name']
+    },
+    playlist_art: {
+        type: String,
+    },
+    is_public: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true })
 

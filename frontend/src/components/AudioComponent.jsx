@@ -7,34 +7,41 @@ const AudioComponent = () => {
   const audioRef = useRef(null);
   const dispatch = useDispatch();
   const audioSrc = useSelector((state) => state.player.audioSrc);
-  const songDuration = useSelector((state) => state.player.duration);
+  const isPlaying = useSelector((state) => state.player.isPlaying);
 
   useEffect(() => {
     let hls;
     if (Hls.isSupported()) {
       hls = new Hls({
         xhrSetup: (xhr, url) => {
-          // Configure xhr requests to include credentials (cookies)
           xhr.withCredentials = true;
         },
       });
-      // TODO: Source url uses auth but this method send request without cookie
       hls.loadSource(audioSrc);
       hls.attachMedia(audioRef.current);
+
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        // audioRef.current.play();
-      });
-      hls.on(Hls.Events.AUDIO_TRACK_LOADED, () => {
-        // if (isPlaying) {
-        //   // audioRef.current.play();
-        // }
-        audioRef.current.play();
+        //
       });
 
-      // audioRef.current?.addEventListener("timeupdate");
-      // This event fires when the audio's first frame is fully loaded.
+      hls.on(Hls.Events.AUDIO_TRACK_LOADED, () => {
+        // 
+      });
+
       audioRef.current?.addEventListener('loadeddata', () => {
         console.log('=========Audio is loaded and ready to play');
+
+        var promise = audioRef.current.play();
+        if (promise !== undefined) {
+          promise.then(_ => {
+            // Autoplay started!
+            if(!isPlaying) {
+              dispatch({ type: 'PLAY' });
+            }
+          }).catch(error => {
+            // Autoplay was prevented.
+          });
+        }
       });
 
       audioRef.current.addEventListener('loadedmetadata', () => {
@@ -42,7 +49,9 @@ const AudioComponent = () => {
       });
 
       audioRef.current?.addEventListener('ended', () => {
-        dispatch({ type: 'TOGGLE_PLAY_PAUSE' })
+        dispatch({ type: 'TOGGLE_PLAY_PAUSE' });
+        console.log('=========audio ended');
+
       })
     }
     return () => {

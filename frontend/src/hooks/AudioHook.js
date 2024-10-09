@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 const AudioHook = () => {
   const audioRef = useSelector((state) => state.audioRef);
+  const currentSong = useSelector((state) => state.currentSong);
   const isPlaying = useSelector((state) => state.player.isPlaying);
   const isMuted = useSelector((state) => state.player.isMuted);
   const isRepeat = useSelector((state) => state.player.isRepeat);
@@ -39,6 +40,14 @@ const AudioHook = () => {
     }
   };
 
+  const changePlay = (song) => {
+    if (song._id === currentSong) {
+      return null;
+    }
+    dispatch({ type: 'SET_AUDIO_SOURCE', payload: song.stream_url });
+    dispatch({ type: 'SET_CURRENT_SONG', payload: song });
+  }
+
   const handleVolumeChange = (e) => {
     dispatch({ type: "SET_VOLUME", payload: e.target.value });
     audioRef.current.volume = e.target.value / 100;
@@ -66,6 +75,7 @@ const AudioHook = () => {
     togglePlayPause,
     handleVolumeChange,
     handleRepeat,
+    changePlay,
   };
 };
 

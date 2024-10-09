@@ -1,6 +1,5 @@
 import { useEffect, memo, useState } from "react";
 import { axiosPrivate } from "../api/axios";
-import { genreList } from "../constants";
 
 const Genre = () => {
   const [data, setData] = useState(null);

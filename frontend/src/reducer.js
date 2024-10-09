@@ -1,13 +1,13 @@
-export const actions = ['TOGGLE_PLAY_PAUSE', 'TOGGLE_MUTE', 'SET_VOLUME', 'SET_CURRENT_TRACK', 'SET_REPEAT', 'SET_LOADING', 'SET_AUDIO_REF', 'UPDATE_PROGRESS', 'SET_DURATION'];
+export const actions = ['TOGGLE_PLAY_PAUSE', 'SET_AUDIO_SOURCE', 'SET_CURRENT_SONG', 'TOGGLE_MUTE', 'SET_VOLUME', 'SET_CURRENT_TRACK', 'SET_REPEAT', 'SET_LOADING', 'SET_AUDIO_REF', 'UPDATE_PROGRESS', 'SET_DURATION', 'SET_CURRENT_SONG'];
 export const appStateActions = ['SET_LOADING', 'CLEAR_ERROR', 'SET_ERROR', 'SHOW_ALERT', 'DISMISS_ALERT'];
 export const userActions = ['SET_USER', 'UPDATE_USER', 'LOGOUT_USER'];
 
 const initialState = {
     audioRef: null,
+    volumeLevel: 100,
     player: {
-        audioSrc: "http://localhost:5000/api/v1/song/stream/6704bd1bef81c12f14267a9e/",
+        audioSrc: "http://localhost:5000/api/v1/song/stream/6704edb59130920e6c0a71a6/",
         isPlaying: false,
-        volumeLevel: 100,
         isRepeat: false,
         isMuted: false,
         isShuffle: false,
@@ -17,9 +17,7 @@ const initialState = {
             percent: 0,
         }
     },
-    currentPlay: {
-        currentTrack: null,
-    },
+    currentSong: null,
     user: {
         isAuthenticated: false,
         token: null,
@@ -42,21 +40,31 @@ function reducer(state=initialState, action) {
         const newState = Object.assign({}, state)
         newState.player.isPlaying = !newState.player.isPlaying;
         return newState;
+    } else if ((action.type === 'PLAY')) {
+        const newState = Object.assign({}, state);
+        newState.player.isPlaying = true;
+        return newState;
     } else if ((action.type === 'TOGGLE_MUTE')) {
         const newState = Object.assign({}, state);
         newState.player.isMuted = !newState.player.isMuted;
         return newState;
+    } else if ((action.type === 'SET_AUDIO_SOURCE')) {
+        const newState = Object.assign({}, state);
+        newState.player.audioSrc = action.payload;
+        newState.player.isPlaying = false;
+        return newState;
+    } else if ((action.type === 'SET_CURRENT_SONG')) {
+        const newState = Object.assign({}, state);
+        newState.currentSong = action.payload;
+        return newState;
     } else if ((action.type === 'SET_VOLUME')) {
         const newState = Object.assign({}, state);
-        newState.player.volumeLevel = action.payload;
+        newState.volumeLevel = action.payload;
+        newState.volumeLevel = action.payload;
         return newState;
     } else if (action.type === 'SET_REPEAT') {
         const newState = Object.assign({}, state);
         newState.player.isRepeat = !newState.player.isRepeat;
-        return newState;
-    } else if (action.type === 'SET_CURRENT_TRACK') {
-        const newState = Object.assign({}, state);
-        newState.currentPlay.currentTrack = action.payload;
         return newState;
     } else if (action.type === 'SET_DURATION') {
         const newState = Object.assign({}, state);
