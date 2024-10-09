@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AudioHook from "../hooks/AudioHook";
 import { styles } from "../style";
-import { currentPlay } from "../constants";
 
 const MusicPlayer = () => {
   const navigate = useNavigate();

@@ -6,7 +6,7 @@ import { axiosPrivate } from "../api/axios";
 const AddSong = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [geners, setGenres] = useState([]);
+  const [genres, setGenres] = useState([]);
   const [form, setForm] = useState({
     song_art: "",
     song: "",
@@ -48,7 +48,7 @@ const AddSong = () => {
         dispatch({
           type: "SHOW_ALERT",
           payload: {
-            message: err.response.data?.error,
+            message: err?.response?.data?.error || null,
             type: "warning",
             dismiss: 9000,
           },
@@ -63,7 +63,14 @@ const AddSong = () => {
         setGenres(res.data?.genre);
       })
       .catch((err) => {
-        //
+        dispatch({
+          type: "SHOW_ALERT",
+          payload: {
+            message: err?.response?.data?.error || null,
+            type: "warning",
+            dismiss: 9000,
+          },
+        });
       });
   }, []);
 
@@ -198,7 +205,7 @@ const AddSong = () => {
                       onChange={handleChange}
                     >
                       <option value="">Select song genre</option>
-                      {geners.map((genre) => (
+                      {genres.map((genre) => (
                         <option key={genre._id} value={genre._id}>
                           {genre.name}
                         </option>

@@ -1,7 +1,9 @@
 import { useEffect, memo, useState } from "react";
+import { useDispatch } from "react-redux";
 import { axiosPrivate } from "../api/axios";
 
 const Genre = () => {
+  const dispatch = useDispatch();
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -11,7 +13,14 @@ const Genre = () => {
         setData(res.data?.genre);
       })
       .catch((err) => {
-        // TODO: dispatch alert
+        dispatch({
+          type: "SHOW_ALERT",
+          payload: {
+            message: err?.response?.data?.error || null,
+            type: "warning",
+            dismiss: 9000,
+          },
+        });
       });
     console.log("Component Genre");
   }, []);

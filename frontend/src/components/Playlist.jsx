@@ -20,8 +20,8 @@ const Playlist = () => {
         dispatch({
           type: "SHOW_ALERT",
           payload: {
-            message: err.response.data?.error,
-            type: "warninng",
+            message: err?.response?.data?.error || null,
+            type: "warning",
             dismiss: 9000,
           },
         });

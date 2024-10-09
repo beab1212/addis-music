@@ -20,7 +20,7 @@ const TrackList = () => {
         dispatch({
             type: "SHOW_ALERT",
             payload: {
-              message: err.response.data?.error,
+              message: err?.response?.data?.error || null,
               type: "warning",
               dismiss: 9000,
             },

@@ -31,16 +31,24 @@ const MaxPlayer = () => {
           </div>
           <div className="items-center sm:pt-20 pt-40 h-full">
             <div className="relative">
-              <img
-                src={currentSong?.song_art}
-                alt="song_art"
-                className={`w-[18rem] rounded-full object-contain mx-auto slow-spin ${
+              <div
+                className={`relative w-[18rem] h-[18rem] mx-auto rounded-full overflow-hidden`}
+              >
+                <img
+                  src={currentSong?.song_art}
+                  alt="song_art"
+                  className={`w-full h-full object-cover slow-spin  ${
                   !isPlaying && "paused"
-                }`}
-              />
+                } `}
+                />
                 <div className="absolute flex bg-[#121212] rounded-full w-16 h-16 borderx top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center">
-                <img src={addisMusic} alt="addis_music" className="w-[70%] object-cover mx-auto" />
+                  <img
+                    src={addisMusic}
+                    alt="addis_music"
+                    className="w-[70%] object-cover mx-auto"
+                  />
                 </div>
+              </div>
             </div>
           </div>
 
