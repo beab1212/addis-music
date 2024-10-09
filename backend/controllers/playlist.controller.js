@@ -78,7 +78,7 @@ const PlaylistController = {
                 is_public: 1,
                 createdAt: 1,
                 updatedAt: 1,
-                playlist_art: { $concat: ['http://localhost:5000/api/v1/playlist/asset/', '$playlist_art']},
+                playlist_art: { $concat: [`${config.HOST_ADDRESS}/api/v1/playlist/asset/`, '$playlist_art']},
             }},
             { $skip: per_page *(page - 1)},
             { $limit: per_page }
@@ -108,10 +108,10 @@ const PlaylistController = {
         const songs = await PlaylistSong.find({ playlist_id: playlist._id }, { song_id: 1, _id: 0 });
 
         if (playlistJson?.playlist_art) {
-            playlistJson.playlist_art = `http://localhost:5000/api/v1/playlist/asset/${playlistJson.playlist_art}`;
+            playlistJson.playlist_art = `${config.HOST_ADDRESS}/api/v1/playlist/asset/${playlistJson.playlist_art}`;
         } else {
             if (songs) {
-                playlistJson.playlist_art = `http://localhost:5000/api/v1/playlist/asset/${songs[0]?.song_art}`;
+                playlistJson.playlist_art = `${config.HOST_ADDRESS}/api/v1/playlist/asset/${songs[0]?.song_art}`;
             }
         }
 

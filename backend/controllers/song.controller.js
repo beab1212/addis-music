@@ -68,7 +68,7 @@ const SongController = {
             user_id: user._id
         });
 
-        newSong.stream_url = `http://localhost:5000/api/v1/song/stream/${newSong._id}/`;
+        newSong.stream_url = `${config.HOST_ADDRESS}/api/v1/song/stream/${newSong._id}/`;
 
         if (album) {
             if (!isValidObjectId(album)) {
@@ -123,7 +123,7 @@ const SongController = {
                 stream_url: 1,
                 createdAt: 1,
                 updatedAt: 1,
-                song_art: { $concat: ['http://localhost:5000/api/v1/song/asset/', '$song_art']},
+                song_art: { $concat: [`${config.HOST_ADDRESS}/api/v1/song/asset/`, '$song_art']},
                 duration: { $concat: [{ $toString: "$duration" }, ] }
             }},
             { $skip: per_page *(page - 1)},
@@ -152,7 +152,7 @@ const SongController = {
 
         const transformedSong = song.toObject();
         transformedSong.duration = parseFloat(transformedSong.duration);
-        transformedSong.song_art = `http://localhost:5000/api/v1/song/asset/${transformedSong.song_art}`;
+        transformedSong.song_art = `${config.HOST_ADDRESS}/api/v1/song/asset/${transformedSong.song_art}`;
         delete transformedSong.__v;
 
         return res.status(StatusCodes.OK).json({ success: true, song: { ...transformedSong } });
