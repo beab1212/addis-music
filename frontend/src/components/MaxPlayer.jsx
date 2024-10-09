@@ -35,7 +35,7 @@ const MaxPlayer = () => {
                 className={`relative w-[18rem] h-[18rem] mx-auto rounded-full overflow-hidden`}
               >
                 <img
-                  src={currentSong?.song_art}
+                  src={currentSong?.song_art + '_400'}
                   alt="song_art"
                   className={`w-full h-full object-cover slow-spin  ${
                   !isPlaying && "paused"
