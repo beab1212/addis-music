@@ -3,7 +3,6 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import path from 'path';
-import fs from 'fs';
 import morgan from 'morgan';
 import { rateLimit } from 'express-rate-limit';
 import mongoSanitize from 'express-mongo-sanitize';
@@ -58,18 +57,6 @@ const main = async () => {
     }).catch((err) => {
         console.error('Error to connect to db ', err);
     });
-
-    if (!fs.existsSync(config.DATA_PATH)) {
-        fs.mkdirSync(path.join(config.DATA_PATH, 'image'), { recursive: true });
-        fs.mkdirSync(path.join(config.DATA_PATH, 'song'), { recursive: true });
-        console.log('Data directory created');
-    }
-
-    if (!fs.existsSync(config.TMP_PATH)) {
-        fs.mkdirSync(path.join(config.TMP_PATH, 'image'), { recursive: true });
-        fs.mkdirSync(path.join(config.TMP_PATH, 'song'), { recursive: true });
-        console.log('Temporary data directory created');
-    }
 
     await redisClient.connect();
 
