@@ -29,12 +29,33 @@ const Signup = () => {
     axiosPrivate
       .post("/auth/signup", form)
       .then((res) => {
-        dispatch({ type: "SHOW_ALERT", payload: { message: res.data?.message + ', redirected to app dashbord...', type: "success", dismiss: 9000 } });
-        dispatch({ type: 'SET_USER', payload: { isAuthenticated: true, token: res.data?.sessionToken, user: res.data?.user } });
-        navigate('/app');
+        dispatch({
+          type: "SET_USER",
+          payload: {
+            isAuthenticated: true,
+            token: res.data?.sessionToken,
+            user: res.data?.user,
+          },
+        });
+        dispatch({
+          type: "SHOW_ALERT",
+          payload: {
+            message: res.data?.message + ", redirected to app dashbord...",
+            type: "success",
+            dismiss: 9000,
+          },
+        });
+        navigate("/app");
       })
       .catch((err) => {
-        dispatch({ type: "SHOW_ALERT", payload: { message: err.response.data?.error, type: "warninng", dismiss: 9000 } });
+        dispatch({
+          type: "SHOW_ALERT",
+          payload: {
+            message: err.response.data?.error,
+            type: "warning",
+            dismiss: 9000,
+          },
+        });
       });
   };
 

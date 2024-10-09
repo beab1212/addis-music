@@ -11,7 +11,7 @@ const Genre = () => {
         setData(res.data?.genre);
       })
       .catch((err) => {
-        //
+        // TODO: dispatch alert
       });
     console.log("Component Genre");
   }, []);

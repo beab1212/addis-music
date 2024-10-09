@@ -1,10 +1,12 @@
 import { useEffect, memo, useState } from "react";
 import { axiosPrivate } from "../api/axios";
+import { useNavigate } from "react-router-dom";
 import { brandName } from "../constants";
 import { profile } from "../assets";
 
 const Header = () => {
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
   const [isSearchFocus, setIsSearchFocus] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
 
@@ -45,9 +47,10 @@ const Header = () => {
         <img
           src={brandName.logo}
           alt={brandName.name}
-          className="w-[40px] h-[40px] object-contain"
+          className="w-[40px] h-[40px] object-contain cursor-pointer"
+          onClick={() => navigate('/app')}
         />
-        <h1 className="text-[24px] font-semibold px-4 sm:block hidden">
+        <h1 className="text-[24px] font-semibold px-4 sm:block hidden cursor-pointer" onClick={() => navigate('/app')}>
           {brandName.name}
         </h1>
       </div>

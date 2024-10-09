@@ -1,6 +1,7 @@
 import StatusCode from 'http-status-codes';
 import { v4 as uuidv4 } from 'uuid';
 import CustomError from '../errors/index.js';
+import { signUser } from '../utils/jwt.js';
 import User from '../models/User.js';
 import redisClient from '../db/redis.js';
 import { setSessionCookie, clearSessionCookie } from '../utils/cookie.js';
@@ -41,10 +42,13 @@ const AuthController = {
         await user.save();
 
         const token = uuidv4();
-        
         await redisClient.set(`auth_${token}`, JSON.stringify(user), 2592000);
         setSessionCookie(res, token);
-        return res.status(StatusCode.CREATED).json({ success: true, message: 'account created successfully', sessionToken: token, user: {} });
+
+        // jwt signed user information
+        const currentUser = signUser(user);
+
+        return res.status(StatusCode.CREATED).json({ success: true, message: 'account created successfully', sessionToken: token, user: currentUser });
     },
 
     async singin (req, res) {
@@ -72,7 +76,11 @@ const AuthController = {
         const token = uuidv4();
         await redisClient.set(`auth_${token}`, JSON.stringify(user), 2592000);
         setSessionCookie(res, token);
-        return res.status(StatusCode.OK).json({ success: true, message: 'signin successfully', sessionToken: token, user: {} });
+
+        // jwt signed user information
+        const currentUser = signUser(user);
+
+        return res.status(StatusCode.OK).json({ success: true, message: 'signin successfully', sessionToken: token, user: currentUser });
     },
 
     async signout (req, res) {

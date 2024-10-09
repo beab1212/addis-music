@@ -32,11 +32,11 @@ const MusicPlayer = () => {
             onClick={() => navigate('/app/player')}
           />
           {/* Info */}
-          <div className="flex flex-1 flex-col mx-6">
-            <h4 className="text-[13px] font-semibold cursor-pointer hover:text-dimWhite">
+          <div className="flex flex-1 flex-col ml-4 w-24 overflow-x-hidden">
+            <h4 className="text-[13px] font-semibold cursor-pointer hover:text-dimWhite text-nowrap">
               {currentSong?.title || 'Title'}
             </h4>
-            <h4 className="text-[13px] text-dimWhite cursor-pointer hover:text-white">
+            <h4 className="text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap">
               {currentSong?.contributors.join(', ').slice(0, 10) || 'Title'}
             </h4>
           </div>

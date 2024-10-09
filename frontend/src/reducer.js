@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 export const actions = ['TOGGLE_PLAY_PAUSE', 'SET_AUDIO_SOURCE', 'SET_CURRENT_SONG', 'TOGGLE_MUTE', 'SET_VOLUME', 'SET_CURRENT_TRACK', 'SET_REPEAT', 'SET_LOADING', 'SET_AUDIO_REF', 'UPDATE_PROGRESS', 'SET_DURATION', 'SET_CURRENT_SONG'];
 export const appStateActions = ['SET_LOADING', 'CLEAR_ERROR', 'SET_ERROR', 'SHOW_ALERT', 'DISMISS_ALERT'];
 export const userActions = ['SET_USER', 'UPDATE_USER', 'LOGOUT_USER'];
@@ -21,7 +22,7 @@ const initialState = {
     user: {
         isAuthenticated: false,
         token: null,
-        user: null
+        user: jwtDecode(localStorage.getItem('user'))
     },
     appState: {
         isLoading: false,
@@ -44,7 +45,11 @@ function reducer(state=initialState, action) {
         const newState = Object.assign({}, state);
         newState.player.isPlaying = true;
         return newState;
-    } else if ((action.type === 'TOGGLE_MUTE')) {
+    } else if ((action.type === 'PAUSE')) {
+        const newState = Object.assign({}, state);
+        newState.player.isPlaying = false;
+        return newState;
+    }  else if ((action.type === 'TOGGLE_MUTE')) {
         const newState = Object.assign({}, state);
         newState.player.isMuted = !newState.player.isMuted;
         return newState;
@@ -104,11 +109,13 @@ function reducer(state=initialState, action) {
         return newState;
     } else if (action.type === 'SET_USER') {
         const newState = Object.assign({}, state);
+        // action.payload?.user is a signed data not decoded yet
         newState.user = {
             isAuthenticated: action.payload?.isAuthenticated,
             token: action.payload?.token,
-            user: action.payload?.user
+            user: jwtDecode(action.payload?.user)
         };
+        localStorage.setItem('user', action.payload?.user);
         return newState;
     } else if (action.type === 'UPDATE_USER') {
         const newState = Object.assign({}, state);

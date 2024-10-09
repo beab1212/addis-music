@@ -49,7 +49,7 @@ const AudioComponent = () => {
       });
 
       audioRef.current?.addEventListener('ended', () => {
-        dispatch({ type: 'TOGGLE_PLAY_PAUSE' });
+        dispatch({ type: 'PAUSE' });
         console.log('=========audio ended');
 
       })

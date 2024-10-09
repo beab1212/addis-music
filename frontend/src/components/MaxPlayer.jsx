@@ -1,6 +1,6 @@
 import { useEffect, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { hana } from "../assets";
+import { addisMusic } from "../assets";
 import { styles } from "../style";
 import { useSelector } from "react-redux";
 import AudioHook from "../hooks/AudioHook";
@@ -38,7 +38,9 @@ const MaxPlayer = () => {
                   !isPlaying && "paused"
                 }`}
               />
-                <div className="absolute bg-[#121212] rounded-full w-16 h-16 borderx top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                <div className="absolute flex bg-[#121212] rounded-full w-16 h-16 borderx top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center">
+                <img src={addisMusic} alt="addis_music" className="w-[70%] object-cover mx-auto" />
+                </div>
             </div>
           </div>
 

@@ -3,7 +3,7 @@ import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import config from '../config.js';
 
-const image_fields = ['song_art', 'album_art'];
+const image_fields = ['song_art', 'album_art', 'playlist_art'];
 
 const storage = multer.diskStorage({
     destination: async function (req, file, cb) {
@@ -17,13 +17,13 @@ const storage = multer.diskStorage({
                 await fs.promises.mkdir(imagePath, { recursive: true });
                 return cb(null, imagePath);
             } else if (file.fieldname === 'song') {
+                // Asynchronously create the image directory if it doesn't exist
                 await fs.promises.mkdir(songPath, { recursive: true });
                 return cb(null, songPath);
             }
         } catch(err) {
             cb(err, null);
         }
-        
     },
 
     filename: function (req, file, cb) {

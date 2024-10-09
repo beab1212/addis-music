@@ -2,16 +2,18 @@ import { StatusCodes } from 'http-status-codes';
 import { isValidObjectId, Types } from 'mongoose';
 import CustomError from '../errors/index.js';
 import Playlist from '../models/Playlist.js';
+import Song from '../models/Song.js';
 import PlaylistSong from '../models/PlaylistSong.js';
 
 const PlaylistController = {
     async addPlaylist(req, res) {
         const user = req.user;
         const { name, is_public=false } = req.body;
-        const { playlist_art } = req.files;
+      
+        const playlist_art = req.file || null;
 
         if (!name) {
-            throw new CustomError.BadRequest('please provide new playlist name');
+            throw new CustomError.BadRequest('please provide playlist name');
         }
 
         if (name.length < 3 || name.length > 30) {
@@ -25,7 +27,7 @@ const PlaylistController = {
         });
 
         if (playlist_art) {
-            newPlaylist.playlist_art = playlist_art[0].filename;
+            newPlaylist.playlist_art = playlist_art.filename;
         }
 
         await newPlaylist.save();
@@ -34,11 +36,10 @@ const PlaylistController = {
         delete newPlaylistJson.__v;
         
         return res.status(StatusCodes.CREATED).json({ success: true, message: 'playlist created successfully add song to it', playlist: { ...newPlaylistJson } });
-
     },
 
     async playlist(req, res) {
-        const user = req.user;        
+        const user = req.user;
         const { query='' } = req.query;
         let { page=1, per_page=20 } = req.query;
 
@@ -106,6 +107,53 @@ const PlaylistController = {
         }
 
         return res.status(StatusCodes.OK).json({ success: true, playlist: { ...playlistJson , songs: songs }});
+    },
+    
+    // add song to playlist
+    async songToPlaylist(req, res) {
+        // post: playlist/:id/song/id:
+        const user = req.user;
+        const { playlist_id, song_id } = req.params;
+
+        if (!playlist_id || !song_id) {
+            throw new CustomError.BadRequest('playlist or song id doesn\'t provided');
+        }
+
+        if (!isValidObjectId(playlist_id)) {
+            throw new CustomError.BadRequest('invalid playlist id');
+        }
+
+        if (!isValidObjectId(song_id)) {
+            throw new CustomError.BadRequest('invalid song id');
+        }
+
+        const playlist = await Playlist.findById(playlist_id);
+
+        if (!playlist) {
+            throw new CustomError.BadRequest('playlist does\'t exist');
+        }
+
+        if (playlist.user_id.toString() !== user._id ) {
+            return res.status(StatusCodes.FORBIDDEN).json({ success: false, error: 'you don\'t have permission' });
+        }
+
+        const song = await Song.findById(song_id);
+
+        if (!song) {
+            throw new CustomError.BadRequest('song does\'t exist');
+        }
+
+        const newPlaylistSong = new PlaylistSong({
+            playlist_id: playlist_id,
+            song_id: song_id,
+        });
+
+        await newPlaylistSong.save();
+
+        const newPlaylistSongJson = newPlaylistSong.toObject();
+        delete newPlaylistSongJson.__v;
+
+        return res.status(StatusCodes.CREATED).json({ success: true, message: 'song added to playlist successfully', playlistSong: { ...newPlaylistSongJson } })
     }
 };
 

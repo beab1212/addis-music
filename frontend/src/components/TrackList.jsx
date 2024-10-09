@@ -21,7 +21,7 @@ const TrackList = () => {
             type: "SHOW_ALERT",
             payload: {
               message: err.response.data?.error,
-              type: "warninng",
+              type: "warning",
               dismiss: 9000,
             },
           });

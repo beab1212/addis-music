@@ -10,10 +10,11 @@ import AddSong from "./AddSong";
 import { SmallAlert } from "./Alert"
 import AppLayout from "./AppLayout";
 import PlaylistSong from "./PlaylistSong";
+import AddPlaylist from "./AddPlaylist";
 
 // 
 import Home from "./market/Home";
 import Signin from "./market/Signin";
 import Signup from "./market/Signup";
 
-export { AudioComponent, SmallAlert, Header, AppLayout, SideBar, Genre, TrackList, MusicPlayer, Playlist, PlaylistSong, MaxPlayer,AddSong, Signin, Signup, Home };
+export { AudioComponent, SmallAlert, Header, AppLayout, SideBar, Genre, TrackList, MusicPlayer, Playlist, PlaylistSong, AddPlaylist, MaxPlayer,AddSong, Signin, Signup, Home };

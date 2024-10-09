@@ -27,6 +27,14 @@ const Signin = () => {
       .post("/auth/signin", form)
       .then((res) => {
         dispatch({
+          type: "SET_USER",
+          payload: {
+            isAuthenticated: true,
+            token: res.data?.sessionToken,
+            user: res.data?.user,
+          },
+        });
+        dispatch({
           type: "SHOW_ALERT",
           payload: {
             message: res.data?.message + ", redirected to app dashbord...",
@@ -34,7 +42,14 @@ const Signin = () => {
             dismiss: 9000,
           },
         });
-        dispatch({ type: 'SET_USER', payload: { isAuthenticated: true, token: res.data?.sessionToken, user: res.data?.user } });
+        dispatch({
+          type: "SET_USER",
+          payload: {
+            isAuthenticated: true,
+            token: res.data?.sessionToken,
+            user: res.data?.user,
+          },
+        });
         navigate("/app");
       })
       .catch((err) => {
@@ -42,7 +57,7 @@ const Signin = () => {
           type: "SHOW_ALERT",
           payload: {
             message: err.response.data?.error,
-            type: "warninng",
+            type: "warning",
             dismiss: 9000,
           },
         });

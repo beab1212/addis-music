@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const SmallAlert = (probs) => {
@@ -17,8 +16,8 @@ const SmallAlert = (probs) => {
   };
 
   return (
-    <div className={`absolute top-4 right-4 ${alert.show ? 'block' : 'hidden'} z-10 opacity-70`}>
-      <div className={`flex max-w-[655px] items-center rounded-md border-l-[8px] bg-white text-gray-800 p-5 pl-6 dark:bg-dark-2xx ${ alert.type === 'success' ? 'border-l-green-500' : alert.type === 'warninng' ? 'border-l-yellow-500 bg-white bg-yellow-light-4' : 'border-red-600 bg-red-light-6' }`}>
+    <div className={`absolute top-4 right-4 ${alert.show ? 'block' : 'hidden'} z-50 opacity-70`}>
+      <div className={`flex max-w-[655px] items-center rounded-md border-l-[8px] bg-white text-gray-800 p-5 pl-6 dark:bg-dark-2xx ${ alert.type === 'success' ? 'border-l-green-500' : alert.type === 'warning' ? 'border-l-yellow-500 bg-white bg-yellow-light-4' : 'border-red-600 bg-red-light-6' }`}>
         <div className="mr-5 flex h-[36px] w-full max-w-[36px] items-center justify-center rounded-full bg-cyan-dark text-whitex">
           <svg
             width="18"
