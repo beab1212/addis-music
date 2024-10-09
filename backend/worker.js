@@ -8,7 +8,7 @@ import config from './config.js';
 // connect to imageProcessing queue
 const imageQueue = new Queue('imageProcessing');
 const dataPath = config.DATA_PATH;
-const resolutions = [200, 400, 600];
+const resolutions = [100, 200, 400];
 
 imageQueue.process(async (job) => {
     const { imagePath } = job.data;
@@ -29,4 +29,3 @@ imageQueue.process(async (job) => {
 });
 
 console.log('Image processor queue started');
-

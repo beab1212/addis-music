@@ -15,7 +15,7 @@ const initialState = {
     audioRef: null,
     volumeLevel: 100,
     player: {
-        audioSrc: "http://localhost:5000/api/v1/song/stream/6704edb59130920e6c0a71a6/",
+        audioSrc: "http://localhost:5000/api/v1/song/stream/6706b36b21764544449e0054/",
         isPlaying: false,
         isRepeat: false,
         isMuted: false,

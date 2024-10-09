@@ -41,17 +41,17 @@ const TrackList = () => {
           <div key={song._id} className={`flex relative rounded-lg cursor-pointer overflow-hidden hover:bg-gray-800 md:w-[10rem] w-[6rem] ${currentSong?._id === song._id && 'animate-pulse'}`} onClick={() => changePlay(song)}
           >
             <img
-              src={song.song_art}
+              src={song.song_art + '_200'}
               alt={song._id}
               className="w-full object-cover"
             />
 
             <div className="absolute bottom-0 flex w-full flex-col bg-gradient-to-b from-[#2828281a] to-[#000000] pl-2">
-              <h5 className="text-[14px] font-semibold cursor-pointer hover:text-dimWhite">
+              <h5 className="text-[14px] font-semibold cursor-pointer hover:text-dimWhite text-nowrap">
                 {song.title}
               </h5>
-              <h5 className="text-[13px] text-dimWhite cursor-pointer hover:text-white">
-                {song.contributors.slice(0, 2).join(',')}
+              <h5 className="text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap">
+                {song.contributors.slice(0, 2).join(',').slice(0, 15)}
               </h5>
             </div>
 

@@ -14,10 +14,10 @@ import errorHandler from './middleware/errorHandler.js';
 import { AuthRoute, SearchRoute, SongRoute, GenreRoute, PlaylistRoute } from './routes/index.js';
 
 const app = express();
-app.use(rateLimit({
-    windowMs: 15 * 60 * 1000,
-    limit: 100,
-}));
+// app.use(rateLimit({
+//     windowMs: 15 * 60 * 1000,
+//     limit: 100,
+// }));
 // app.use(cors());
 app.use(cors({
     origin: 'http://localhost:3000',

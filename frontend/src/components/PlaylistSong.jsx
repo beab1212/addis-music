@@ -95,7 +95,7 @@ const SongTemplate = (probs) => {
     >
       <h4 className="text-[1.1rem] mr-4">{++listNumber}</h4>
       <img
-        src={data?.song_art}
+        src={data?.song_art + '_100'}
         alt={data?._id}
         className="w-[40px] h-[40px] object-cover overflow-hidden min-w-[40px]"
       />

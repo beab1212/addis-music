@@ -25,8 +25,6 @@ const moveToDataPath = async (sourcePath, type) => {
 
     const destinationPath = path.join(dataPath, `${type}/${filename}`);
 
-    fs.ensureDirSync(dataPath);
-
     return new Promise((resolve, reject) => {
         fs.rename(sourcePath, destinationPath, (err) => {
             if (err) {
