@@ -12,7 +12,7 @@ const SearchController = {
         // TODO: make it more complex using regex
         const pattern = new RegExp(`${query}`, 'i');
 
-        const suggestions = await Keyword.find({key: {$regex: pattern}}).limit(10).sort({ key: 1 });
+        const suggestions = await Keyword.find({key: {$regex: pattern}}, { title : 1 }).limit(10).sort({ key: 1 });
 
         if (!suggestions) {
             return res.status(StatusCodes.NO_CONTENT).json({ success: true });

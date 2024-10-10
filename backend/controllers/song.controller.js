@@ -9,6 +9,8 @@ import Song from '../models/Song.js';
 import Genre from '../models/Genre.js';
 import Album from '../models/Album.js';
 import Like from '../models/Like.js';
+import Keyword from '../models/Keyword.js';
+
 
 const hlsFolder = config.HLS_PATH;
 
@@ -83,6 +85,13 @@ const SongController = {
         }
 
         await newSong.save();
+
+        const keyword = new Keyword({
+            key: `${title}, ${contributors}, ${description}`,
+            title: title
+        });
+
+        await keyword.save();
         
         const newSongJson = newSong.toObject();
         delete newSongJson.song;

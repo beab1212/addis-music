@@ -5,6 +5,10 @@ const KeywordSchema = new mongoose.Schema({
         type: String,
         maxlength: 50,
         required: true,
+    },
+    title: {
+        type: String,
+        required: true,
     }
 });
 
