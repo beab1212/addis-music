@@ -10,6 +10,7 @@ import Genre from '../models/Genre.js';
 import Album from '../models/Album.js';
 import Like from '../models/Like.js';
 import Keyword from '../models/Keyword.js';
+import ListeningHistory from '../models/ListeningHistory.js';
 
 
 const hlsFolder = config.HLS_PATH;
@@ -176,6 +177,7 @@ const SongController = {
 
     async songStream(req, res) {
         // /song/stream/:id/:fileName
+        const user = req.user;
         const { id='', fileName=null } = req.params;
 
         if (!isValidObjectId(id))  {
@@ -192,13 +194,17 @@ const SongController = {
             }
 
             if (!(await isHlsAudioExist(m3u8FilePath))) {
-                console.log('=================================== not Exist',);
                 const song = await Song.findById(id);
         
                 if (!song) {
                     return res.status(StatusCodes.NOT_FOUND).json({ success: false, message: 'requested song doesn\'t exist' })
                 }
+                console.log('=================================== Requested song hls not exist, Generating new hls segment...',);
                 await generateHLSStream(song._id, song.song);
+            }
+            // when user listen up to 130 seconds song marked as listened
+            if (fileName === 'output12.ts') {
+                makeSongListened(id, user._id);
             }
             res.status(StatusCodes.OK).sendFile(segmentPath);
         } catch(err) {
@@ -239,5 +245,26 @@ const SongController = {
         return res.status(StatusCodes.OK).json({ success: true, like: true })
     }
 };
+
+
+const makeSongListened = async(song_id, user_id) => {
+    const isListened = await ListeningHistory.findOne({ user_id: new Types.ObjectId(user_id), song_id: new Types.ObjectId(song_id) });
+
+    // current user already listen the song
+    if (isListened) {
+        console.log('=========> Debugging==== user already listened the song');
+        return null
+    }
+
+    const newListen = new ListeningHistory({
+        user_id,
+        song_id
+    })
+    console.log('=========> Debugging==== song: ', song_id, ' got new listener id: ', user_id);
+    
+    await newListen.save()
+    return newListen;
+}
+
 
 export default SongController;
