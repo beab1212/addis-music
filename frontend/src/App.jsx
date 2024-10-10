@@ -1,23 +1,23 @@
+import { useEffect, memo, lazy, Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 // import "font-awesome/css/font-awesome.min.css";
 import "./assets/font-awesome-1-master/css/all.css";
 // import { styles } from "./style";
-import {
-  AudioComponent,
-  Genre,
-  TrackList,
-  Playlist,
-  PlaylistSong,
-  SmallAlert,
-  MaxPlayer,
-  AppLayout,
-  Signin,
-  Signup,
-  AddSong,
-  Home,
-} from "./components";
-import { useEffect, memo } from "react";
-import { Routes, Route } from "react-router-dom";
+
+const Home = lazy(() => import('./components/market/Home'));
+const Signin = lazy(() => import('./components/market/Signin'));
+const Signup = lazy(() => import('./components/market/Signup'));
+const AudioComponent = lazy(() => import('./components/AudioComponent'))
+const SmallAlert = lazy(() => import('./components/Alert'))
+const MaxPlayer = lazy(() => import('./components/MaxPlayer'));
+const AddSong = lazy(() => import('./components/AddSong'));
+const Genre = lazy(() => import('./components/Genre'));
+const TrackList = lazy(() => import('./components/TrackList'));
+const Playlist = lazy(() => import('./components/Playlist'));
+const PlaylistSong = lazy(() => import('./components/PlaylistSong'));
+const AppLayout = lazy(() => import('./components/AppLayout'));
+
 
 // TODO: don't forget to implement lazy loading image
 function App() {
@@ -27,16 +27,20 @@ function App() {
   return (
     <div className="bg-[#000000] w-full h-screen text-white overflow-hidden">
       <SmallAlert/>
-      <AudioComponent />
+      
+      <Suspense>
+        <AudioComponent />
+      </Suspense>
+
       <Routes>
         <Route path="/">
-          <Route path="/" Component={Home} />
-          <Route path="signin" Component={Signin} />
-          <Route path="signup" Component={Signup} />
+          <Route path="/" element={<LazyComponent Component={Home} />} />
+          <Route path="signin" element={<LazyComponent Component={Signin} />} />
+          <Route path="signup" Component={Signup} element={<LazyComponent Component={Signup} />} />
         </Route>
         
-        <Route path="/app/player" Component={MaxPlayer}/>
-        <Route path="/app/song/upload" Component={AddSong}/>
+        <Route path="/app/player" element={<LazyComponent Component={MaxPlayer} />}/>
+        <Route path="/app/song/upload"element={<LazyComponent Component={AddSong} />} />
         <Route path="/app" element={<AppLayout />}>
           <Route path="" Component={Genre} />
           <Route path="genre" Component={Genre} />
@@ -48,5 +52,11 @@ function App() {
     </div>
   );
 }
+
+const LazyComponent = ({ Component }) => (
+  <Suspense fallback={<div><h1 className="text-[70px] text-red-500">Loading...</h1></div>}>
+    <Component />
+  </Suspense>
+);
 
 export default memo(App);

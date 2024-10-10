@@ -42,7 +42,7 @@ const TrackList = () => {
           >
             <img
               src={song.song_art + '_200'}
-              alt={song._id}
+              alt={song?._id}
               className="w-full object-cover"
             />
 
@@ -50,9 +50,9 @@ const TrackList = () => {
               <h5 className="text-[14px] font-semibold cursor-pointer hover:text-dimWhite text-nowrap">
                 {song.title}
               </h5>
-              <h5 className="text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap">
+              <h2 className="text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap">
                 {song.contributors.slice(0, 2).join(',').slice(0, 15)}
-              </h5>
+              </h2>
             </div>
 
             <div className="absolute hover:flex flex top-0 items-center justify-center w-full h-full">

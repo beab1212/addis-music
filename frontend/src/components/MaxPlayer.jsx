@@ -77,6 +77,7 @@ const MaxPlayer = () => {
                   {progress.time ? progress.time : "0:00"}
                 </p>
                 <input
+                  aria-label="progress_bar"
                   type="range"
                   min={0}
                   step={0.01}

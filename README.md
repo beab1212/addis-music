@@ -5,6 +5,7 @@
 
 
 ## <h2 style="color:#ff1a1a">Development Note:</h2>
+===> <b>Note</b>: lazy import doesn't work with barrel export(index.js) in component's as expected(it download every thing once)
 => implement access control for image and song assets
 => don't forget to include big size file's in .gitignore
 => add advanced auth mechanism(otp) email verification

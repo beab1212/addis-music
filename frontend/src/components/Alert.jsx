@@ -78,4 +78,5 @@ const SmallAlert = (probs) => {
   );
 };
 
-export { SmallAlert };
+// export { SmallAlert };
+export default SmallAlert

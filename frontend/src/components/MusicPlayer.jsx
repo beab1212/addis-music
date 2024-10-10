@@ -50,18 +50,18 @@ const MusicPlayer = () => {
         <div className="flex items-center">
           <img
             src={currentSong?.song_art}
-            alt={currentSong && currentSong?._id}
+            alt={currentSong?._id || 'song_art_image'}
             className="w-[50px] h-[50px] object-cover rounded-full cursor-pointer"
             onClick={() => navigate("/app/player")}
           />
           {/* Info */}
           <div className="flex flex-1 flex-col ml-4 w-24 overflow-x-hidden">
-            <h4 className="text-[13px] font-semibold cursor-pointer hover:text-dimWhite text-nowrap">
+            <p className="text-[13px] font-semibold cursor-pointer hover:text-dimWhite text-nowrap">
               {currentSong?.title || "Title"}
-            </h4>
-            <h4 className="text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap">
+            </p>
+            <p className="text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap">
               {currentSong?.contributors.join(", ").slice(0, 10) || "Title"}
-            </h4>
+            </p>
           </div>
           {/* Play buttons */}
           <div className="flex flex-row justify-between w-52 px-4 items-center text-[23px]">
@@ -105,6 +105,7 @@ const MusicPlayer = () => {
             {progress.time ? progress.time : "0:00"}
           </p>
           <input
+            aria-label="progress_bar"
             type="range"
             min={0}
             step={0.01}
@@ -132,7 +133,9 @@ const MusicPlayer = () => {
               } pr-4`}
               onClick={handleMute}
             />
+            <label htmlFor="volume_slider"></label>
             <input
+              aria-label="volume_slider"
               type="range"
               max={100}
               min={0}
