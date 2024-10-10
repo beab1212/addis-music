@@ -108,11 +108,11 @@ const SongTemplate = (probs) => {
         >
           {data?.title}
         </h5>
-        <h5
+        <h6
           className={`text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap `}
         >
           {data?.contributors.slice(0, 2).join(",")}
-        </h5>
+        </h6>
       </div>
 
       <p className="text-dimWhite text-[13px] text-end w-full">

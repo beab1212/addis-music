@@ -54,7 +54,7 @@ function App() {
 }
 
 const LazyComponent = ({ Component }) => (
-  <Suspense fallback={<div><h1 className="text-[70px] text-red-500">Loading...</h1></div>}>
+  <Suspense fallback={<div><h1 className="text-[20px] text-red-500">Loading...</h1></div>}>
     <Component />
   </Suspense>
 );

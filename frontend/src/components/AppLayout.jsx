@@ -23,7 +23,7 @@ const AppLayout = () => {
       {/* Central section AKA Route */}
       <div className="sm:col-start-2 col-start-1 col-end-5 bg-[#121212] rounded-lg overflow-y-scroll overflow-x-hidden scroll-smooth customScroll">
         <section className={`borderx border-green-500`}>
-          <Suspense fallback={<div><h1 className="text-[70px] text-red-500">Loading...</h1></div>}>
+          <Suspense fallback={<div><h1 className="text-[20px] text-red-500">Loading...</h1></div>}>
             <Outlet />
           </Suspense>
         </section>

@@ -55,9 +55,9 @@ const Playlist = () => {
               <h5 className="md:text-[14px] text-[24px] font-semibold cursor-pointer hover:text-dimWhite">
                 {playlist.name}
               </h5>
-              <h5 className="text-[13px] text-dimWhite cursor-pointer hover:text-white">
+              <h6 className="text-[13px] text-dimWhite cursor-pointer hover:text-white">
                 {playlist.name}
-              </h5>
+              </h6>
             </div>
           </div>
         ))}

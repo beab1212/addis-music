@@ -50,9 +50,9 @@ const TrackList = () => {
               <h5 className="text-[14px] font-semibold cursor-pointer hover:text-dimWhite text-nowrap">
                 {song.title}
               </h5>
-              <h2 className="text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap">
+              <h6 className="text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap">
                 {song.contributors.slice(0, 2).join(',').slice(0, 15)}
-              </h2>
+              </h6>
             </div>
 
             <div className="absolute hover:flex flex top-0 items-center justify-center w-full h-full">
