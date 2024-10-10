@@ -13,11 +13,12 @@ const SmallAlert = lazy(() => import('./components/Alert'))
 const MaxPlayer = lazy(() => import('./components/MaxPlayer'));
 const AddSong = lazy(() => import('./components/AddSong'));
 const Genre = lazy(() => import('./components/Genre'));
-const TrackList = lazy(() => import('./components/TrackList'));
+const Discover = lazy(() => import('./components/Discover'));
 const Playlist = lazy(() => import('./components/Playlist'));
 const PlaylistSong = lazy(() => import('./components/PlaylistSong'));
 const AppLayout = lazy(() => import('./components/AppLayout'));
 const Favorites = lazy(() => import('./components/Favorites'));
+const Foryou = lazy(() => import('./components/Foryou'));
 
 
 // TODO: don't forget to implement lazy loading image
@@ -43,9 +44,10 @@ function App() {
         <Route path="/app/player" element={<LazyComponent Component={MaxPlayer} />}/>
         <Route path="/app/song/upload"element={<LazyComponent Component={AddSong} />} />
         <Route path="/app" element={<AppLayout />}>
-          <Route path="" Component={Genre} />
+          <Route path="" Component={Foryou} />
           <Route path="genre" Component={Genre} />
-          <Route path="track" Component={TrackList} />
+          <Route path="foryou" Component={Foryou} />
+          <Route path="discover" Component={Discover} />
           <Route path="favorite" Component={Favorites} />
           <Route path="playlist" Component={Playlist} />
           <Route path="playlist/:id" Component={PlaylistSong} />

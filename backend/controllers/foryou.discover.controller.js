@@ -1,0 +1,82 @@
+import { StatusCodes } from 'http-status-codes';
+import { Types } from 'mongoose';
+import config from '../config.js';
+import CustomError from '../errors/index.js';
+import Song from '../models/Song.js';
+import Playlist from '../models/Playlist.js';
+// Todo: try to powered with AI
+
+const ForyouAndDiscover = {
+    async foryou(req, res) {
+        const user = req.user;
+
+        throw new CustomError.BadRequest('End point not implemented yet')
+    },
+
+    async discover(req, res) {
+        // /discover?query=...
+        const user = req.user;
+        const { query='' } = req.query;
+        let { page=1, per_page=20 } = req.query;
+        try {
+            page = parseInt(page);
+            per_page = parseInt(per_page);
+        } catch(parseErr) {
+            throw new CustomError.BadRequest('page and per_page must be type integer');
+        }
+
+        const pattern = new RegExp(`${query}`, 'i');
+        const patternStart = new RegExp(`^${query}`, 'i');
+
+        const playlists = await Playlist.aggregate([
+            { $match: 
+                {$and: [
+                    {name: pattern},
+                    { $or: [
+                        { is_public: {$ne: false}},
+                        { $and: [{is_public: false}, {user_id: new Types.ObjectId(user._id)}] }
+                    ]}
+                ]}
+            },
+            { $project:{
+                name: 1,
+                user_id: 1,
+                is_public: 1,
+                createdAt: 1,
+                updatedAt: 1,
+                playlist_art: { $concat: [`${config.HOST_ADDRESS}/api/v1/playlist/asset/`, '$playlist_art']},
+            }},
+        ]).limit(10);
+
+        const songs = await Song.aggregate([
+            { $match:
+                { $or: [
+                    { title: {$regex: pattern}},
+                    { description: {$regex: pattern}},
+                    { contributors: {$regex: patternStart}},
+                ]}
+            },
+            { $project:{
+                title: 1,
+                song: 1,
+                user_id: 1,
+                description: 1,
+                contributors: 1,
+                genre: 1,
+                // not import when app is once deployed
+                // only stream_url: 1
+                stream_url: { $concat: [`${config.HOST_ADDRESS}/api/v1/song/stream/`, { $toString:'$_id'}, '/']},
+                createdAt: 1,
+                updatedAt: 1,
+                song_art: { $concat: [`${config.HOST_ADDRESS}/api/v1/song/asset/`, '$song_art']},
+                duration: { $concat: [{ $toString: "$duration" }, ] }
+            }},
+            { $skip: per_page *(page - 1)},
+            { $limit: per_page }
+        ]);
+
+        return res.status(StatusCodes.OK).json({ success: true, discover: { songs, playlists } });
+    }
+}
+
+export default ForyouAndDiscover;

@@ -89,7 +89,7 @@ const SongController = {
 
         const keyword = new Keyword({
             key: `${title}, ${contributors}, ${description}`,
-            title: title
+            title: `${title}}`,
         });
 
         await keyword.save();

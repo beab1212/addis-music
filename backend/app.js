@@ -11,7 +11,7 @@ import connectDB from './db/connect.js';
 import redisClient from './db/redis.js';
 import errorHandler from './middleware/errorHandler.js';
 
-import { AuthRoute, SearchRoute, SongRoute, GenreRoute, PlaylistRoute } from './routes/index.js';
+import { AuthRoute, SearchRoute, SongRoute, GenreRoute, PlaylistRoute, ForyouAndDiscover } from './routes/index.js';
 
 const app = express();
 // app.use(rateLimit({
@@ -44,6 +44,7 @@ router.use('/search', SearchRoute);
 router.use('/song', SongRoute);
 router.use('/genre', GenreRoute);
 router.use('/playlist', PlaylistRoute);
+router.use('/', ForyouAndDiscover);
 
 app.use(errorHandler);
 app.use("*", async (req, res) => {

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { axiosPrivate } from "../api/axios";
 import AudioHook from "../hooks/AudioHook";
+import { playlist } from "../assets";
 
 const PlaylistSong = () => {
   const { id } = useParams();
@@ -16,7 +17,7 @@ const PlaylistSong = () => {
     axiosPrivate
       .get(`/playlist/${id}`)
       .then((res) => {
-        setData(res.data?.playlist);
+        setData(res.data?.playlist);        
       })
       .catch((err) => {
         dispatch({
@@ -43,6 +44,7 @@ const PlaylistSong = () => {
             song={song?.song_id}
             index={index}
             key={song?.song_id}
+            isOwner={(user._id === data.user_id)}
           />
         ))}
       </div>
@@ -100,7 +102,7 @@ const SongTemplate = (probs) => {
         className="w-[40px] h-[40px] object-cover overflow-hidden min-w-[40px]"
       />
 
-      <div className="flex flex-col ml-4">
+      <div className="flex flex-col ml-4 min-w-32">
         <h5
           className={`text-[13px] font-semibold cursor-pointer hover:text-dimWhite text-nowrap ${
             currentSong?._id === probs?.song && "text-red-500"
@@ -111,13 +113,16 @@ const SongTemplate = (probs) => {
         <h6
           className={`text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap `}
         >
-          {data?.contributors.slice(0, 2).join(",")}
+          {data?.contributors.slice(0, 2).join(",")?.slice(0, 15)}
         </h6>
       </div>
 
-      <p className="text-dimWhite text-[13px] text-end w-full">
+      <p className={`text-dimWhite text-[13px] text-end w-full ${currentSong?._id === probs?.song && "text-red-700"}`}>
         {formatTime(data?.duration)}
       </p>
+      { probs.isOwner && (
+        <i className={`mx-4 fad fa-ellipsis-v-alt hover:text-pink-800`} />
+      )}
     </div>
   );
 };

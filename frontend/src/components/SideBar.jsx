@@ -20,6 +20,23 @@ const SideBar = () => {
       <div className="flex flex-col">
         {/* Finding's */}
         <div className="">
+
+        <div className="flex flex-1 items-center mb-[25px] cursor-pointer">
+            <img
+              src={podcast}
+              alt=""
+              className="w-[28px] h-[28px] object-contain"
+            />
+            <h1
+              className={`${styles.hoverColor} text-[13px] font-semibold px-8`}
+              onClick={() => {
+                navigate('/app/foryou')
+              }}
+            >
+              FORYOU
+            </h1>
+          </div>
+
           <div className="flex flex-1 items-center mb-[25px] cursor-pointer">
             <img
               src={discover}
@@ -29,7 +46,7 @@ const SideBar = () => {
             <h1
               className={`${styles.hoverColor} text-[13px] font-semibold px-8`}
               onClick={() => {
-                navigate('/app/track')
+                navigate('/app/discover')
               }}
             >
               DISCOVER
@@ -62,19 +79,6 @@ const SideBar = () => {
               className={`${styles.hoverColor} text-[13px] font-semibold px-8`}
             >
               TOP CHARTS
-            </h1>
-          </div>
-
-          <div className="flex flex-1 items-center mb-[25px] cursor-pointer">
-            <img
-              src={podcast}
-              alt=""
-              className="w-[28px] h-[28px] object-contain"
-            />
-            <h1
-              className={`${styles.hoverColor} text-[13px] font-semibold px-8`}
-            >
-              PODCAST
             </h1>
           </div>
         </div>

@@ -74,7 +74,6 @@ const PlaylistController = {
             { $project:{
                 name: 1,
                 user_id: 1,
-                stream_url: 1,
                 is_public: 1,
                 createdAt: 1,
                 updatedAt: 1,

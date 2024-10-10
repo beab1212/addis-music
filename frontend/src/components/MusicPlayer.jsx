@@ -57,7 +57,7 @@ const MusicPlayer = () => {
           {/* Info */}
           <div className="flex flex-1 flex-col ml-4 w-24 overflow-x-hidden">
             <p className="text-[13px] font-semibold cursor-pointer hover:text-dimWhite text-nowrap">
-              {currentSong?.title || "Title"}
+              {currentSong?.title?.slice(0, 15) || "Title"}
             </p>
             <p className="text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap">
               {currentSong?.contributors.join(", ").slice(0, 10) || "Title"}

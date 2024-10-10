@@ -14,8 +14,11 @@ const Header = () => {
     setQuery(e.target.value);
   };
 
-  const search = () => {
-    console.log(query, '=============');
+  const search = (e) => {
+    if (e.key === 'Enter' && query.length >= 2) {
+      console.log('============= Searching...');
+      navigate(`/app/discover?query=${query}`)
+    }
   };
 
   useEffect(() => {
@@ -66,15 +69,16 @@ const Header = () => {
             placeholder="search"
             value={query}
             onChange={handleChange}
+            onKeyUp={search}
           />
         </div>
 
         <div className={`absolute top-12 w-full bg-gray-300 border rounded-xl px-1 py-4 z-10 ${ (suggestions.length > 0 && isSearchFocus) ? 'block' : 'hidden'}`}>
           <ul className="text-gray-900">
             {suggestions.map((suggestion) => (
-              <li key={suggestion._id} value={suggestion.key} className="py-1 px-2 hover:bg-gray-100 cursor-pointer rounded-lg" onMouseDown={(e) => {
+              <li key={suggestion._id} value={suggestion.title} className="py-1 px-2 hover:bg-gray-100 cursor-pointer rounded-lg" onMouseDown={(e) => {
                 setQuery(e.target.textContent);
-              }}>{suggestion.key}</li>
+              }}>{suggestion.title}</li>
             ))}
           </ul>
         </div>

@@ -31,7 +31,7 @@ const AudioComponent = () => {
       audioRef.current?.addEventListener('loadeddata', () => {
         console.log('=========Audio is loaded and ready to play');
 
-        var promise = audioRef.current.play();
+        const promise = audioRef.current.play();
         if (promise !== undefined) {
           promise.then(_ => {
             // Autoplay started!

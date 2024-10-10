@@ -21,23 +21,37 @@ const AudioHook = () => {
 
   const updateProgress = () => {
     if (audioRef.current?.currentTime) {
-      dispatch({ type: 'UPDATE_PROGRESS', payload: { percent: (audioRef.current.currentTime * 100) / audioRef.current.duration, time: formatTime(audioRef.current.currentTime) } })
+      dispatch({
+        type: "UPDATE_PROGRESS",
+        payload: {
+          percent:
+            (audioRef.current.currentTime * 100) / audioRef.current.duration,
+          time: formatTime(audioRef.current.currentTime),
+        },
+      });
     } else {
-      dispatch({ type: 'UPDATE_PROGRESS', payload: { percent: progress.percent, time: "0:00" } })
+      dispatch({
+        type: "UPDATE_PROGRESS",
+        payload: { percent: progress.percent, time: "0:00" },
+      });
     }
   };
 
   const handleProgress = (e) => {
     const newTime = (e.target.value * audioRef.current.duration) / 100;
-    audioRef.current.currentTime = newTime;
+    if (audioRef.current?.currentTime) {
+      audioRef.current.currentTime = newTime;
+    }
   };
 
   const togglePlayPause = (e) => {
     dispatch({ type: "TOGGLE_PLAY_PAUSE" });
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
+    if (audioRef.current?.readyState !== 0) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
     }
   };
 
@@ -48,19 +62,21 @@ const AudioHook = () => {
 
     // new approach
     axiosPrivate
-    .get(`/song/${song?._id}`)
-    .then((res) => {
-      dispatch({ type: 'SET_AUDIO_SOURCE', payload: res.data?.song.stream_url });
-      dispatch({ type: 'SET_CURRENT_SONG', payload: res.data?.song });
-    })
-    .catch((err) => {
-      // 
-    })
-
+      .get(`/song/${song?._id}`)
+      .then((res) => {
+        dispatch({
+          type: "SET_AUDIO_SOURCE",
+          payload: res.data?.song.stream_url,
+        });
+        dispatch({ type: "SET_CURRENT_SONG", payload: res.data?.song });
+      })
+      .catch((err) => {
+        //
+      });
     // old approach before like button
     // dispatch({ type: 'SET_AUDIO_SOURCE', payload: song.stream_url });
     // dispatch({ type: 'SET_CURRENT_SONG', payload: song });
-  }
+  };
 
   const handleVolumeChange = (e) => {
     dispatch({ type: "SET_VOLUME", payload: e.target.value });
