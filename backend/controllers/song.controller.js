@@ -128,7 +128,9 @@ const SongController = {
                 description: 1,
                 contributors: 1,
                 genre: 1,
-                stream_url: 1,
+                // not import when app is once deployed
+                // only stream_url: 1
+                stream_url: { $concat: [`${config.HOST_ADDRESS}/api/v1/song/stream/`, { $toString:'$_id'}, '/']},
                 createdAt: 1,
                 updatedAt: 1,
                 song_art: { $concat: [`${config.HOST_ADDRESS}/api/v1/song/asset/`, '$song_art']},
@@ -162,6 +164,8 @@ const SongController = {
         const transformedSong = song.toObject();
         transformedSong.duration = parseFloat(transformedSong.duration);
         transformedSong.song_art = `${config.HOST_ADDRESS}/api/v1/song/asset/${transformedSong.song_art}`;
+        // not import when app is once deployed
+        transformedSong.stream_url = `${config.HOST_ADDRESS}/api/v1/song/stream/${transformedSong._id}/`;
         delete transformedSong.__v;
 
         const like = await Like.findOne({ user_id: new Types.ObjectId(user._id), song_id: song._id });
@@ -243,6 +247,15 @@ const SongController = {
         await newLike.save()
 
         return res.status(StatusCodes.OK).json({ success: true, like: true })
+    },
+
+    async favoriteSong(req, res) {
+        const user = req.user;
+        let { page=1, per_page=20 } = req.query;
+
+        const favSongs = await Like.find({ user_id: new Types.ObjectId(user._id) }, { song_id: 1 }).skip(per_page *(page - 1)).limit(per_page);
+
+        return res.status(StatusCodes.OK).json({ success: true, favSongs })
     }
 };
 

@@ -20,7 +20,7 @@ const app = express();
 // }));
 // app.use(cors());
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'http://192.168.1.1:3000',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }))

@@ -11,7 +11,7 @@ const PlaylistSong = () => {
   const user = useSelector((state) => state.user.user);
   const [data, setData] = useState([]);
   // get refresh: change it's value in child component to trigger refresh
-  const [refresh ,setRefresh] = useState("false")
+  const [refresh ,setRefresh] = useState("false");
   useEffect(() => {
     axiosPrivate
       .get(`/playlist/${id}`)
