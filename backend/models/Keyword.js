@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const KeywordSchema = new mongoose.Schema({
     key: {
         type: String,
-        maxlength: 50,
+        maxlength: 500,
         required: true,
     },
     title: {

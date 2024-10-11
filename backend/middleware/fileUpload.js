@@ -1,13 +1,15 @@
 import multer from 'multer';
 import fs from 'fs';
+import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import CustomError from '../errors/index.js';
 import config from '../config.js';
 
 const image_fields = ['song_art', 'album_art', 'playlist_art'];
 
 const storage = multer.diskStorage({
     destination: async function (req, file, cb) {
-        console.log(file, '===============');
+        // console.log(file, '===============');
         const imagePath = `${config.TMP_PATH}/image`;
         const songPath = `${config.TMP_PATH}/song`;
         
@@ -32,19 +34,36 @@ const storage = multer.diskStorage({
     }
 });
 
-// NOTE: not integrated yet
-const fileFilter = (req, file, cb) => {
-    const fileTypes = /jpeg|jpg|png|gif/;
-    const mimeType = fileTypes.test(file.mimetype);
-    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
 
-    if (mimeType && extname) {
-        return cb(null, true);
-    } else {
-        cb('Error: File upload only supports the following file types - ' + fileTypes);
+const fileFilter = (req, file, cb) => {    
+    const allowedImageFileTypes = /jpeg|jpg|png|gif/;
+    const allowedAudioFileTypes = /mpeg|mp3|wav|m4a/;
+
+    try {
+        if (image_fields.includes(file.fieldname)) {
+            const mimetype = allowedImageFileTypes.test(file.mimetype);
+            const extname = allowedImageFileTypes.test(path.extname(file.originalname).toLowerCase());
+            if (mimetype && extname) {
+                return cb(null, true);
+            } else {
+                return cb(new CustomError.BadRequest(`Invalid file type! "${file.fieldname}".`));
+            }
+        } else if(file.fieldname === 'song') {            
+            const mimetype = allowedAudioFileTypes.test(file.mimetype);
+            const extname = allowedAudioFileTypes.test(path.extname(file.originalname).toLowerCase());
+            if (mimetype && extname) {
+                return cb(null, true);
+            } else {
+                return cb(new CustomError.BadRequest('Invalid file type "song".'));
+            }
+        } else {
+            return cb(new CustomError.BadRequest(`Invalid file field name ${file.fieldname}.!`));
+        }
+    } catch(err) {
+        return cb(new Error('Critical: =============> Unknown file filter error', err));
     }
 };
 
-const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } });
+const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 }, fileFilter: fileFilter });
 
 export default upload;
