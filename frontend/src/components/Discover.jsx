@@ -18,7 +18,6 @@ const Discover = () => {
       .get(`/discover${location.search}`)
       .then((res) => {
         setData(res.data?.discover);
-        console.log(res.data);
       })
       .catch((err) => {
         dispatch({
@@ -59,9 +58,9 @@ const Discover = () => {
                 />
 
                 <div className="absolute bottom-0 pb-2 flex w-full flex-col bg-gradient-to-b from-[#2828281a] to-[#000000] pl-2">
-                  <h5 className="text-[16px] pb-2 font-semibold cursor-pointer hover:text-dimWhite text-nowrap">
+                  <p className="text-[16px] pb-2 font-semibold cursor-pointer hover:text-dimWhite text-nowrap">
                     {playlist.name}
-                  </h5>
+                  </p>
                   {/* <h6 className="text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap">
                     {"Contributors"}
                   </h6> */}

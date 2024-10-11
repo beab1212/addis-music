@@ -51,7 +51,6 @@ const AudioComponent = () => {
       audioRef.current?.addEventListener('ended', () => {
         dispatch({ type: 'PAUSE' });
         console.log('=========audio ended');
-
       })
     }
     return () => {

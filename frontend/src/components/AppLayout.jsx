@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import SideBar from "./SideBar";
 import MusicPlayer from "./MusicPlayer";
+import SmallBar from "./SmallBar";
 
 const AppLayout = () => {
   useEffect(() => {
@@ -10,10 +11,14 @@ const AppLayout = () => {
   }, []);
   return (
     <div
-      className={`grid grid-cols-[1fr_1fr_1fr_1fr] grid-rows-[56px_1fr_60px] gap-4 h-screen mx-auto sm:px-2 px-1`}
+      className={`grid grid-cols-[1fr_1fr_1fr_1fr] sm:grid-rows-[56px_1fr_60px] grid-rows-[56px__50px_1fr_60px] gap-4 h-screen mx-auto sm:px-2 px-1`}
     >
       <div className="col-span-full flex items-center overflow-hiddenx bg-[#121212] rounded-lg">
         <Header />
+      </div>
+
+      <div className="col-span-full hidden max-sm:flex items-center overflow-hidden px-1 bg-[#121212] rounded-lg">
+        <SmallBar />
       </div>
 
       <div className="bg-[#121212] rounded-lg overflow-y-scroll scroll-smooth customScroll sm:block hidden">
@@ -29,7 +34,7 @@ const AppLayout = () => {
         </section>
       </div>
 
-      <div className="col-span-full bg-[#121212] rounded-lg pt-2">
+      <div className="col-span-full bg-[#121212] rounded-lg pb-2 pt-1">
         <MusicPlayer />
       </div>
     </div>
