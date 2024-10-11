@@ -2,7 +2,7 @@ import { useEffect, memo, lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 // import "font-awesome/css/font-awesome.min.css";
-import "./assets/font-awesome-1-master/css/all.css";
+import "./assets/font-awesome-1-master/css/all.min.css";
 // import { styles } from "./style";
 
 const Home = lazy(() => import('./components/market/Home'));
@@ -19,6 +19,7 @@ const PlaylistSong = lazy(() => import('./components/PlaylistSong'));
 const AppLayout = lazy(() => import('./components/AppLayout'));
 const Favorites = lazy(() => import('./components/Favorites'));
 const Foryou = lazy(() => import('./components/Foryou'));
+const Profile = lazy(() => import('./components/Profile'));
 
 
 // TODO: don't forget to implement lazy loading image
@@ -41,10 +42,11 @@ function App() {
           <Route path="signup" Component={Signup} element={<LazyComponent Component={Signup} />} />
         </Route>
         
-        <Route path="/app/player" element={<LazyComponent Component={MaxPlayer} />}/>
-        <Route path="/app/song/upload"element={<LazyComponent Component={AddSong} />} />
         <Route path="/app" element={<AppLayout />}>
           <Route path="" Component={Foryou} />
+          <Route path="player" Component={MaxPlayer} />
+          <Route path="song/upload" Component={AddSong} />
+          <Route path="profile" Component={Profile} />
           <Route path="genre" Component={Genre} />
           <Route path="foryou" Component={Foryou} />
           <Route path="discover" Component={Discover} />

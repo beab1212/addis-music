@@ -51,7 +51,7 @@ const MusicPlayer = () => {
           <img
             src={currentSong?.song_art}
             alt={currentSong?._id || 'song_art_image'}
-            className="w-[50px] h-[50px] object-cover rounded-full cursor-pointer"
+            className="w-[50px] h-[50px] object-cover rounded-full cursor-pointer overflow-hidden"
             onClick={() => navigate("/app/player")}
           />
           {/* Info */}

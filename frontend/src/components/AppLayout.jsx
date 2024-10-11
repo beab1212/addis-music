@@ -1,11 +1,15 @@
 import React, { useEffect, memo, Suspense } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import SideBar from "./SideBar";
 import MusicPlayer from "./MusicPlayer";
 import SmallBar from "./SmallBar";
 
 const AppLayout = () => {
+  const location = useLocation();
+
+  const fullLayoutPaths = ["/app/profile", "/app/song/upload", "/other"];
+  const isFullLayout = fullLayoutPaths.includes(location.pathname);
   useEffect(() => {
     console.log("Component AppLayout");
   }, []);
@@ -17,26 +21,44 @@ const AppLayout = () => {
         <Header />
       </div>
 
-      <div className="col-span-full hidden max-sm:flex items-center overflow-hidden px-1 bg-[#121212] rounded-lg">
-        <SmallBar />
-      </div>
+      {!isFullLayout && (
+        <div className="col-span-full hidden max-sm:flex items-center overflow-hidden px-1 bg-[#121212] rounded-lg">
+          <SmallBar />
+        </div>
+      )}
 
-      <div className="bg-[#121212] rounded-lg overflow-y-scroll scroll-smooth customScroll sm:block hidden">
-        <SideBar />
-      </div>
+      {!isFullLayout && (
+        <div className="bg-[#121212] rounded-lg overflow-y-scroll scroll-smooth customScroll sm:block hidden">
+          <SideBar />
+        </div>
+      )}
 
       {/* Central section AKA Route */}
-      <div className="sm:col-start-2 col-start-1 col-end-5 bg-[#121212] rounded-lg overflow-y-scroll overflow-x-hidden scroll-smooth customScroll">
+      <div
+        className={`${
+          !isFullLayout
+            ? "sm:col-start-2 col-start-1 col-end-5"
+            : "col-start-1 col-end-5 row-start-2 row-end-5 mb-2"
+        } bg-[#121212] rounded-lg overflow-y-scroll overflow-x-hidden scroll-smooth customScroll`}
+      >
         <section className={`borderx border-green-500`}>
-          <Suspense fallback={<div><h1 className="text-[20px] text-red-500">Loading...</h1></div>}>
+          <Suspense
+            fallback={
+              <div>
+                <h1 className="text-[20px] text-red-500">Loading...</h1>
+              </div>
+            }
+          >
             <Outlet />
           </Suspense>
         </section>
       </div>
 
-      <div className="col-span-full bg-[#121212] rounded-lg pb-2 pt-1">
-        <MusicPlayer />
-      </div>
+      {!isFullLayout && (
+        <div className="col-span-full bg-[#121212] rounded-lg pb-2 pt-1">
+          <MusicPlayer />
+        </div>
+      )}
     </div>
   );
 };
