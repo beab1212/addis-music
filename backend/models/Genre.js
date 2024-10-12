@@ -7,7 +7,7 @@ const GenreSchema = new mongoose.Schema({
         required: [true, 'please provide genre name'],
     },
     image: {
-        type: Array,
+        type: String,
         required: [true, 'required for ui presentation']
     },
     description: {

@@ -172,7 +172,7 @@ const Profile = () => {
           </label>
           <div className="relative">
             <input
-              type={`${isHide.password ? "password" : "text"}`}
+              type={`${isHide.password ? "_" : "text"}`}
               name="password"
               placeholder="Enter you password"
               disabled=""

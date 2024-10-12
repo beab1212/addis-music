@@ -12,12 +12,12 @@ const PlaylistSong = () => {
   const user = useSelector((state) => state.user.user);
   const [data, setData] = useState([]);
   // get refresh: change it's value in child component to trigger refresh
-  const [refresh ,setRefresh] = useState("false");
+  const [refresh, setRefresh] = useState("false");
   useEffect(() => {
     axiosPrivate
       .get(`/playlist/${id}`)
       .then((res) => {
-        setData(res.data?.playlist);        
+        setData(res.data?.playlist);
       })
       .catch((err) => {
         dispatch({
@@ -32,7 +32,12 @@ const PlaylistSong = () => {
   }, [refresh]);
   return (
     <section className="grid sm:grid-rows-[150px_1fr]">
-      <AddPlaylistSong toggle={addToggle} playlist_id={id} setAddToggle={setAddToggle} setRefresh={setRefresh} />
+      <AddPlaylistSong
+        toggle={addToggle}
+        playlist_id={id}
+        setAddToggle={setAddToggle}
+        setRefresh={setRefresh}
+      />
       <div className="sm:py-10 sm:bg-gradient-to-b from-[#e0cb419d] to-[#121212]">
         <h1 className="text-[38px] font-semibold mb-8 ml-8 uppercase text-nowrap">
           {data?.name}
@@ -44,7 +49,9 @@ const PlaylistSong = () => {
             song={song?.song_id}
             index={index}
             key={song?.song_id}
-            isOwner={(user._id === data.user_id)}
+            isOwner={user._id === data.user_id}
+            playlistId={id}
+            setRefresh={setRefresh}
           />
         ))}
       </div>
@@ -73,6 +80,36 @@ const SongTemplate = (probs) => {
   const currentSong = useSelector((state) => state.currentSong);
   const [data, setData] = useState();
   let listNumber = probs.index;
+
+  const handleDelete = (e, song_id) => {
+    // Prevent click bubbling to parent div
+    e.stopPropagation();
+    axiosPrivate
+    .delete(`/playlist?playlist_id=${probs.playlistId}&song_id=${song_id}`)
+    .then((res) => {
+      probs.setRefresh(Math.random())
+      dispatch({
+        type: "SHOW_ALERT",
+        payload: {
+          message: res?.data?.message || null,
+          type: "success",
+          dismiss: 9000,
+        },
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: "SHOW_ALERT",
+        payload: {
+          message: err?.response?.data?.error || null,
+          type: "warning",
+          dismiss: 9000,
+        },
+      });
+    })
+    console.log("================", probs.playlistId, '=============', song_id);
+  };
+
   useEffect(() => {
     axiosPrivate
       .get(`/song/${probs.song}`)
@@ -97,7 +134,7 @@ const SongTemplate = (probs) => {
     >
       <h4 className="text-[1.1rem] mr-4">{++listNumber}</h4>
       <img
-        src={data?.song_art + '_100'}
+        src={data?.song_art + "_100"}
         alt={data?._id}
         className="w-[40px] h-[40px] object-cover overflow-hidden min-w-[40px]"
       />
@@ -117,16 +154,26 @@ const SongTemplate = (probs) => {
         </h6>
       </div>
 
-      <p className={`text-dimWhite text-[13px] text-end w-full ${currentSong?._id === probs?.song && "text-red-700"}`}>
-        {formatTime(data?.duration) }
+      <p
+        className={`text-dimWhite text-[13px] text-end w-full ${
+          currentSong?._id === probs?.song && "text-red-700"
+        }`}
+      >
+        {formatTime(data?.duration)}
       </p>
-      { probs.isOwner && (
-        <i className={`mx-4 fad fa-ellipsis-v-alt hover:text-pink-800`} />
+      {probs.isOwner && (
+        <div className="relative">
+          <i
+            className={`mx-4 fad fa-trash hover:text-red-600 px-1`}
+            onClick={(e) => {
+              handleDelete(e, probs.song)
+            }}
+          />
+        </div>
       )}
     </div>
   );
 };
-
 
 // Popup component
 const AddPlaylistSong = (probs) => {
@@ -136,7 +183,7 @@ const AddPlaylistSong = (probs) => {
   // selected song
   const [selectedSong, setSelectedSong] = useState({
     title: null,
-    id: null
+    id: null,
   });
 
   const handleSubmit = (e) => {
@@ -155,7 +202,7 @@ const AddPlaylistSong = (probs) => {
           },
         });
         // set to random(selectedSong.id) value to trigger refresh in parent component
-        probs.setRefresh(selectedSong.id)
+        probs.setRefresh(selectedSong.id);
 
         setTimeout(() => {
           probs.setAddToggle(false);
@@ -220,7 +267,7 @@ const AddPlaylistSong = (probs) => {
           </div>
           {/* Selected song */}
           <h4 className="font-semibold mt-2 text-dimWhite">
-            { selectedSong?.title ? selectedSong?.title : 'No song selected' }
+            {selectedSong?.title ? selectedSong?.title : "No song selected"}
           </h4>
           <div className="">
             <label

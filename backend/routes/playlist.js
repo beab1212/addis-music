@@ -11,9 +11,6 @@ router.post('/', authHandler, upload.single('playlist_art') , PlaylistController
 router.get('/:id', authHandler, PlaylistController.playlistDetail);
 router.get('/', authHandler, PlaylistController.playlist);
 router.post('/:playlist_id/song/:song_id', authHandler, PlaylistController.songToPlaylist);
-
-// router.post('/', authHandler)
-
-// router.get('/:id', authHandler)
+router.delete('/', authHandler, PlaylistController.deleteFromPlaylist);
 
 export default router;

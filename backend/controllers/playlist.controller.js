@@ -170,6 +170,43 @@ const PlaylistController = {
 
         return res.status(StatusCodes.CREATED).json({ success: true, message: 'song added to playlist successfully', playlistSong: { ...newPlaylistSongJson } })
     },
+
+    async deleteFromPlaylist(req, res) {
+        const user = req.user;
+        const { playlist_id, song_id } = req.query;
+
+        if (!playlist_id || !song_id) {
+            throw new CustomError.BadRequest('playlist or song id doesn\'t provided');
+        }
+
+        if (!isValidObjectId(playlist_id)) {
+            throw new CustomError.BadRequest('invalid playlist id');
+        }
+
+        if (!isValidObjectId(song_id)) {
+            throw new CustomError.BadRequest('invalid song id');
+        }
+
+        const playlist = await Playlist.findById(playlist_id);
+
+        if (!playlist) {
+            throw new CustomError.BadRequest('playlist does\'t exist');
+        }
+
+        if (playlist.user_id.toString() !== user._id ) {
+            return res.status(StatusCodes.FORBIDDEN).json({ success: false, error: 'you don\'t have permission' });
+        }
+
+        const playlistSong = await PlaylistSong.findOne({ playlist_id: playlist_id, song_id: song_id });
+
+        if (!playlistSong) {
+            throw new CustomError.BadRequest('song doesn\'t exist in the playlist');
+        }
+        
+        await PlaylistSong.deleteOne({ playlist_id: playlist_id, song_id: song_id });
+
+        return res.status(StatusCodes.OK).json({ success: true, message: 'song removed from playlist successfully' });
+    }
 };
 
 export default PlaylistController;
