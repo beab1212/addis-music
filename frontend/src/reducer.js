@@ -128,6 +128,7 @@ function reducer(state=initialState, action) {
     } else if (action.type === 'UPDATE_USER') {
         const newState = Object.assign({}, state);
         newState.user.user = action.payload?.user;
+        localStorage.setItem('user', action.payload?.user);
         return newState;
     } else if (action.type === 'LOGOUT_USER') {
         const newState = Object.assign({}, state);

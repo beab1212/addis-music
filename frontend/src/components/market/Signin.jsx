@@ -37,7 +37,7 @@ const Signin = () => {
         dispatch({
           type: "SHOW_ALERT",
           payload: {
-            message: res.data?.message + ", redirected to app dashbord...",
+            message: res.data?.message + ", redirected to app dashboard...",
             type: "success",
             dismiss: 9000,
           },

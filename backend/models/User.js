@@ -3,6 +3,16 @@ import bcrypt from 'bcryptjs';
 
 const UserSchema = new mongoose.Schema({
     // email, password, username,
+    first_name: {
+        type: String,
+        maxlength: 20,
+        default: 'Unknown',
+    },
+    last_name: {
+        type: String,
+        maxlength: 20,
+        default: 'Unknown',
+    },
     email: {
         type: String,
         unique: true,
@@ -13,6 +23,11 @@ const UserSchema = new mongoose.Schema({
         type: String,
         unique: true,
         minlength: 3,
+    },
+    profile_image: {
+        type: String,
+        maxlength:200,
+        default: 'profile.png',
     },
     password: {
         type: String,

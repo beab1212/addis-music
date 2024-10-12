@@ -4,5 +4,6 @@ import SongRoute from './song.js';
 import GenreRoute from './genre.js';
 import PlaylistRoute from './playlist.js';
 import ForyouAndDiscover from './discover.js';
+import UserRoute from './user.js'
 
-export { AuthRoute, SearchRoute, SongRoute, GenreRoute, PlaylistRoute, ForyouAndDiscover };
+export { AuthRoute, UserRoute, SearchRoute, SongRoute, GenreRoute, PlaylistRoute, ForyouAndDiscover };

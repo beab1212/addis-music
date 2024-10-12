@@ -16,7 +16,8 @@ const AudioHook = () => {
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    const formattedTime = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    return formattedTime === 'NaN:NaN' ? '00:00' : formattedTime;
   };
 
   const updateProgress = () => {

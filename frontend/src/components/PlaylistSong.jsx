@@ -118,7 +118,7 @@ const SongTemplate = (probs) => {
       </div>
 
       <p className={`text-dimWhite text-[13px] text-end w-full ${currentSong?._id === probs?.song && "text-red-700"}`}>
-        {formatTime(data?.duration)}
+        {formatTime(data?.duration) }
       </p>
       { probs.isOwner && (
         <i className={`mx-4 fad fa-ellipsis-v-alt hover:text-pink-800`} />
