@@ -1,17 +1,59 @@
 import { useEffect, memo, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { axiosPrivate } from "../api/axios";
 import AudioHook from "../hooks/AudioHook";
 
 const Discover = () => {
   const location = useLocation();
+  const { outerDivRef } = useOutletContext();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { changePlay } = AudioHook();
   const currentSong = useSelector((state) => state.currentSong);
   const isPlaying = useSelector((state) => state.player.isPlaying);
+  let page = 1;
   const [data, setData] = useState([]);
+
+  const handleScroll = () => {
+    const scrollableHeight =
+      outerDivRef.current.scrollHeight - outerDivRef.current.clientHeight;
+    const currentScrollPos = outerDivRef.current.scrollTop;
+
+    if (currentScrollPos >= scrollableHeight) {
+      fetchNewPage();
+      // Remove the event listener after detecting scroll once
+      outerDivRef.current.removeEventListener("scroll", handleScroll);
+    }
+  };
+
+  const fetchNewPage = () => {
+    page = page + 1;
+    axiosPrivate
+      .get(`/discover${location.search}?page=${page}`)
+      .then((res) => {
+        setData((prev) => {
+          return {
+            songs: prev.songs.concat(res.data?.discover?.songs),
+            playlists: prev.playlists.concat(res.data?.discover?.playlists),
+          };
+        });
+        // Reattach event listener
+        outerDivRef.current.addEventListener("scroll", handleScroll);
+      })
+      .catch((err) => {
+        dispatch({
+          type: "SHOW_ALERT",
+          payload: {
+            message: err?.response?.data?.error || null,
+            type: "warning",
+            dismiss: 9000,
+          },
+        });
+        // Reattach event listener
+        outerDivRef.current.addEventListener("scroll", handleScroll);
+      });
+  };
 
   useEffect(() => {
     axiosPrivate
@@ -29,17 +71,32 @@ const Discover = () => {
           },
         });
       });
+
+    if (outerDivRef.current) {
+      outerDivRef.current.addEventListener("scroll", handleScroll);
+    }
+
     console.log("Component Discover");
+
+    return () => {
+      if (outerDivRef.current) {
+        outerDivRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
   }, [location]);
   return (
-    <section className="">
+    <section className="border">
       <div className="sm:py-10 sm:bg-gradient-to-b from-[#41e0d89d] to-[#121212]">
         <h1 className="text-[38px] font-semibold mb-8 ml-8 max-xs:text-[30px] max-xs:mb-2 uppercase">
           Discover
         </h1>
       </div>
 
-      <div className={`${ data?.playlists && data?.playlists.length === 0 && 'hidden'}`}>
+      <div
+        className={`${
+          data?.playlists && data?.playlists.length === 0 && "hidden"
+        }`}
+      >
         <h2 className="text-[24px] font-semibold mb-8 ml-8 uppercase">
           Playlists
         </h2>
@@ -61,9 +118,6 @@ const Discover = () => {
                   <p className="text-[16px] pb-2 font-semibold cursor-pointer hover:text-dimWhite text-nowrap">
                     {playlist.name}
                   </p>
-                  {/* <h6 className="text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap">
-                    {"Contributors"}
-                  </h6> */}
                 </div>
               </div>
             ))}
@@ -108,7 +162,6 @@ const Discover = () => {
                 </div>
               </div>
             ))}
-          {/* <div className="absolute z-[-1] right-[-10rem] top-0 w-[40%] h-[70%] rounded-full blue_gradient" /> */}
         </div>
       </div>
     </section>

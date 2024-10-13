@@ -25,6 +25,10 @@ const ForyouAndDiscover = {
             throw new CustomError.BadRequest('page and per_page must be type integer');
         }
 
+        if (isNaN(page)  || isNaN(per_page)) {
+            throw new CustomError.BadRequest('page and per_page must be type integer');
+        }
+
         const pattern = new RegExp(`${query}`, 'i');
         const patternStart = new RegExp(`^${query}`, 'i');
 
@@ -46,7 +50,9 @@ const ForyouAndDiscover = {
                 updatedAt: 1,
                 playlist_art: { $concat: [`${config.HOST_ADDRESS}/api/v1/playlist/asset/`, '$playlist_art']},
             }},
-        ]).limit(10);
+        ]).skip(Math.round((per_page * 25) / 100) *(page - 1)).limit(Math.round((per_page * 25) / 100));
+        // Playlist will be 25% of the per_page
+        // if user request 20 per_page playlist will be 5
 
         const songs = await Song.aggregate([
             { $match:

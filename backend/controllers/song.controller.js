@@ -104,12 +104,18 @@ const SongController = {
     async song(req, res){
         const { query='' } = req.query;
         let { page=1, per_page=20 } = req.query;
+        
         try {
             page = parseInt(page);
             per_page = parseInt(per_page);
         } catch(parseErr) {
             throw new CustomError.BadRequest('page and per_page must be type integer');
         }
+
+        if (isNaN(page)  || isNaN(per_page)) {
+            throw new CustomError.BadRequest('page and per_page must be type integer');
+        }
+
         const pattern = new RegExp(`${query}`, 'i');
         const patternStart = new RegExp(`^${query}`, 'i');
 

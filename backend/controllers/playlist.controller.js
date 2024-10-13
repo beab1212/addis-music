@@ -59,6 +59,10 @@ const PlaylistController = {
             throw new CustomError.BadRequest('page and per_page must be type integer');
         }
 
+        if (isNaN(page)  || isNaN(per_page)) {
+            throw new CustomError.BadRequest('page and per_page must be type integer');
+        }
+
         const pattern = new RegExp(`${query}`, 'i');
 
         const playlists = await Playlist.aggregate([

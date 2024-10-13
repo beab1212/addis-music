@@ -1,4 +1,4 @@
-import React, { useEffect, memo, Suspense } from "react";
+import React, { useEffect, memo, Suspense, useRef } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import SideBar from "./SideBar";
@@ -7,6 +7,7 @@ import SmallBar from "./SmallBar";
 
 const AppLayout = () => {
   const location = useLocation();
+  const outerDivRef = useRef(null);
 
   const fullLayoutPaths = ["/app/profile", "/app/song/upload", "/app/player"];
   const isFullLayout = fullLayoutPaths.includes(location.pathname);
@@ -35,6 +36,7 @@ const AppLayout = () => {
 
       {/* Central section AKA Route */}
       <div
+        ref={outerDivRef}
         className={`${
           !isFullLayout
             ? "sm:col-start-2 col-start-1 col-end-5"
@@ -49,7 +51,7 @@ const AppLayout = () => {
               </div>
             }
           >
-            <Outlet />
+            <Outlet context={{outerDivRef}} />
           </Suspense>
         </section>
       </div>
