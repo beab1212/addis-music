@@ -85,29 +85,29 @@ const SongTemplate = (probs) => {
     // Prevent click bubbling to parent div
     e.stopPropagation();
     axiosPrivate
-    .delete(`/playlist?playlist_id=${probs.playlistId}&song_id=${song_id}`)
-    .then((res) => {
-      probs.setRefresh(Math.random())
-      dispatch({
-        type: "SHOW_ALERT",
-        payload: {
-          message: res?.data?.message || null,
-          type: "success",
-          dismiss: 9000,
-        },
+      .delete(`/playlist?playlist_id=${probs.playlistId}&song_id=${song_id}`)
+      .then((res) => {
+        probs.setRefresh(Math.random());
+        dispatch({
+          type: "SHOW_ALERT",
+          payload: {
+            message: res?.data?.message || null,
+            type: "success",
+            dismiss: 9000,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: "SHOW_ALERT",
+          payload: {
+            message: err?.response?.data?.error || null,
+            type: "warning",
+            dismiss: 9000,
+          },
+        });
       });
-    })
-    .catch((err) => {
-      dispatch({
-        type: "SHOW_ALERT",
-        payload: {
-          message: err?.response?.data?.error || null,
-          type: "warning",
-          dismiss: 9000,
-        },
-      });
-    })
-    console.log("================", probs.playlistId, '=============', song_id);
+    console.log("================", probs.playlistId, "=============", song_id);
   };
 
   useEffect(() => {
@@ -166,7 +166,7 @@ const SongTemplate = (probs) => {
           <i
             className={`mx-4 fad fa-trash hover:text-red-600 px-1`}
             onClick={(e) => {
-              handleDelete(e, probs.song)
+              handleDelete(e, probs.song);
             }}
           />
         </div>

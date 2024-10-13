@@ -9,7 +9,7 @@ const Genre = () => {
   useEffect(() => {
     axiosPrivate
       .get("/genre/available")
-      .then((res) => {     
+      .then((res) => {
         setData(res.data?.genre);
       })
       .catch((err) => {
@@ -36,7 +36,7 @@ const Genre = () => {
             className="flex relative sm:w-[300px] w-[45%] lg:mb-8x mb-6x h-[150px] rounded-lg overflow-hidden cursor-pointer hover:rounded-2xl shadow shadow-blue-800/40 hover:shadow-indigo-800/40"
           >
             <img
-              src={genre.image + '_400'}
+              src={genre.image + "_400"}
               alt={genre.name}
               className="w-[100%] h-full object-cover"
             />

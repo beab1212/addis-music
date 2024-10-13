@@ -43,7 +43,6 @@ const Discover = () => {
           outerDivRef.current.addEventListener("scroll", handleScroll);
         }
         // No Content
-        
       })
       .catch((err) => {
         dispatch({

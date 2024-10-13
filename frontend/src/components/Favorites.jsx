@@ -8,7 +8,7 @@ const Favorites = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
   // get refresh: change it's value in child component to trigger refresh
-  const [refresh ,setRefresh] = useState("false");
+  const [refresh, setRefresh] = useState("false");
   useEffect(() => {
     axiosPrivate
       .get(`/song/favorite`)
@@ -60,7 +60,7 @@ const SongTemplate = (probs) => {
       .then((res) => {
         setLocalLike(res.data?.like);
         // set to random(selectedSong.id) value to trigger refresh in parent component
-        probs.setRefresh(res.data?.like)
+        probs.setRefresh(res.data?.like);
       })
       .catch((err) => {
         // nothing to do

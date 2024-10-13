@@ -13,15 +13,14 @@ import {
 const SideBar = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    console.log('Component SideBar');
-  }, [])
+    console.log("Component SideBar");
+  }, []);
   return (
     <section className={`md:px-16 px-4 ${styles.paddingY}`}>
       <div className="flex flex-col">
         {/* Finding's */}
         <div className="">
-
-        <div className="flex flex-1 items-center mb-[25px] cursor-pointer">
+          <div className="flex flex-1 items-center mb-[25px] cursor-pointer">
             <img
               src={podcast}
               alt=""
@@ -30,7 +29,7 @@ const SideBar = () => {
             <h1
               className={`${styles.hoverColor} text-[13px] font-semibold px-8`}
               onClick={() => {
-                navigate('/app/foryou')
+                navigate("/app/foryou");
               }}
             >
               FORYOU
@@ -46,7 +45,7 @@ const SideBar = () => {
             <h1
               className={`${styles.hoverColor} text-[13px] font-semibold px-8`}
               onClick={() => {
-                navigate('/app/discover')
+                navigate("/app/discover");
               }}
             >
               DISCOVER
@@ -62,7 +61,7 @@ const SideBar = () => {
             <h1
               className={`${styles.hoverColor} text-[13px] font-semibold px-8`}
               onClick={() => {
-                navigate('/app/genre')
+                navigate("/app/genre");
               }}
             >
               GENRE
@@ -94,7 +93,7 @@ const SideBar = () => {
             <h1
               className={`${styles.hoverColor} text-[13px] font-semibold px-8`}
               onClick={() => {
-                navigate('/app/favorite')
+                navigate("/app/favorite");
               }}
             >
               FAVORITES
@@ -109,7 +108,7 @@ const SideBar = () => {
             <h1
               className={`${styles.hoverColor} text-[13px] font-semibold px-8`}
               onClick={() => {
-                navigate('/app/playlist')
+                navigate("/app/playlist");
               }}
             >
               PLAYLIST

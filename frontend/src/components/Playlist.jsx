@@ -36,9 +36,12 @@ const Playlist = () => {
           Playlist
         </h1>
       </div>
-      <div className="flex flex-wrap gap-5 justify-between relative z-[5] m-4 customScroll overflow-hidden overflow-y-scroll scroll-smooth" onClick={() => {
-        setAddToggle(false)
-      }}>
+      <div
+        className="flex flex-wrap gap-5 justify-between relative z-[5] m-4 customScroll overflow-hidden overflow-y-scroll scroll-smooth"
+        onClick={() => {
+          setAddToggle(false);
+        }}
+      >
         {data?.map((playlist) => (
           <div
             key={playlist._id}
@@ -69,7 +72,7 @@ const Playlist = () => {
           className="fad fa-plus-circle text-right"
           style={{ fontSize: "3rem" }}
           onClick={() => {
-            setAddToggle(prev => !prev)
+            setAddToggle((prev) => !prev);
           }}
         />
       </div>

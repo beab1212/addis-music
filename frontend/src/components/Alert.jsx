@@ -7,17 +7,28 @@ const SmallAlert = (probs) => {
   if (alert.message) {
     setTimeout(() => {
       dispacth({ type: "DISMISS_ALERT" });
-      
-    }, alert.dismiss)
-  };
+    }, alert.dismiss);
+  }
 
   const dismissAlert = () => {
     dispacth({ type: "DISMISS_ALERT" });
   };
 
   return (
-    <div className={`absolute top-4 right-4 ${alert.show ? 'block' : 'hidden'} z-50 opacity-70`}>
-      <div className={`flex max-w-[655px] items-center rounded-md border-l-[8px] bg-white text-gray-800 p-5 pl-6 dark:bg-dark-2xx ${ alert.type === 'success' ? 'border-l-green-500' : alert.type === 'warning' ? 'border-l-yellow-500 bg-white bg-yellow-light-4' : 'border-red-600 bg-red-light-6' }`}>
+    <div
+      className={`absolute top-4 right-4 ${
+        alert.show ? "block" : "hidden"
+      } z-50 opacity-70`}
+    >
+      <div
+        className={`flex max-w-[655px] items-center rounded-md border-l-[8px] bg-white text-gray-800 p-5 pl-6 dark:bg-dark-2xx ${
+          alert.type === "success"
+            ? "border-l-green-500"
+            : alert.type === "warning"
+            ? "border-l-yellow-500 bg-white bg-yellow-light-4"
+            : "border-red-600 bg-red-light-6"
+        }`}
+      >
         <div className="mr-5 flex h-[36px] w-full max-w-[36px] items-center justify-center rounded-full bg-cyan-dark text-whitex">
           <svg
             width="18"
@@ -50,14 +61,17 @@ const SmallAlert = (probs) => {
         <div className="flex w-full items-center justify-between">
           <div>
             <h3 className="mb-1 text-lg font-medium text-dark dark:text-whitex">
-              { alert.type ? alert.type : '' }
+              {alert.type ? alert.type : ""}
             </h3>
             <p className="text-sm text-body-color dark:text-dark-6">
-              { alert.message ? alert.message : 'Something went wrong' }
+              {alert.message ? alert.message : "Something went wrong"}
             </p>
           </div>
           <div>
-            <button className="text-dark-3 duration-300 hover:text-dark dark:text-dark-4 dark:hover:text-dark-6" onClick={dismissAlert}>
+            <button
+              className="text-dark-3 duration-300 hover:text-dark dark:text-dark-4 dark:hover:text-dark-6"
+              onClick={dismissAlert}
+            >
               <svg
                 width="20"
                 height="20"
@@ -79,4 +93,4 @@ const SmallAlert = (probs) => {
 };
 
 // export { SmallAlert };
-export default SmallAlert
+export default SmallAlert;

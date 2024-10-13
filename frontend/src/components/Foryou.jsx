@@ -10,7 +10,7 @@ const Foryou = () => {
   const isPlaying = useSelector((state) => state.player.isPlaying);
   const [data, setData] = useState([]);
 
-  useEffect(() => {    
+  useEffect(() => {
     axiosPrivate
       .get(`/foryou`)
       .then((res) => {

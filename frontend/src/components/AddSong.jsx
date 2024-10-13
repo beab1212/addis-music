@@ -18,7 +18,7 @@ const AddSong = () => {
 
   const handleChange = (e) => {
     if (e.target.name === "song_art" || e.target.name === "song") {
-      setForm((prev) => {        
+      setForm((prev) => {
         return { ...prev, [e.target.name]: e.target.files[0] };
       });
     } else {
@@ -59,7 +59,7 @@ const AddSong = () => {
   useEffect(() => {
     axiosPrivate
       .get("/genre/available")
-      .then((res) => {        
+      .then((res) => {
         setGenres(res.data?.genre);
       })
       .catch((err) => {

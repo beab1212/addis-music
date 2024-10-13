@@ -87,7 +87,9 @@ const Header = () => {
           onClick={() => navigate("/app")}
         />
         <h1
-          className={`text-[24px] font-semibold px-4 sm:block cursor-pointer ${user ? 'hidden' : 'block'}`}
+          className={`text-[24px] font-semibold px-4 sm:block cursor-pointer ${
+            user ? "hidden" : "block"
+          }`}
           onClick={() => navigate("/app")}
         >
           {brandName.name}

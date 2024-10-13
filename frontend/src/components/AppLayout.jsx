@@ -51,7 +51,7 @@ const AppLayout = () => {
               </div>
             }
           >
-            <Outlet context={{outerDivRef}} />
+            <Outlet context={{ outerDivRef }} />
           </Suspense>
         </section>
       </div>

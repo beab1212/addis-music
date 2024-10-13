@@ -203,8 +203,10 @@ const Profile = () => {
           </button>
         </div>
       </div>
-      <p className="mb-8 text-center text-red-500">Development Note: profile image and password change functionality is not implemented in both side</p>
-
+      <p className="mb-8 text-center text-red-500">
+        Development Note: profile image and password change functionality is not
+        implemented in both side
+      </p>
     </section>
   );
 };

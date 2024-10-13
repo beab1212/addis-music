@@ -2,7 +2,6 @@ import { useEffect, useRef, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Hls from "hls.js";
 
-
 const AudioComponent = () => {
   const audioRef = useRef(null);
   const dispatch = useDispatch();
@@ -25,33 +24,35 @@ const AudioComponent = () => {
       });
 
       hls.on(Hls.Events.AUDIO_TRACK_LOADED, () => {
-        // 
+        //
       });
 
-      audioRef.current?.addEventListener('loadeddata', () => {
-        console.log('=========Audio is loaded and ready to play');
+      audioRef.current?.addEventListener("loadeddata", () => {
+        console.log("=========Audio is loaded and ready to play");
 
         const promise = audioRef.current.play();
         if (promise !== undefined) {
-          promise.then(_ => {
-            // Autoplay started!
-            if(!isPlaying) {
-              dispatch({ type: 'PLAY' });
-            }
-          }).catch(error => {
-            // Autoplay was prevented.
-          });
+          promise
+            .then((_) => {
+              // Autoplay started!
+              if (!isPlaying) {
+                dispatch({ type: "PLAY" });
+              }
+            })
+            .catch((error) => {
+              // Autoplay was prevented.
+            });
         }
       });
 
-      audioRef.current.addEventListener('loadedmetadata', () => {
-        dispatch({ type: 'SET_DURATION', payload: audioRef.current.duration })
+      audioRef.current.addEventListener("loadedmetadata", () => {
+        dispatch({ type: "SET_DURATION", payload: audioRef.current.duration });
       });
 
-      audioRef.current?.addEventListener('ended', () => {
-        dispatch({ type: 'PAUSE' });
-        console.log('=========audio ended');
-      })
+      audioRef.current?.addEventListener("ended", () => {
+        dispatch({ type: "PAUSE" });
+        console.log("=========audio ended");
+      });
     }
     return () => {
       hls.destroy();
@@ -60,11 +61,11 @@ const AudioComponent = () => {
 
   useEffect(() => {
     dispatch({ type: "SET_AUDIO_REF", payload: audioRef });
-  }, [dispatch])
+  }, [dispatch]);
 
   useEffect(() => {
-    console.log('Component AudioComponent');
-  }, [])
+    console.log("Component AudioComponent");
+  }, []);
   return (
     <div>
       <audio ref={audioRef}></audio>
