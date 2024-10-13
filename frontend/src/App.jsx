@@ -20,6 +20,7 @@ const AppLayout = lazy(() => import('./components/AppLayout'));
 const Favorites = lazy(() => import('./components/Favorites'));
 const Foryou = lazy(() => import('./components/Foryou'));
 const Profile = lazy(() => import('./components/Profile'));
+const NotFound = lazy(() => import('./components/NotFound'));
 
 
 // TODO: don't forget to implement lazy loading image
@@ -54,6 +55,8 @@ function App() {
           <Route path="playlist" Component={Playlist} />
           <Route path="playlist/:id" Component={PlaylistSong} />
         </Route>
+
+        <Route path="*" Component={NotFound} element={<LazyComponent Component={NotFound} />} />
       </Routes>
     </div>
   );

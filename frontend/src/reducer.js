@@ -137,6 +137,7 @@ function reducer(state=initialState, action) {
             token: null,
             user: null
         };
+        localStorage.removeItem('user')
         // if it possible return app to initial state
         return newState;
     }

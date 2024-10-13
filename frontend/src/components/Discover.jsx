@@ -88,7 +88,7 @@ const Discover = () => {
     };
   }, [location]);
   return (
-    <section className="border">
+    <section className="">
       <div className="sm:py-10 sm:bg-gradient-to-b from-[#41e0d89d] to-[#121212]">
         <h1 className="text-[38px] font-semibold mb-8 ml-8 max-xs:text-[30px] max-xs:mb-2 uppercase">
           Discover

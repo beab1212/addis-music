@@ -9,7 +9,7 @@ const Header = () => {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const audioRef = useSelector((state) => state.audioRef);
   const user = useSelector((state) => state.user.user);
   const [isSearchFocus, setIsSearchFocus] = useState(false);
   const [dropDownToggle, setDropDownToggle] = useState(false);
@@ -29,11 +29,12 @@ const Header = () => {
     axiosPrivate
       .delete("/auth/signout")
       .then((res) => {
+        audioRef.current.pause();
         dispatch({ type: "LOGOUT_USER" });
         dispatch({
           type: "SHOW_ALERT",
           payload: {
-            message: res.data?.message + ", redirected to app dashboard...",
+            message: res.data?.message,
             type: "success",
             dismiss: 9000,
           },
@@ -152,6 +153,7 @@ const Header = () => {
             className="w-[40px] h-[40px] min-w-[30px] min-h-[30px] object-cover rounded-full"
             onClick={() => setDropDownToggle((prev) => !prev)}
           />
+          {/* Dropdown menu */}
           <div
             className={`absolute z-50 -mr-5 right-0 top-[4rem] w-[240px] max-xs:w-screen divide-y divide-stroke overflow-hidden rounded-lg bg-[#1a1a1a] shadow-md shadow-cyan-500/50 ${
               dropDownToggle ? "block" : "hidden"
@@ -161,25 +163,25 @@ const Header = () => {
             <div>
               <Link
                 to="/app/profile"
-                className="px-4 py-2.5 text-sm font-medium items-center hover:bg-white/5 block"
+                className="px-4 py-2.5 text-sm font-medium items-center hover:bg-white/5 block text-dimWhite"
               >
                 View profile
               </Link>
               <Link
                 to="/app/song/upload"
-                className="px-4 py-2.5 text-sm font-medium items-center hover:bg-white/5 block"
+                className="px-4 py-2.5 text-sm font-medium items-center hover:bg-white/5 block text-dimWhite"
               >
                 Upload Song
               </Link>
               <Link
                 to="/app"
-                className="px-4 py-2.5 text-sm font-medium items-center hover:bg-white/5 block"
+                className="px-4 py-2.5 text-sm font-medium items-center hover:bg-white/5 block text-dimWhite"
               >
                 History
               </Link>
               <Link
                 to="/app"
-                className="px-4 py-2.5 text-sm font-medium items-center hover:bg-white/5 block"
+                className="px-4 py-2.5 text-sm font-medium items-center hover:bg-white/5 block text-dimWhite"
               >
                 API
               </Link>

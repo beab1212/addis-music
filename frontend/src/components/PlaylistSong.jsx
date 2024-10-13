@@ -49,7 +49,7 @@ const PlaylistSong = () => {
             song={song?.song_id}
             index={index}
             key={song?.song_id}
-            isOwner={user._id === data.user_id}
+            isOwner={user?._id === data.user_id}
             playlistId={id}
             setRefresh={setRefresh}
           />
@@ -59,7 +59,7 @@ const PlaylistSong = () => {
       {/* TODO: make this div only visible if current user is creator of this play list */}
       <div
         className={`fixed bottom-[4.8rem] right-8 z-10 text-right py-4 cursor-pointer ${
-          user._id === data.user_id ? "block" : "hidden"
+          user?._id === data.user_id ? "block" : "hidden"
         }`}
       >
         <i
