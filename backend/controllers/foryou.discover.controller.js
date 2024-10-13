@@ -81,6 +81,10 @@ const ForyouAndDiscover = {
             { $limit: per_page }
         ]);
 
+        if (songs.length === 0 && playlists.length === 0) {
+            return res.status(StatusCodes.NO_CONTENT).json({ success: true});
+        }
+
         return res.status(StatusCodes.OK).json({ success: true, discover: { songs, playlists } });
     }
 }

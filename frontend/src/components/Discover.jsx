@@ -32,14 +32,18 @@ const Discover = () => {
     axiosPrivate
       .get(`/discover${location.search}?page=${page}`)
       .then((res) => {
-        setData((prev) => {
-          return {
-            songs: prev.songs.concat(res.data?.discover?.songs),
-            playlists: prev.playlists.concat(res.data?.discover?.playlists),
-          };
-        });
-        // Reattach event listener
-        outerDivRef.current.addEventListener("scroll", handleScroll);
+        if (res.status === 200) {
+          setData((prev) => {
+            return {
+              songs: prev.songs.concat(res.data?.discover?.songs),
+              playlists: prev.playlists.concat(res.data?.discover?.playlists),
+            };
+          });
+          // Reattach event listener
+          outerDivRef.current.addEventListener("scroll", handleScroll);
+        }
+        // No Content
+        
       })
       .catch((err) => {
         dispatch({
