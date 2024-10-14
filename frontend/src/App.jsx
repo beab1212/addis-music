@@ -18,6 +18,9 @@ const Discover = lazy(() => import('./components/Discover'));
 const Playlist = lazy(() => import('./components/Playlist'));
 const PlaylistSong = lazy(() => import('./components/PlaylistSong'));
 const AppLayout = lazy(() => import('./components/AppLayout'));
+const Album = lazy(() => import('./components/Album'));
+const AlbumSong = lazy(() => import('./components/AlbumSong'));
+const AddAlbum = lazy(() => import('./components/AddAlbum'));
 const Favorites = lazy(() => import('./components/Favorites'));
 const Foryou = lazy(() => import('./components/Foryou'));
 const Profile = lazy(() => import('./components/Profile'));
@@ -52,6 +55,9 @@ function App() {
           <Route path="" Component={Foryou} />
           <Route path="player" Component={MaxPlayer} />
           <Route path="song/upload" Component={AddSong} />
+          <Route path="album/upload" Component={AddAlbum} />
+          <Route path="album" Component={Album} />
+          <Route path="album/:id" Component={AlbumSong} />
           <Route path="profile" Component={Profile} />
           <Route path="genre" Component={Genre} />
           <Route path="foryou" Component={Foryou} />

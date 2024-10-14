@@ -9,7 +9,7 @@ const image_fields = ['song_art', 'album_art', 'playlist_art'];
 
 const storage = multer.diskStorage({
     destination: async function (req, file, cb) {
-        // console.log(file, '===============');
+        console.log('=============== File Controller', file);
         const imagePath = `${config.TMP_PATH}/image`;
         const songPath = `${config.TMP_PATH}/song`;
         

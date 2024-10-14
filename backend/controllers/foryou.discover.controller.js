@@ -42,8 +42,7 @@ const ForyouAndDiscover = {
 
         const playlists = await Playlist.aggregate([
             { $match: 
-                {$and: [
-                    {name: pattern},    
+                {$and: [ genreName ? {name: new RegExp(genreName.name, 'i')} : {name: pattern},    
                     { $or: [
                         { is_public: {$ne: false}},
                         { $and: [{is_public: false}, {user_id: new Types.ObjectId(user._id)}] }
@@ -59,6 +58,7 @@ const ForyouAndDiscover = {
                 playlist_art: { $concat: [`${config.HOST_ADDRESS}/api/v1/playlist/asset/`, '$playlist_art']},
             }},
         ]).skip(Math.ceil((per_page * 25) / 100) *(page - 1)).limit(Math.ceil((per_page * 25) / 100));
+        // if searched genre is available query the playlist by genre name rater than search query param
         // Playlist will be 25% of the per_page
         // if user request 20 per_page playlist will be 5
 

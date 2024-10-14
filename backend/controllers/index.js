@@ -5,5 +5,6 @@ import GenreController from './genre.controller.js';
 import PlaylistController from './playlist.controller.js';
 import ForyouAndDiscover from './foryou.discover.controller.js';
 import UserController from './user.controller.js';
+import AlbumController from './album.controller.js';
 
-export { AuthController, SearchController, SongController, GenreController, PlaylistController, ForyouAndDiscover, UserController };
+export { AuthController, SearchController, SongController, GenreController, PlaylistController, ForyouAndDiscover, UserController, AlbumController };

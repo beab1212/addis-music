@@ -14,5 +14,6 @@ router.get('/', authHandler, SongController.song);
 router.post('/', authHandler, upload.fields([{ name: 'song_art', maxCount: 1 }, { name: 'song', maxCount: 1 }]), SongController.addSong);
 router.get('/stream/:id/:fileName?', authHandler, SongController.songStream);
 router.post('/:id/like', authHandler, SongController.likeSong);
+router.delete('/:id', authHandler, SongController.deleteSong);
 
 export default router;

@@ -1,16 +1,14 @@
 import { memo, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { axiosPrivate } from "../api/axios";
 
-const AddSong = () => {
+const AddAlbum = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
   const [genres, setGenres] = useState([]);
   const [form, setForm] = useState({
-    song_art: "",
-    song: "",
+    album_art: "",
     title: "",
     contributors: "",
     genre: "",
@@ -18,7 +16,7 @@ const AddSong = () => {
   });
 
   const handleChange = (e) => {
-    if (e.target.name === "song_art" || e.target.name === "song") {
+    if (e.target.name === "album_art") {
       setForm((prev) => {
         return { ...prev, [e.target.name]: e.target.files[0] };
       });
@@ -32,7 +30,7 @@ const AddSong = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axiosPrivate
-      .post(`/song${location.search}`, form, {
+      .post("/album", form, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((res) => {
@@ -44,15 +42,7 @@ const AddSong = () => {
             dismiss: 9000,
           },
         });
-        // reset form for new songs
-        setForm({
-          song_art: "",
-          song: "",
-          title: "",
-          contributors: "",
-          genre: "",
-          description: "",
-        });
+        navigate(`/app/song/upload?album=${res.data?.album?._id}`)
       })
       .catch((err) => {
         dispatch({
@@ -99,7 +89,7 @@ const AddSong = () => {
             <div className="px-7 py-8">
               <div className="mb-6">
                 <h3 className="text-xl font-semibold text-dark dark:text-white">
-                  Upload Song Art
+                  Upload Album Art
                 </h3>
                 <p className="text-base text-body-color dark:text-dark-6">
                   You can only upload file at a time. File limit is 2 MB.
@@ -139,7 +129,7 @@ const AddSong = () => {
                         </button>
                         <input
                           type="file"
-                          name="song_art"
+                          name="album_art"
                           onChange={handleChange}
                         />
                       </p>
@@ -153,20 +143,6 @@ const AddSong = () => {
 
               <div>
                 <div className="space-y-3 text-gray-800">
-                  <div className="w-full">
-                    <label className="mb-2.5 block text-base font-medium text-dark dark:text-white">
-                      Upload a Song File:
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="file"
-                        name="song"
-                        onChange={handleChange}
-                        className="w-full text-dimWhite rounded-lg border border-stroke p-3 text-body-color outline-none duration-200 file:mr-4 file:rounded file:border-[.5px] file:border-stroke file:bg-gray-3 file:px-3 file:py-1 file:text-base file:text-dark focus:border-primary active:border-primary dark:border-dark-3 dark:text-dark-6 dark:file:border-dark-3 dark:file:bg-dark-3 dark:file:text-whitx"
-                      />
-                    </div>
-                  </div>
-
                   <div className="">
                     <label
                       htmlFor="title"
@@ -177,7 +153,7 @@ const AddSong = () => {
                     <input
                       type="text"
                       name="title"
-                      placeholder="Enter you song title"
+                      placeholder="Enter you album title"
                       className="w-full rounded-lg border border-stroke px-5 py-3 text-dark placeholder-dark-6 outline-none focus:border-primary"
                       value={form.title}
                       onChange={handleChange}
@@ -248,7 +224,7 @@ const AddSong = () => {
                     <input
                       type="text"
                       name="description"
-                      placeholder="Enter song description"
+                      placeholder="Enter album description"
                       className="w-full rounded-lg border border-stroke px-5 py-3 text-dark placeholder-dark-6 outline-none focus:border-primary"
                       value={form.description}
                       onChange={handleChange}
@@ -268,7 +244,7 @@ const AddSong = () => {
                 type="submit"
                 className="flex h-12 items-center justify-center rounded-lg border border-transparent bg-primary px-6 py-3 font-medium text-white duration-200 hover:bg-primary/90"
               >
-                Add Song
+                Add Album
               </button>
             </div>
           </div>
@@ -278,4 +254,4 @@ const AddSong = () => {
   );
 };
 
-export default memo(AddSong);
+export default memo(AddAlbum);

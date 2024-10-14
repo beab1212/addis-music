@@ -6,11 +6,13 @@ import CustomError from '../errors/index.js';
 import { getAudioDuration, isHlsAudioExist, generateHLSStream } from '../utils/song.utils.js';
 import { moveToDataPath } from '../utils/file.utils.js';
 import Song from '../models/Song.js';
+import AlbumSong from '../models/AlbumSong.js';
 import Genre from '../models/Genre.js';
 import Album from '../models/Album.js';
 import Like from '../models/Like.js';
 import Keyword from '../models/Keyword.js';
 import ListeningHistory from '../models/ListeningHistory.js';
+import PlaylistSong from '../models/PlaylistSong.js';
 
 
 const hlsFolder = config.HLS_PATH;
@@ -82,6 +84,18 @@ const SongController = {
             if (!isAlbumExists) {
                 throw new CustomError.BadRequest('selected album does\'t exist');
             }
+
+            if (isAlbumExists.user_id.toString() !== user._id) {
+                return res.status(StatusCodes.FORBIDDEN).json({ success: false, error: 'you don\'t have permission to this album' })
+            }
+
+            const newAlbumSong = new AlbumSong({
+                album_id: album,
+                song_id: newSong._id
+            });
+
+            await newAlbumSong.save();
+
             newSong.album_id = album;
         }
 
@@ -183,6 +197,32 @@ const SongController = {
         }
 
         return res.status(StatusCodes.OK).json({ success: true, song: { ...transformedSong } });
+    },
+
+    async deleteSong(req, res) {
+        const user = req.user;
+        const { id='' } = req.params;
+
+        if (!isValidObjectId(id))  {
+            throw new CustomError.BadRequest('invalid song id');
+        }
+
+        const song = await Song.findById(id);
+
+        if (!song) {
+            throw new CustomError.BadRequest('requested song doesn\'t exist');
+        }
+
+        if (song.user_id.toString() !== user._id) {
+            return res.status(StatusCodes.FORBIDDEN).json({ success: false, error: 'you don\'t have permission to this album' })
+        }
+
+        await Song.deleteOne({ _id: new Types.ObjectId(id)})
+
+        await PlaylistSong.deleteOne({ song_id: new Types.ObjectId(id) });
+        await AlbumSong.deleteOne({ song_id: new Types.ObjectId(id) });
+
+        res.status(StatusCodes.OK).json({ success: true, message: 'song deleted successfully' });
     },
 
     async songStream(req, res) {

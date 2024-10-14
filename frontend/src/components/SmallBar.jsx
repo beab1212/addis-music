@@ -29,6 +29,13 @@ const SmallBar = () => {
 
       <h1
         className="bg-[#2a2a2a] py-2 px-5 text-dimWhite hover:text-white cursor-pointer mr-4 rounded-full text-nowrap"
+        onClick={() => navigate("/app/album")}
+      >
+        ALBUM
+      </h1>
+
+      <h1
+        className="bg-[#2a2a2a] py-2 px-5 text-dimWhite hover:text-white cursor-pointer mr-4 rounded-full text-nowrap"
         onClick={() => navigate("/app/discover")}
       >
         TOP CHARTS

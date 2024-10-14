@@ -95,7 +95,7 @@ const PlaylistController = {
         const { id='' } = req.params;
 
         if (!isValidObjectId(id))  {
-            throw new CustomError.BadRequest('invalid song id');
+            throw new CustomError.BadRequest('invalid playlist id');
         }
 
         const playlist = await Playlist.findById(id, { __v: 0 });

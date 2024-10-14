@@ -9,6 +9,9 @@ import MaxPlayer from "./MaxPlayer";
 import AddSong from "./AddSong";
 import { SmallAlert } from "./Alert";
 import AppLayout from "./AppLayout";
+import AddAlbum from "./AddAlbum";
+import Album from "./Album";
+import AlbumSong from "./AlbumSong";
 import PlaylistSong from "./PlaylistSong";
 import AddPlaylist from "./AddPlaylist";
 import Foryou from "./Foryou";
@@ -33,6 +36,9 @@ export {
   MusicPlayer,
   Playlist,
   PlaylistSong,
+  AddAlbum,
+  Album,
+  AlbumSong,
   AddPlaylist,
   MaxPlayer,
   AddSong,

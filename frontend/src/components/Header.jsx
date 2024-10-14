@@ -174,6 +174,12 @@ const Header = () => {
                 Upload Song
               </Link>
               <Link
+                to="/app/album/upload"
+                className="px-4 py-2.5 text-sm font-medium items-center hover:bg-white/5 block text-dimWhite"
+              >
+                Create Album
+              </Link>
+              <Link
                 to="/app"
                 className="px-4 py-2.5 text-sm font-medium items-center hover:bg-white/5 block text-dimWhite"
               >

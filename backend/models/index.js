@@ -9,6 +9,7 @@ import Playlist from './Playlist.js';
 import PlaylistSong from './PlaylistSong.js';
 import Song from './Song.js';
 import User from './User.js';
+import AlbumSong from './AlbumSong.js';
 
-export default { Album, Artist, Follow, Genre, Keyword, Like, ListeningHistory, Playlist, PlaylistSong, Song, User };
+export default { Album, Artist, Follow, Genre, Keyword, Like, ListeningHistory, Playlist, PlaylistSong, Song, User, AlbumSong };
 

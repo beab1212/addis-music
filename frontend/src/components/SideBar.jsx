@@ -69,6 +69,24 @@ const SideBar = () => {
           </div>
 
           <div className="flex flex-1 items-center mb-[25px] cursor-pointer">
+            {/* <img
+              src={genre}
+              alt=""
+              className="w-[28px] h-[28px] object-contain"
+            /> */}
+            <i className="fad fa-folder-open" style={{ fontSize: '26px' }} />
+
+            <h1
+              className={`${styles.hoverColor} text-[13px] font-semibold px-8`}
+              onClick={() => {
+                navigate("/app/album");
+              }}
+            >
+              ALBUM
+            </h1>
+          </div>
+          
+          <div className="flex flex-1 items-center mb-[25px] cursor-pointer">
             <img
               src={topchart}
               alt=""

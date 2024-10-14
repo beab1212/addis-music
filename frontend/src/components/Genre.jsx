@@ -9,7 +9,6 @@ const Genre = () => {
   const [data, setData] = useState(null);
 
   const handleClick = (genre_id) => {
-    console.log("============== genre search");
     navigate(`/app/discover?genre=${genre_id}`);
   };
 
