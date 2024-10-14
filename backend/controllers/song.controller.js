@@ -106,8 +106,8 @@ const SongController = {
         let { page=1, per_page=20 } = req.query;
         
         try {
-            page = parseInt(page);
-            per_page = parseInt(per_page);
+            page = Math.ceil(parseInt(page));
+            per_page = Math.ceil(parseInt(per_page));
         } catch(parseErr) {
             throw new CustomError.BadRequest('page and per_page must be type integer');
         }

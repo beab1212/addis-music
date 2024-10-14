@@ -1,10 +1,17 @@
 import { useEffect, memo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { axiosPrivate } from "../api/axios";
 
 const Genre = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
+
+  const handleClick = (genre_id) => {
+    console.log("============== genre search");
+    navigate(`/app/discover?genre=${genre_id}`);
+  };
 
   useEffect(() => {
     axiosPrivate
@@ -34,6 +41,9 @@ const Genre = () => {
           <div
             key={genre._id}
             className="flex relative sm:w-[300px] w-[45%] lg:mb-8x mb-6x h-[150px] rounded-lg overflow-hidden cursor-pointer hover:rounded-2xl shadow shadow-blue-800/40 hover:shadow-indigo-800/40"
+            onClick={() => {
+              handleClick(genre._id);
+            }}
           >
             <img
               src={genre.image + "_400"}

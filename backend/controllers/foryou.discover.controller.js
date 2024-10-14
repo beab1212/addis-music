@@ -1,9 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
-import { Types } from 'mongoose';
+import { isValidObjectId, Types } from 'mongoose';
 import config from '../config.js';
 import CustomError from '../errors/index.js';
 import Song from '../models/Song.js';
 import Playlist from '../models/Playlist.js';
+import Genre from '../models/Genre.js'
 // Todo: try to powered with AI
 
 const ForyouAndDiscover = {
@@ -17,10 +18,11 @@ const ForyouAndDiscover = {
         // /discover?query=...
         const user = req.user;
         const { query='' } = req.query;
+        let { genre='' } = req.query;
         let { page=1, per_page=20 } = req.query;
         try {
-            page = parseInt(page);
-            per_page = parseInt(per_page);
+            page = Math.ceil(parseInt(page));
+            per_page = Math.ceil(parseInt(per_page));
         } catch(parseErr) {
             throw new CustomError.BadRequest('page and per_page must be type integer');
         }
@@ -29,13 +31,19 @@ const ForyouAndDiscover = {
             throw new CustomError.BadRequest('page and per_page must be type integer');
         }
 
+        genre = isValidObjectId(genre) ? new Types.ObjectId(genre) : '';
+        let genreName;
+        if (genre !== '') {
+            genreName = await Genre.findById(genre)
+        }
+
         const pattern = new RegExp(`${query}`, 'i');
         const patternStart = new RegExp(`^${query}`, 'i');
 
         const playlists = await Playlist.aggregate([
             { $match: 
                 {$and: [
-                    {name: pattern},
+                    {name: pattern},    
                     { $or: [
                         { is_public: {$ne: false}},
                         { $and: [{is_public: false}, {user_id: new Types.ObjectId(user._id)}] }
@@ -50,17 +58,26 @@ const ForyouAndDiscover = {
                 updatedAt: 1,
                 playlist_art: { $concat: [`${config.HOST_ADDRESS}/api/v1/playlist/asset/`, '$playlist_art']},
             }},
-        ]).skip(Math.round((per_page * 25) / 100) *(page - 1)).limit(Math.round((per_page * 25) / 100));
+        ]).skip(Math.ceil((per_page * 25) / 100) *(page - 1)).limit(Math.ceil((per_page * 25) / 100));
         // Playlist will be 25% of the per_page
         // if user request 20 per_page playlist will be 5
 
         const songs = await Song.aggregate([
             { $match:
-                { $or: [
-                    { title: {$regex: pattern}},
-                    { description: {$regex: pattern}},
-                    { contributors: {$regex: patternStart}},
-                ]}
+                !isValidObjectId(genre) ? {
+                    $or: [
+                        { title: {$regex: pattern}},
+                        { description: {$regex: pattern}},
+                        { contributors: {$regex: patternStart}},
+                    ]} : {
+                    $and: [
+                        {$or: [
+                            { title: {$regex: pattern}},
+                            { description: {$regex: pattern}}
+                        ]},
+                        { genre: genre },
+                    ]
+                }
             },
             { $project:{
                 title: 1,

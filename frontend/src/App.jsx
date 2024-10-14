@@ -5,6 +5,7 @@ import "./App.css";
 import "./assets/font-awesome-1-master/css/all.min.css";
 // import { styles } from "./style";
 
+import ProtectedRoute from "./components/ProtectedRoute";
 const Home = lazy(() => import('./components/market/Home'));
 const Signin = lazy(() => import('./components/market/Signin'));
 const Signup = lazy(() => import('./components/market/Signup'));
@@ -43,7 +44,11 @@ function App() {
           <Route path="signup" Component={Signup} element={<LazyComponent Component={Signup} />} />
         </Route>
         
-        <Route path="/app" element={<AppLayout />}>
+        <Route path="/app" element={
+          <ProtectedRoute>
+            <AppLayout />
+          </ProtectedRoute>
+        }>
           <Route path="" Component={Foryou} />
           <Route path="player" Component={MaxPlayer} />
           <Route path="song/upload" Component={AddSong} />

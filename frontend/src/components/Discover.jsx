@@ -29,8 +29,9 @@ const Discover = () => {
 
   const fetchNewPage = () => {
     page = page + 1;
+    
     axiosPrivate
-      .get(`/discover${location.search}?page=${page}`)
+      .get(`/discover${location.search}${location.search ? '&' : '?'}page=${page}`)
       .then((res) => {
         if (res.status === 200) {
           setData((prev) => {
