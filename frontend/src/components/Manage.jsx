@@ -10,7 +10,7 @@ const Manage = () => {
         <div className="bg-[#121212] rounded-lg">
           <div className="max-w-[350px] px-6 bg-[#212121] mx-auto p-2 flex justify-between rounded-b-lg font-semibold">
             <Link to="/app/manage/song">Song</Link>
-            <Link>Album</Link>
+            <Link to="/app/manage/album">Album</Link>
             <Link>Playlist</Link>
           </div>
         </div>

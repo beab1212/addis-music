@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
-import { isValidObjectId } from 'mongoose';
+import { isValidObjectId, Types } from 'mongoose';
+import CustomError from '../errors/index.js';
 import config from '../config.js';
 import { moveToDataPath } from '../utils/file.utils.js';
 import Album from '../models/Album.js';
@@ -140,6 +141,118 @@ const AlbumController = {
 
         return res.status(StatusCodes.OK).json({ success: true, album: { ...albumJson , songs: songs }});
     },
+
+    async userAlbum(req, res) {
+        const user = req.user;
+        const { query='' } = req.query;
+        let { page=1, per_page=20 } = req.query;
+
+        try {
+            page = Math.ceil(parseInt(page));
+            per_page = Math.ceil(parseInt(per_page));
+        } catch(parseErr) {
+            throw new CustomError.BadRequest('page and per_page must be type integer');
+        }
+
+        if (isNaN(page)  || isNaN(per_page)) {
+            throw new CustomError.BadRequest('page and per_page must be type integer');
+        }
+
+        const pattern = new RegExp(`${query}`, 'i');
+        const patternStart = new RegExp(`^${query}`, 'i');
+
+        const albums = await Album.aggregate([
+            { $match:
+                {$and: [
+                    { user_id: new Types.ObjectId(user._id) },
+                    { $or: [
+                        { title: {$regex: pattern}},
+                        { description: {$regex: pattern}},
+                        { contributors: {$regex: patternStart}},
+                    ]}
+                ] }
+            },
+            { $project:{
+                title: 1,
+                user_id: 1,
+                description: 1,
+                contributors: 1,
+                genre_id: 1,
+                createdAt: 1,
+                updatedAt: 1,
+                album_art: { $concat: [`${config.HOST_ADDRESS}/api/v1/song/asset/`, '$album_art']},
+            }},
+            { $skip: per_page *(page - 1)},
+            { $limit: per_page }
+        ]);
+
+        return res.status(StatusCodes.OK).json({ success: true, albums });
+    },
+
+    async deleteAlbum(req, res) {
+        const user = req.user;
+        const { id='' } = req.params;
+
+        if (!isValidObjectId(id))  {
+            throw new CustomError.BadRequest('invalid album id');
+        }
+
+        const album = await Album.findById(id);
+
+        if (!album) {
+            throw new CustomError.BadRequest('requested album doesn\'t exist');
+        }
+
+        if (album.user_id.toString() !== user._id) {
+            return res.status(StatusCodes.FORBIDDEN).json({ success: false, error: 'you don\'t have permission to this album' })
+        }
+
+        await Album.deleteOne({ _id: new Types.ObjectId(id)})
+
+        await AlbumSong.deleteOne({ song_id: new Types.ObjectId(id) });
+
+        res.status(StatusCodes.OK).json({ success: true, message: 'song deleted successfully' });
+    },
+
+    async updateAlbum(req, res) {
+        const user = req.user;
+        const { id='' } = req.params;
+        const { title, genre_id, contributors, description } = req.body;
+
+        if (!isValidObjectId(id)) {
+            throw new CustomError.BadRequest('invalid song id');
+        }
+
+        if (genre_id && !isValidObjectId(genre_id)) {
+            throw new CustomError.BadRequest('invalid genre id');
+        }
+
+        let newGenre;
+        if (genre_id) {
+            newGenre = await Genre.findById(genre_id);
+            if (!newGenre) {
+                throw new CustomError.BadRequest('selected genre does\'t exist');
+            }
+        }
+
+        const album = await Album.findById(id);
+
+        if (!album) {
+            throw new CustomError.BadRequest('requested album doesn\'t exist');
+        }
+
+        if (album.user_id.toString() !== user._id) {
+            return res.status(StatusCodes.FORBIDDEN).json({ success: false, error: 'you don\'t have permission to this album' })
+        }
+
+        if (album.title === title && album.description === description && album.genre?.toString() === genre_id && album.contributors === contributors?.split(',')) {
+            throw new CustomError.BadRequest('nothing is new to update with');
+        }
+        
+        await Album.updateOne({ _id: album._id }, { title, description, contributors: contributors?.split(', '), genre_id: (newGenre ? newGenre._id.toString() : '') });
+
+        res.status(StatusCodes.OK).json({ success: true, message: 'album updated successfully' });
+    }
 
 }
 

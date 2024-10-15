@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { axiosPrivate } from "../../api/axios";
 
-const ManageSong = () => {
+const ManageAlbum = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [refresh, setRefresh] = useState("false");
   const [toggle, setToggle] = useState(false);
   const [currentUpdated, setCurrentUpdated] = useState(null);
 
-  const handleDelete = (e, song_id) => {
+  const handleDelete = (e, album_id) => {
     // Prevent click bubbling to parent div
     e.stopPropagation();
     axiosPrivate
-      .delete(`/song/${song_id}`)
+      .delete(`/album/${album_id}`)
       .then((res) => {
-        setRefresh(song_id);
+        setRefresh(album_id);
         dispatch({
           type: "SHOW_ALERT",
           payload: {
@@ -36,12 +36,11 @@ const ManageSong = () => {
         });
       });
   };
-
   useEffect(() => {
     axiosPrivate
-      .get("/song/my")
+      .get("/album/my")
       .then((res) => {
-        setData(res.data?.songs);
+        setData(res.data?.albums);
       })
       .catch((err) => {
         dispatch({
@@ -54,20 +53,19 @@ const ManageSong = () => {
         });
       });
   }, [refresh]);
-
   return (
-    <div className="">
-      <UpdateSong
+    <div>
+      <UpdateAlbum
         toggle={toggle}
         setToggle={setToggle}
         currentUpdated={currentUpdated}
         setRefresh={setRefresh}
       />
-      {data.map((song, index) => (
-        <SongTemplate
-          key={song._id}
+      {data.map((album, index) => (
+        <AlbumTemplate
+          key={album?._id}
           index={index}
-          song={song}
+          album={album}
           handleDelete={handleDelete}
           setToggle={setToggle}
           setCurrentUpdated={setCurrentUpdated}
@@ -81,7 +79,7 @@ const ManageSong = () => {
   );
 };
 
-const SongTemplate = (probs) => {
+const AlbumTemplate = (probs) => {
   return (
     <div className="flex flex-row">
       <div
@@ -89,7 +87,7 @@ const SongTemplate = (probs) => {
       >
         <h4 className="text-[1.1rem] mr-4">{probs.index + 1}</h4>
         <img
-          src={probs.song.song_art + "_100"}
+          src={probs.album.album_art + "_100"}
           alt={probs._id}
           className="w-[40px] h-[40px] object-cover overflow-hidden min-w-[40px]"
         />
@@ -97,12 +95,12 @@ const SongTemplate = (probs) => {
           <h5
             className={`text-[13px] font-semibold cursor-pointer hover:text-dimWhite text-nowrap`}
           >
-            {probs.song.title}
+            {probs.album.title}
           </h5>
           <h6
             className={`text-[13px] text-dimWhite cursor-pointer hover:text-white text-nowrap `}
           >
-            {probs.song.contributors?.join(", ")}
+            {probs.album.contributors?.join(", ")}
           </h6>
         </div>
         <p className={`text-dimWhite text-[13px] text-end w-full`}>{}</p>
@@ -111,7 +109,7 @@ const SongTemplate = (probs) => {
           <i
             className={`mx-4 fad fa-edit hover:text-green-600`}
             onClick={() => {
-              probs.setCurrentUpdated(probs.song);
+              probs.setCurrentUpdated(probs.album);
               probs.setToggle(true);
             }}
           />
@@ -119,7 +117,7 @@ const SongTemplate = (probs) => {
           <i
             className={`mx-4 fad fa-trash hover:text-red-600`}
             onClick={(e) => {
-              probs.handleDelete(e, probs.song._id);
+              probs.handleDelete(e, probs.album._id);
             }}
           />
         </div>
@@ -128,13 +126,13 @@ const SongTemplate = (probs) => {
   );
 };
 
-const UpdateSong = (probs) => {
+const UpdateAlbum = (probs) => {
   const dispatch = useDispatch();
   const [genres, setGenres] = useState([]);
   const [form, setForm] = useState({
     title: "",
     contributors: "",
-    genre: "",
+    genre_id: "",
     description: "",
   });
 
@@ -150,7 +148,7 @@ const UpdateSong = (probs) => {
       probs.currentUpdated.title === form.title &&
       probs.currentUpdated.description === form.description &&
       probs?.currentUpdated?.contributors?.join(", ") === form.contributors &&
-      probs.currentUpdated?.genre === form.genre
+      probs.currentUpdated?.genre_id === form.genre_id
     ) {
       dispatch({
         type: "SHOW_ALERT",
@@ -162,7 +160,7 @@ const UpdateSong = (probs) => {
       });
     } else {
       axiosPrivate
-        .post(`/song/${probs?.currentUpdated?._id}`, form)
+        .post(`/album/${probs?.currentUpdated?._id}`, form)
         .then((res) => {
           dispatch({
             type: "SHOW_ALERT",
@@ -192,7 +190,7 @@ const UpdateSong = (probs) => {
     setForm({
       title: probs?.currentUpdated?.title,
       contributors: probs?.currentUpdated?.contributors?.join(", "),
-      genre: probs?.currentUpdated?.genre,
+      genre_id: probs?.currentUpdated?.genre_id,
       description: probs?.currentUpdated?.description,
     });
 
@@ -260,9 +258,9 @@ const UpdateSong = (probs) => {
               Genre
             </label>
             <select
-              name="genre"
+              name="genre_id"
               className="w-full appearance-none rounded-lg border border-stroke py-3 pl-5 pr-12 text-gray-900 outline-none focus:border-primary "
-              value={form.genre}
+              value={form.genre_id}
               onChange={handleChange}
             >
               <option value="">Select song genre</option>
@@ -304,7 +302,7 @@ const UpdateSong = (probs) => {
               type="submit"
               className="flex h-12 items-center justify-center rounded-lg border border-transparent bg-green-800 px-6 py-3 font-medium text-white duration-200 hover:bg-green-950"
             >
-              Update Song
+              Update Album
             </button>
           </div>
         </form>
@@ -313,4 +311,4 @@ const UpdateSong = (probs) => {
   );
 };
 
-export default ManageSong;
+export default ManageAlbum;

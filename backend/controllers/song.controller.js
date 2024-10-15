@@ -328,7 +328,7 @@ const SongController = {
             { $limit: per_page }
         ]);
 
-        return res.status(StatusCodes.OK).json({ success: true, songs })
+        return res.status(StatusCodes.OK).json({ success: true, songs });
     },
 
     async deleteSong(req, res) {
@@ -346,15 +346,14 @@ const SongController = {
         }
 
         if (song.user_id.toString() !== user._id) {
-            return res.status(StatusCodes.FORBIDDEN).json({ success: false, error: 'you don\'t have permission to this album' })
+            return res.status(StatusCodes.FORBIDDEN).json({ success: false, error: 'you don\'t have permission to this song' })
         }
 
-        await Song.deleteOne({ _id: new Types.ObjectId(id)})
+        await Album.deleteOne({ _id: new Types.ObjectId(id)})
 
-        await PlaylistSong.deleteOne({ song_id: new Types.ObjectId(id) });
         await AlbumSong.deleteOne({ song_id: new Types.ObjectId(id) });
 
-        res.status(StatusCodes.OK).json({ success: true, message: 'song deleted successfully' });
+        res.status(StatusCodes.OK).json({ success: true, message: 'album deleted successfully' });
     },
 
     async updateSong(req, res) {
