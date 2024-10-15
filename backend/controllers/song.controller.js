@@ -13,6 +13,7 @@ import Like from '../models/Like.js';
 import Keyword from '../models/Keyword.js';
 import ListeningHistory from '../models/ListeningHistory.js';
 import PlaylistSong from '../models/PlaylistSong.js';
+import Activity from '../models/Activity.js';
 
 
 const hlsFolder = config.HLS_PATH;
@@ -353,6 +354,8 @@ const SongController = {
 
         await AlbumSong.deleteOne({ song_id: new Types.ObjectId(id) });
 
+        await PlaylistSong.deleteMany({ song_id: new Types.ObjectId(id) });
+
         res.status(StatusCodes.OK).json({ success: true, message: 'album deleted successfully' });
     },
 
@@ -411,9 +414,22 @@ const makeSongListened = async(song_id, user_id) => {
     })
     console.log('=========> Debugging==== song: ', song_id, ' got new listener id: ', user_id);
     
-    await newListen.save()
+    createActivity(song_id, user_id);
+
+    await newListen.save();
+
     return newListen;
 }
 
+const createActivity = async (song_id, user_id) => {
+
+    const song = await Song.findById(song_id);
+
+    // tags formatted for regex
+    await new Activity({
+        user_id: user_id,
+        tags: song.contributors
+    }).save()
+}
 
 export default SongController;
