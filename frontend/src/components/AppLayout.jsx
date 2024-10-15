@@ -8,7 +8,7 @@ import SmallBar from "./SmallBar";
 const AppLayout = () => {
   const location = useLocation();
   const outerDivRef = useRef(null);
-  const fullLayoutPaths = ["/app/profile", "/app/player"];
+  const fullLayoutPaths = ["/app/profile", "/app/manage", "/app/manage/song", "/app/manage/playlist", "/app/manage/album", "/app/player"];
   const isFullLayout = fullLayoutPaths.includes(location.pathname);
 
   useEffect(() => {

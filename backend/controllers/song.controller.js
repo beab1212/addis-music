@@ -115,7 +115,7 @@ const SongController = {
         return res.status(StatusCodes.CREATED).json({ success: true, message: 'Song created successfully', song: { ...newSongJson, duration: parseFloat(newSong.duration) } });
     },
 
-    async song(req, res){
+    async song(req, res) {
         const { query='' } = req.query;
         let { page=1, per_page=20 } = req.query;
         
@@ -167,7 +167,7 @@ const SongController = {
         return res.status(StatusCodes.OK).json({ success: true, songs });
     },
 
-    async songDetail(req, res){
+    async songDetail(req, res) {
         const user = req.user;
         const { id='' } = req.params;
 
@@ -197,32 +197,6 @@ const SongController = {
         }
 
         return res.status(StatusCodes.OK).json({ success: true, song: { ...transformedSong } });
-    },
-
-    async deleteSong(req, res) {
-        const user = req.user;
-        const { id='' } = req.params;
-
-        if (!isValidObjectId(id))  {
-            throw new CustomError.BadRequest('invalid song id');
-        }
-
-        const song = await Song.findById(id);
-
-        if (!song) {
-            throw new CustomError.BadRequest('requested song doesn\'t exist');
-        }
-
-        if (song.user_id.toString() !== user._id) {
-            return res.status(StatusCodes.FORBIDDEN).json({ success: false, error: 'you don\'t have permission to this album' })
-        }
-
-        await Song.deleteOne({ _id: new Types.ObjectId(id)})
-
-        await PlaylistSong.deleteOne({ song_id: new Types.ObjectId(id) });
-        await AlbumSong.deleteOne({ song_id: new Types.ObjectId(id) });
-
-        res.status(StatusCodes.OK).json({ success: true, message: 'song deleted successfully' });
     },
 
     async songStream(req, res) {
@@ -303,6 +277,122 @@ const SongController = {
         const favSongs = await Like.find({ user_id: new Types.ObjectId(user._id) }, { song_id: 1 }).skip(per_page *(page - 1)).limit(per_page);
 
         return res.status(StatusCodes.OK).json({ success: true, favSongs })
+    },
+
+    async userSong(req, res) {
+        const user = req.user;
+        const { query='' } = req.query;
+        let { page=1, per_page=20 } = req.query;
+
+        try {
+            page = Math.ceil(parseInt(page));
+            per_page = Math.ceil(parseInt(per_page));
+        } catch(parseErr) {
+            throw new CustomError.BadRequest('page and per_page must be type integer');
+        }
+
+        if (isNaN(page)  || isNaN(per_page)) {
+            throw new CustomError.BadRequest('page and per_page must be type integer');
+        }
+
+        const pattern = new RegExp(`${query}`, 'i');
+        const patternStart = new RegExp(`^${query}`, 'i');
+
+        const songs = await Song.aggregate([
+            { $match:
+                {$and: [
+                    { user_id: new Types.ObjectId(user._id) },
+                    { $or: [
+                        { title: {$regex: pattern}},
+                        { description: {$regex: pattern}},
+                        { contributors: {$regex: patternStart}},
+                    ]}
+                ] }
+            },
+            { $project:{
+                title: 1,
+                song: 1,
+                user_id: 1,
+                description: 1,
+                contributors: 1,
+                genre: 1,
+                // not import when app is once deployed
+                // only stream_url: 1
+                stream_url: { $concat: [`${config.HOST_ADDRESS}/api/v1/song/stream/`, { $toString:'$_id'}, '/']},
+                createdAt: 1,
+                updatedAt: 1,
+                song_art: { $concat: [`${config.HOST_ADDRESS}/api/v1/song/asset/`, '$song_art']},
+                duration: { $concat: [{ $toString: "$duration" }, ] }
+            }},
+            { $skip: per_page *(page - 1)},
+            { $limit: per_page }
+        ]);
+
+        return res.status(StatusCodes.OK).json({ success: true, songs })
+    },
+
+    async deleteSong(req, res) {
+        const user = req.user;
+        const { id='' } = req.params;
+
+        if (!isValidObjectId(id))  {
+            throw new CustomError.BadRequest('invalid song id');
+        }
+
+        const song = await Song.findById(id);
+
+        if (!song) {
+            throw new CustomError.BadRequest('requested song doesn\'t exist');
+        }
+
+        if (song.user_id.toString() !== user._id) {
+            return res.status(StatusCodes.FORBIDDEN).json({ success: false, error: 'you don\'t have permission to this album' })
+        }
+
+        await Song.deleteOne({ _id: new Types.ObjectId(id)})
+
+        await PlaylistSong.deleteOne({ song_id: new Types.ObjectId(id) });
+        await AlbumSong.deleteOne({ song_id: new Types.ObjectId(id) });
+
+        res.status(StatusCodes.OK).json({ success: true, message: 'song deleted successfully' });
+    },
+
+    async updateSong(req, res) {
+        const user = req.user;
+        const { id='' } = req.params;
+        const { title, genre, contributors, description } = req.body;
+
+        if (!isValidObjectId(id)) {
+            throw new CustomError.BadRequest('invalid song id');
+        }
+
+        if (!isValidObjectId(genre)) {
+            throw new CustomError.BadRequest('invalid genre id');
+        }
+
+        const song = await Song.findById(id);
+
+        if (!song) {
+            throw new CustomError.BadRequest('requested song doesn\'t exist');
+        }
+
+        if (song.user_id.toString() !== user._id) {
+            return res.status(StatusCodes.FORBIDDEN).json({ success: false, error: 'you don\'t have permission to this song' })
+        }
+
+        if (song.title === title && song.description === description && song.genre.toString() === genre && song.contributors === contributors?.split(',')) {
+            throw new CustomError.BadRequest('nothing is new to update with');
+        }
+
+        const newGenre = await Genre.findById(genre);
+
+        if (!newGenre) {
+            throw new CustomError.BadRequest('selected genre does\'t exist');
+        }
+        
+        await Song.updateOne({ _id: song._id }, { title, description, contributors: contributors?.split(', '), genre });
+
+        res.status(StatusCodes.OK).json({ success: true, message: 'song updated successfully' });
     }
 };
 

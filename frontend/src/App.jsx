@@ -24,7 +24,13 @@ const AddAlbum = lazy(() => import('./components/AddAlbum'));
 const Favorites = lazy(() => import('./components/Favorites'));
 const Foryou = lazy(() => import('./components/Foryou'));
 const Profile = lazy(() => import('./components/Profile'));
+const Manage = lazy(() => import('./components/Manage'));
 const NotFound = lazy(() => import('./components/NotFound'));
+
+const ManageSong = lazy(() => import('./components/manage/ManageSong'));
+
+// ManageSong
+
 
 
 // TODO: don't forget to implement lazy loading image
@@ -56,6 +62,11 @@ function App() {
           <Route path="player" Component={MaxPlayer} />
           <Route path="song/upload" Component={AddSong} />
           <Route path="album/upload" Component={AddAlbum} />
+          <Route path="manage" Component={Manage}>
+            <Route path="song" Component={ManageSong}/>
+            <Route path="album" />
+            <Route path="playlist" />
+          </Route>
           <Route path="album" Component={Album} />
           <Route path="album/:id" Component={AlbumSong} />
           <Route path="profile" Component={Profile} />

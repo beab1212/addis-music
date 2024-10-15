@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { axiosPrivate } from "../api/axios";
 import AudioHook from "../hooks/AudioHook";
-import { playlist } from "../assets";
 
 const PlaylistSong = () => {
   const { id } = useParams();
@@ -13,6 +12,35 @@ const PlaylistSong = () => {
   const [data, setData] = useState([]);
   // get refresh: change it's value in child component to trigger refresh
   const [refresh, setRefresh] = useState("false");
+
+  const handleDelete = (e, song_id) => {
+    // Prevent click bubbling to parent div
+    e.stopPropagation();
+    axiosPrivate
+      .delete(`/playlist?playlist_id=${id}&song_id=${song_id}`)
+      .then((res) => {
+        setRefresh(song_id);
+        dispatch({
+          type: "SHOW_ALERT",
+          payload: {
+            message: res?.data?.message || null,
+            type: "success",
+            dismiss: 9000,
+          },
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: "SHOW_ALERT",
+          payload: {
+            message: err?.response?.data?.error || null,
+            type: "warning",
+            dismiss: 9000,
+          },
+        });
+      });
+  };
+
   useEffect(() => {
     axiosPrivate
       .get(`/playlist/${id}`)
@@ -51,6 +79,7 @@ const PlaylistSong = () => {
             key={song?.song_id}
             isOwner={user?._id === data.user_id}
             playlistId={id}
+            handleDelete={handleDelete}
             setRefresh={setRefresh}
           />
         ))}
@@ -80,35 +109,6 @@ const SongTemplate = (probs) => {
   const currentSong = useSelector((state) => state.currentSong);
   const [data, setData] = useState();
   let listNumber = probs.index;
-
-  const handleDelete = (e, song_id) => {
-    // Prevent click bubbling to parent div
-    e.stopPropagation();
-    axiosPrivate
-      .delete(`/playlist?playlist_id=${probs.playlistId}&song_id=${song_id}`)
-      .then((res) => {
-        probs.setRefresh(Math.random());
-        dispatch({
-          type: "SHOW_ALERT",
-          payload: {
-            message: res?.data?.message || null,
-            type: "success",
-            dismiss: 9000,
-          },
-        });
-      })
-      .catch((err) => {
-        dispatch({
-          type: "SHOW_ALERT",
-          payload: {
-            message: err?.response?.data?.error || null,
-            type: "warning",
-            dismiss: 9000,
-          },
-        });
-      });
-    console.log("================", probs.playlistId, "=============", song_id);
-  };
 
   useEffect(() => {
     axiosPrivate
@@ -166,7 +166,7 @@ const SongTemplate = (probs) => {
           <i
             className={`mx-4 fad fa-trash hover:text-red-600 px-1`}
             onClick={(e) => {
-              handleDelete(e, probs.song);
+              probs.handleDelete(e, probs.song);
             }}
           />
         </div>

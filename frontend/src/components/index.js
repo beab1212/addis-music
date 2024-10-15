@@ -17,6 +17,7 @@ import AddPlaylist from "./AddPlaylist";
 import Foryou from "./Foryou";
 import Profile from "./Profile";
 import ProtectedRoute from "./ProtectedRoute";
+import Manage from "./Manage";
 import NotFound from "./NotFound";
 
 // Marketing components
@@ -47,5 +48,6 @@ export {
   Signup,
   Home,
   NotFound,  
-  ProtectedRoute
+  ProtectedRoute,
+  Manage
 };
