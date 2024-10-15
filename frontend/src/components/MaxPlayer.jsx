@@ -29,7 +29,6 @@ const MaxPlayer = () => {
   };
 
   useEffect(() => {
-    console.log("Component MaxPlayer");
   }, []);
 
   useEffect(() => {

@@ -28,8 +28,6 @@ const AudioComponent = () => {
       });
 
       audioRef.current?.addEventListener("loadeddata", () => {
-        console.log("=========Audio is loaded and ready to play");
-
         const promise = audioRef.current.play();
         if (promise !== undefined) {
           promise
@@ -51,7 +49,6 @@ const AudioComponent = () => {
 
       audioRef.current?.addEventListener("ended", () => {
         dispatch({ type: "PAUSE" });
-        console.log("=========audio ended");
       });
     }
     return () => {
@@ -64,7 +61,7 @@ const AudioComponent = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("Component AudioComponent");
+    
   }, []);
   return (
     <div>

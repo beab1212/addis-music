@@ -12,7 +12,6 @@ const AppLayout = () => {
   const isFullLayout = fullLayoutPaths.includes(location.pathname);
 
   useEffect(() => {
-    console.log("Component AppLayout");
   }, []);
   return (
     <div

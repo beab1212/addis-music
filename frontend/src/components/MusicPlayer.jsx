@@ -37,7 +37,6 @@ const MusicPlayer = () => {
   };
 
   useEffect(() => {
-    console.log("Component MusicPlayer");
   }, []);
 
   useEffect(() => {

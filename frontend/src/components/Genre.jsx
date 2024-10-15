@@ -28,7 +28,6 @@ const Genre = () => {
           },
         });
       });
-    console.log("Component Genre");
   }, []);
   return (
     <section className="">

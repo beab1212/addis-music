@@ -20,7 +20,6 @@ const Profile = () => {
     axiosPrivate
       .post("/user/me", data)
       .then((res) => {
-        console.log(res.data?.message);
         dispatch({
           type: "UPDATE_USER",
           payload: {

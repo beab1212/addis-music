@@ -26,7 +26,6 @@ const Foryou = () => {
           },
         });
       });
-    console.log("Component Discover");
   }, []);
   return (
     <section className="">

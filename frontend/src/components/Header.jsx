@@ -73,7 +73,6 @@ const Header = () => {
   }, [query]);
 
   useEffect(() => {
-    console.log("Component Header");
   }, []);
   return (
     <section

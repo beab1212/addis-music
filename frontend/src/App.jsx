@@ -33,7 +33,6 @@ const ManageAlbum = lazy(() => import("./components/manage/ManageAlbum"));
 // TODO: don't forget to implement lazy loading image
 function App() {
   useEffect(() => {
-    console.log("Debugging from main App component");
   }, []);
   return (
     <div className="bg-[#000000] w-full h-screen text-white overflow-hidden">

@@ -94,6 +94,31 @@ const Home = () => {
               </div>
             </div>
           </div>
+
+          {/* How It Works */}
+          <div className={`flex flex-col ${styles.paddingX} py-0 pb-10 borderx`}>
+            <h2 className={`${styles.heading2}`}>How Addis Music Works?</h2>
+              <p className={`${styles.paragraph}`}>At Addis Music, we believe that music is more than just sound—it’s emotion, passion, and connection. Our mission is to bring the world’s best music to your fingertips and provide a platform where artists and listeners can thrive."</p>
+
+          </div>
+
+          {/* About Addis Music */}
+          <div className={`flex flex-col ${styles.paddingX} ${styles.paddingY} borderx`}>
+            <h2 className={`${styles.heading2}`}>About Addis Music</h2>
+              <p className={`${styles.paragraph}`}>At Addis Music, we believe that music is more than just sound—it’s emotion, passion, and connection. Our mission is to bring the world’s best music to your fingertips and provide a platform where artists and listeners can thrive."</p>
+
+          </div>
+
+          <hr className={`mx-10`} />
+
+          {/* Footer */}
+          <div className={`flex flex-col ${styles.paddingX} py-0 pb-40 borderx`}>
+            <h2 className={`${styles.heading2}`}>How Addis Music Works?</h2>
+              <p className={`${styles.paragraph}`}>At Addis Music, we believe that music is more than just sound—it’s emotion, passion, and connection. Our mission is to bring the world’s best music to your fingertips and provide a platform where artists and listeners can thrive."</p>
+
+          </div>
+
+
         </div>
       </div>
     </div>

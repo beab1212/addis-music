@@ -26,7 +26,6 @@ const Playlist = () => {
           },
         });
       });
-    console.log("Component Playlist");
   }, []);
   return (
     <section className="grid sm:grid-rows-[150px_1fr]">

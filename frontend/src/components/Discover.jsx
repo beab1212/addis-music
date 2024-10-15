@@ -80,8 +80,6 @@ const Discover = () => {
       outerDivRef.current.addEventListener("scroll", handleScroll);
     }
 
-    console.log("Component Discover");
-
     return () => {
       if (outerDivRef.current) {
         outerDivRef.current.removeEventListener("scroll", handleScroll);

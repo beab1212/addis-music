@@ -13,7 +13,6 @@ import {
 const SideBar = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("Component SideBar");
   }, []);
   return (
     <section className={`md:px-16 px-4 ${styles.paddingY}`}>
