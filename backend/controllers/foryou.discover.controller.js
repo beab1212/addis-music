@@ -30,7 +30,7 @@ const ForyouAndDiscover = {
         
         const tags = activities.map((activity) => {
             return activity.tags.join('|');
-        })
+        });
 
         const patternSample = tags.join('|');
 

@@ -2,6 +2,7 @@ import { useEffect, memo, lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 // import "font-awesome/css/font-awesome.min.css";
+// import "./assets/font-awesome-1-master/css/all.css";
 import "./assets/font-awesome-1-master/css/all.min.css";
 // import { styles } from "./style";
 
