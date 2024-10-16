@@ -136,7 +136,7 @@ const Home = () => {
 
           {/* Footer */}
           <div
-            className={`flex flex-col ${styles.paddingX} py-0 pb-40 borderx`}
+            className={`flex flex-col ${styles.paddingX} py-0 pb-40`}
           >
             <div className="flex sm:flex-row flex-col">
               <div className="px-10 flex-1">
@@ -152,18 +152,15 @@ const Home = () => {
               <div className="px-10 flex-1">
                 <h3 className="flex font-semibold py-4">About Addis Music</h3>
                 <p className={`${styles.paragraph}`}>
-                  At Addis Music, we believe that music is more than just
-                  sound—it’s emotion, passion, and connection. Our mission is to
-                  bring the world’s best music to your fingertips and provide a
-                  platform where artists and listeners can thrive."
+                  Addis music
                 </p>
               </div>
 
-              <div className="px-10 md:px-40x">
+              <div className="px-10 md:px-40x flex-1">
                 <h3 className="flex font-semibold py-4">Contact</h3>
                 <div className="flex flex-row text-white py-2">
                   <i
-                    className="fa-brands fa-github px-4 hidden"
+                    className="fab fa-brands fa-github px-4"
                     style={{ fontSize: "1.5rem" }}
                   />{" "}
                   <Link className="text-blue-600" to="https://github.com/beab1212">GitHub</Link>
@@ -171,7 +168,7 @@ const Home = () => {
 
                 <div className="flex flex-row py-2">
                   <i
-                    className="fa-brands fa-github-alt text-white px-4 hidden"
+                    className="fab fa-brands fa-github-alt text-white px-4"
                     style={{ fontSize: "1.5rem" }}
                   />{" "}
                   <Link className="text-blue-600" to="https://www.linkedin.com/in/beabDev">Linkedin</Link>
@@ -179,7 +176,7 @@ const Home = () => {
 
                 <div className="flex flex-row py-2">
                   <i
-                    className="fa-brands fa-github-alt text-white px-4 hidden"
+                    className="fab fa-brands fa-telegram text-white px-4"
                     style={{ fontSize: "1.5rem" }}
                   />{" "}
                   <Link className="text-blue-600" to="https://t.me/beabDev">Telegram</Link>
