@@ -38,8 +38,7 @@ ffmpeg version 4.2.7-0ubuntu0.1 Copyright (c) 2000-2022 the FFmpeg developers
 ### backend
     cd backend
     npm install
-    npm start
-    node worker.js
+    npm start && node worker.js
 
 ### frontend
     cd frontend
