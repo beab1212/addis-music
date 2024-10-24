@@ -29,7 +29,7 @@ ffmpeg version 4.2.7-0ubuntu0.1 Copyright (c) 2000-2022 the FFmpeg developers
     TMP_PATH: default '/var/tmp/addis_music'
     HLS_PATH: default '/var/tmp/addis_music/hls'
 
-#### <h4 style="color:#6600ff">NOTE:</h4>
+#### <h4 style="color:#6600f1">NOTE:</h4>
 <p style="font-size:1.1rem">For windows os <b style="color:#ff6666">DATA_PATH</b>, <b style="color:#ff6666">HLS_PATH</b> and <b style="color:#ff6666">TMP_PATH</b>  default value might not work properly, so change it value in config.js</p>
 
 

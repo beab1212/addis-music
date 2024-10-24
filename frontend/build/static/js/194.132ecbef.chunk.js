@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkaddisMusic=self.webpackChunkaddisMusic||[]).push([[194],{194:(e,s,a)=>{a.r(s),a.d(s,{default:()=>t});var l=a(579);const t=()=>(0,l.jsx)("div",{className:"",children:(0,l.jsxs)("div",{className:"flex flex-col mx-auto",children:[(0,l.jsx)("h1",{className:"text-[6rem] text-blue-700 mx-auto font-semibold",children:"404"}),(0,l.jsx)("h2",{className:"text-[4rem] font-semibold mx-auto",children:"Page Not Found"})]})})}}]);
+//# sourceMappingURL=194.132ecbef.chunk.js.map
