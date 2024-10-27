@@ -13,6 +13,15 @@
 => try to use ai generated arts for songs or albums
 => use Bearer or JWT Bearer authentication instead of cookie.
 
+=> make it artist base implementation(account type user and artist)
+=> implement access control for image and song assets
+=> don't forget to include big size file's in .gitignore
+=> add advanced auth mechanism(otp) email verification
+=> try to use ai generated arts for songs or albums
+=> use Bearer or JWT Bearer authentication instead of cookie.
+
+
+
 
 ## <h2 style="color:#6600ff">Dependencies</h2>
 redis-server 5.0.7-2ubuntu0.1 amd64
