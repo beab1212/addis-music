@@ -18,7 +18,6 @@
 => don't forget to include big size file's in .gitignore
 => add advanced auth mechanism(otp) email verification
 => try to use ai generated arts for songs or albums
-=> use Bearer or JWT Bearer authentication instead of cookie.
 
 
 
